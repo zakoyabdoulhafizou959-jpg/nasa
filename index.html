@@ -229,6 +229,14 @@
     z-index: 1100;
     display: none;
   }
+  .ad-container {
+    margin: 15px 0;
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 10px;
+    min-height: 100px;
+  }
   @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -292,6 +300,16 @@
       <div class="options-grid" id="optionsContainer"></div>
       <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px;"></div>
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ Question suivante</button>
+      <!-- Zone publicitaire -->
+      <div class="ad-container" id="adContainer" style="display:none;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6876086925672856"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
     </div>
 
     <!-- RESULTS SCREEN -->
@@ -340,7 +358,7 @@
   </div>
 </div>
 
-<!-- MODAL INVITATION (génère lien vers cette même page avec paramètre ref) -->
+<!-- MODAL INVITATION -->
 <div id="inviteModal" class="modal">
   <div class="modal-content">
     <span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span>
@@ -353,7 +371,7 @@
   </div>
 </div>
 
-<!-- MODAL RETRAIT (minimum 5000 FCF) -->
+<!-- MODAL RETRAIT -->
 <div id="withdrawModal" class="modal">
   <div class="modal-content">
     <span style="float:right; font-size:24px; cursor:pointer;" onclick="closeWithdrawModal()">&times;</span>
@@ -374,6 +392,7 @@
 
 <div id="toastMsg" class="toast"></div>
 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6876086925672856" crossorigin="anonymous"></script>
 <script>
   // -------------------- PERSISTANCE & STOCKAGE LOCAL --------------------
   let usersDB = JSON.parse(localStorage.getItem('quiz_users')) || {};
@@ -381,7 +400,7 @@
   let SESSION_KEY = 'quiz_current_user_id';
   let savedSession = localStorage.getItem(SESSION_KEY);
   
-  // ---------- DONNEES PAYS (pour quiz) ----------
+  // ---------- DONNEES PAYS ----------
   const countries = [
     {name:"France",capital:"Paris",code:"fr",diff:"easy"},{name:"Allemagne",capital:"Berlin",code:"de",diff:"easy"},
     {name:"Italie",capital:"Rome",code:"it",diff:"easy"},{name:"Espagne",capital:"Madrid",code:"es",diff:"easy"},
@@ -397,16 +416,16 @@
   
   function saveUsersDB() { localStorage.setItem('quiz_users', JSON.stringify(usersDB)); }
   
-  // Générer code parrainage unique
   function generateReferralCode(userId) { return 'REF' + btoa(userId).replace(/=/g,'').substring(0,8).toUpperCase(); }
   
-  // Restaurer session
   if(savedSession && usersDB[savedSession]) { currentUser = savedSession; }
   
   // ---------- ÉTAT QUIZ ----------
   let currentMode = 'mixed', currentDifficulty = 'easy', currentCount = 50;
   let currentQuestions = [], currentIndex = 0, earnings = 0, correctCount = 0, wrongCount = 0;
   let streak = 0, bestStreak = 0, answered = false, currentQObj = null, timerInterval = null, timeLeft = 15;
+  let answeredCount = 0; // compteur pour les pubs (toutes les 4 réponses)
+  let adDisplayed = false;
   
   function getFilteredCountries() {
     if(currentDifficulty === 'easy') return countries.filter(c => c.diff === 'easy');
@@ -446,7 +465,7 @@
     if(!currentUser) return;
     let key = `prog_${currentMode}_${currentDifficulty}`;
     if(!usersDB[currentUser].progress) usersDB[currentUser].progress = {};
-    usersDB[currentUser].progress[key] = { currentIndex, earnings, correctCount, wrongCount, streak, bestStreak, questions: currentQuestions, mode: currentMode, difficulty: currentDifficulty };
+    usersDB[currentUser].progress[key] = { currentIndex, earnings, correctCount, wrongCount, streak, bestStreak, questions: currentQuestions, mode: currentMode, difficulty: currentDifficulty, answeredCount };
     saveUsersDB();
   }
   
@@ -458,6 +477,7 @@
       currentIndex = prog.currentIndex; earnings = prog.earnings; correctCount = prog.correctCount;
       wrongCount = prog.wrongCount; streak = prog.streak; bestStreak = prog.bestStreak;
       currentQuestions = prog.questions; currentCount = currentQuestions.length;
+      answeredCount = prog.answeredCount || 0;
       return true;
     }
     return false;
@@ -465,13 +485,23 @@
   
   function startQuiz() {
     if(loadProgress() && confirm("🎯 Partie en cours trouvée ! La reprendre ?")) startQuizFromLoaded();
-    else { currentQuestions = generateQuestions(); currentIndex = 0; earnings = 0; correctCount = 0; wrongCount = 0; streak = 0; bestStreak = 0; startQuizFresh(); }
+    else { currentQuestions = generateQuestions(); currentIndex = 0; earnings = 0; correctCount = 0; wrongCount = 0; streak = 0; bestStreak = 0; answeredCount = 0; startQuizFresh(); }
   }
   function startQuizFromLoaded() { showQuizScreen(); renderCurrentQuestion(); }
   function startQuizFresh() { showQuizScreen(); renderCurrentQuestion(); }
   function showQuizScreen() { document.getElementById('startScreen').classList.remove('active'); document.getElementById('resultsScreen').classList.remove('active'); document.getElementById('quizScreen').classList.add('active'); updateScoreUI(); }
   
   function updateScoreUI() { document.getElementById('scoreLive').innerHTML = `💰 ${earnings} FCF`; }
+  
+  function showAd() {
+    let adContainer = document.getElementById('adContainer');
+    adContainer.style.display = 'block';
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch(e) { console.log('Ad error:', e); }
+    setTimeout(() => { adContainer.style.display = 'none'; }, 3000);
+  }
+  
   function renderCurrentQuestion() {
     if(currentIndex >= currentQuestions.length) { showResults(); return; }
     answered = false;
@@ -516,17 +546,28 @@
     updateScoreUI();
     document.getElementById('nextBtn').style.display = 'block';
     if(currentUser) saveProgress();
+    
+    // Gestion des publicités : toutes les 4 réponses (bonnes ou mauvaises)
+    answeredCount++;
+    if(answeredCount % 4 === 0) {
+      showAd();
+    }
   }
   
   function nextQuestion() { if(!answered) return; currentIndex++; saveProgress(); renderCurrentQuestion(); }
+  
   function startTimer() {
     if(timerInterval) clearInterval(timerInterval);
     timeLeft = 15; let fill = document.getElementById('timerFill'); fill.style.width = '100%';
     timerInterval = setInterval(() => {
-      if(!answered && timeLeft > 0) { timeLeft--; fill.style.width = (timeLeft/15)*100+'%'; if(timeLeft<=0 && !answered) { clearInterval(timerInterval); answered=true; wrongCount++; streak=0; document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true); document.getElementById('feedbackMsg').innerHTML = `<div style="background:#c6282833; padding:8px;">⏰ Temps écoulé ! Réponse: ${currentQObj.answer}</div>`; document.getElementById('nextBtn').style.display = 'block'; if(currentUser) saveProgress(); } }
+      if(!answered && timeLeft > 0) { timeLeft--; fill.style.width = (timeLeft/15)*100+'%'; if(timeLeft<=0 && !answered) { clearInterval(timerInterval); answered=true; wrongCount++; streak=0; document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true); document.getElementById('feedbackMsg').innerHTML = `<div style="background:#c6282833; padding:8px;">⏰ Temps écoulé ! Réponse: ${currentQObj.answer}</div>`; document.getElementById('nextBtn').style.display = 'block'; if(currentUser) saveProgress(); 
+        answeredCount++;
+        if(answeredCount % 4 === 0) showAd();
+      } }
     }, 1000);
   }
   function stopTimer() { if(timerInterval) clearInterval(timerInterval); }
+  
   function showResults() {
     stopTimer(); document.getElementById('quizScreen').classList.remove('active'); document.getElementById('resultsScreen').classList.add('active');
     let acc = currentQuestions.length ? Math.round((correctCount/currentQuestions.length)*100) : 0;
@@ -545,7 +586,7 @@
   document.querySelectorAll('.count-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.count-btn').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); currentCount = parseInt(el.dataset.count); }; });
   document.querySelector('.mode-card')?.click(); document.querySelector('.diff-btn')?.click(); document.querySelector('.count-btn.selected')?.click();
   
-  // -------------------- AUTH & PERSISTANCE SESSION --------------------
+  // -------------------- AUTH & PERSISTANCE --------------------
   function updateUserDisplay() {
     if(currentUser && usersDB[currentUser]) {
       document.getElementById('displayName').innerText = usersDB[currentUser].name;
@@ -589,7 +630,6 @@
     let id = 'user'+Date.now();
     usersDB[id] = { name, email, phone, password: pwd, totalFcf: 0, progress: {}, referrals: [], referredBy: null, referralCode: generateReferralCode(id) };
     
-    // Gestion parrainage : chercher utilisateur avec ce code
     let referrerId = null;
     for(let uid in usersDB) {
       if(uid !== id && usersDB[uid].referralCode && usersDB[uid].referralCode === referralCode) {
@@ -612,7 +652,6 @@
   
   window.logout = () => { currentUser = null; updateUserDisplay(); backToMenu(); };
   
-  // Invitation : génère lien vers la page actuelle avec paramètre ref
   window.openInviteModal = () => {
     if(!currentUser) { toast('Connectez-vous d\'abord'); return; }
     let code = usersDB[currentUser].referralCode;
@@ -627,17 +666,14 @@
   window.copyInviteLink = () => {
     let linkDiv = document.getElementById('inviteLinkDisplay');
     navigator.clipboard.writeText(linkDiv.innerText);
-    toast('Lien copié ! Partagez-le à vos amis. Ils seront redirigés vers l\'inscription avec votre code.');
+    toast('Lien copié ! Partagez-le à vos amis.');
   };
   
-  // Détection du paramètre URL ref pour pré-remplir le code parrain
   function checkUrlReferral() {
     let params = new URLSearchParams(window.location.search);
     let refCode = params.get('ref');
     if(refCode) {
-      // Stocker temporairement pour pré-remplir lors de l'ouverture de l'inscription
       sessionStorage.setItem('pendingReferral', refCode);
-      // Si l'utilisateur n'est pas connecté, ouvrir la modale d'inscription
       if(!currentUser) {
         setTimeout(() => {
           openAuthModal();
@@ -648,10 +684,8 @@
         }, 500);
       }
     }
-    // Si on ouvre la modale inscription manuellement, vérifier aussi
   }
   
-  // Retrait (minimum 5000 FCF)
   window.openWithdrawModal = () => { if(!currentUser) toast('Connectez-vous'); else document.getElementById('withdrawModal').classList.add('active'); };
   window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
   window.processWithdraw = () => {
@@ -672,7 +706,6 @@
   
   function toast(msg) { let t = document.getElementById('toastMsg'); t.innerText = msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 3000); }
   
-  // Initialisation
   updateUserDisplay();
   checkUrlReferral();
 </script>
