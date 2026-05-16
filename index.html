@@ -23,7 +23,6 @@
     margin: 0 auto;
   }
 
-  /* Header */
   .top-bar {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
@@ -278,7 +277,7 @@
         <div class="count-btn" data-count="500">500+</div>
       </div>
       <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
-      <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 1500 FCF de bonus !</div>
+      <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 1500 FCF de bonus ! Retrait minimum 5000 FCF</div>
     </div>
 
     <!-- QUIZ SCREEN -->
@@ -315,7 +314,7 @@
   </div>
 </div>
 
-<!-- MODAL AUTH (avec paramètre invitation) -->
+<!-- MODAL AUTH (avec champ code parrain) -->
 <div id="authModal" class="modal">
   <div class="modal-content">
     <span style="float:right; font-size:24px; cursor:pointer;" onclick="closeAuthModal()">&times;</span>
@@ -341,12 +340,12 @@
   </div>
 </div>
 
-<!-- MODAL INVITATION -->
+<!-- MODAL INVITATION (génère lien vers cette même page avec paramètre ref) -->
 <div id="inviteModal" class="modal">
   <div class="modal-content">
     <span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span>
     <h3>👥 Inviter un ami</h3>
-    <p>Partagez votre lien unique :</p>
+    <p>Partagez ce lien unique :</p>
     <div class="invite-link-box" id="inviteLinkDisplay"></div>
     <button class="btn-primary" style="width:100%;" onclick="copyInviteLink()">📋 Copier le lien</button>
     <p style="margin-top:10px; font-size:0.8rem; color:#aaa;">🎁 Pour chaque ami inscrit via votre lien, vous recevez <strong>1500 FCF</strong> de bonus !</p>
@@ -354,12 +353,12 @@
   </div>
 </div>
 
-<!-- MODAL RETRAIT -->
+<!-- MODAL RETRAIT (minimum 5000 FCF) -->
 <div id="withdrawModal" class="modal">
   <div class="modal-content">
     <span style="float:right; font-size:24px; cursor:pointer;" onclick="closeWithdrawModal()">&times;</span>
     <h3>💸 Effectuer un retrait</h3>
-    <input type="number" id="withdrawAmount" placeholder="Montant (min 500 FCF)">
+    <input type="number" id="withdrawAmount" placeholder="Montant (min 5000 FCF)">
     <input type="tel" id="withdrawPhone" placeholder="Numéro de téléphone">
     <select id="withdrawMethod">
       <option value="MTN">MTN Money</option>
@@ -382,7 +381,7 @@
   let SESSION_KEY = 'quiz_current_user_id';
   let savedSession = localStorage.getItem(SESSION_KEY);
   
-  // ---------- DONNEES PAYS ----------
+  // ---------- DONNEES PAYS (pour quiz) ----------
   const countries = [
     {name:"France",capital:"Paris",code:"fr",diff:"easy"},{name:"Allemagne",capital:"Berlin",code:"de",diff:"easy"},
     {name:"Italie",capital:"Rome",code:"it",diff:"easy"},{name:"Espagne",capital:"Madrid",code:"es",diff:"easy"},
@@ -398,8 +397,8 @@
   
   function saveUsersDB() { localStorage.setItem('quiz_users', JSON.stringify(usersDB)); }
   
-  // Générer ID unique pour parrainage
-  function generateReferralCode(userId) { return btoa(userId).replace(/=/g,'').substring(0,12); }
+  // Générer code parrainage unique
+  function generateReferralCode(userId) { return 'REF' + btoa(userId).replace(/=/g,'').substring(0,8).toUpperCase(); }
   
   // Restaurer session
   if(savedSession && usersDB[savedSession]) { currentUser = savedSession; }
@@ -588,21 +587,23 @@
     let referralCode = document.getElementById('signupReferral').value.trim();
     if(!name || !email || !phone || pwd.length<6) { document.getElementById('authError').innerText = 'Champs invalides'; return; }
     let id = 'user'+Date.now();
-    usersDB[id] = { name, email, phone, password: pwd, totalFcf: 0, progress: {}, referrals: [], referredBy: null };
-    // Gestion du parrainage : si un code valide existe
+    usersDB[id] = { name, email, phone, password: pwd, totalFcf: 0, progress: {}, referrals: [], referredBy: null, referralCode: generateReferralCode(id) };
+    
+    // Gestion parrainage : chercher utilisateur avec ce code
     let referrerId = null;
     for(let uid in usersDB) {
-      if(usersDB[uid].referralCode && usersDB[uid].referralCode === referralCode) { referrerId = uid; break; }
+      if(uid !== id && usersDB[uid].referralCode && usersDB[uid].referralCode === referralCode) {
+        referrerId = uid;
+        break;
+      }
     }
     if(referrerId && usersDB[referrerId]) {
       usersDB[id].referredBy = referrerId;
       usersDB[referrerId].totalFcf = (usersDB[referrerId].totalFcf || 0) + 1500;
       if(!usersDB[referrerId].referrals) usersDB[referrerId].referrals = [];
       usersDB[referrerId].referrals.push(id);
-      toast(`🎉 Bonus 1500 FCF crédité pour parrainage !`);
+      toast(`🎉 Bonus 1500 FCF crédité pour votre parrainage !`);
     }
-    // Générer code parrainage pour ce nouvel utilisateur
-    usersDB[id].referralCode = generateReferralCode(id);
     saveUsersDB();
     currentUser = id;
     updateUserDisplay();
@@ -611,7 +612,7 @@
   
   window.logout = () => { currentUser = null; updateUserDisplay(); backToMenu(); };
   
-  // Invitation
+  // Invitation : génère lien vers la page actuelle avec paramètre ref
   window.openInviteModal = () => {
     if(!currentUser) { toast('Connectez-vous d\'abord'); return; }
     let code = usersDB[currentUser].referralCode;
@@ -626,33 +627,40 @@
   window.copyInviteLink = () => {
     let linkDiv = document.getElementById('inviteLinkDisplay');
     navigator.clipboard.writeText(linkDiv.innerText);
-    toast('Lien copié ! Partagez-le à vos amis.');
+    toast('Lien copié ! Partagez-le à vos amis. Ils seront redirigés vers l\'inscription avec votre code.');
   };
   
-  // Détection paramètre URL pour inscription automatique
+  // Détection du paramètre URL ref pour pré-remplir le code parrain
   function checkUrlReferral() {
     let params = new URLSearchParams(window.location.search);
     let refCode = params.get('ref');
-    if(refCode && !currentUser) {
-      setTimeout(() => {
-        openAuthModal();
-        showAuthTab('signup');
-        document.getElementById('signupReferral').value = refCode;
-        toast('Code parrain détecté ! Inscrivez-vous pour recevoir votre bonus.');
-      }, 500);
+    if(refCode) {
+      // Stocker temporairement pour pré-remplir lors de l'ouverture de l'inscription
+      sessionStorage.setItem('pendingReferral', refCode);
+      // Si l'utilisateur n'est pas connecté, ouvrir la modale d'inscription
+      if(!currentUser) {
+        setTimeout(() => {
+          openAuthModal();
+          showAuthTab('signup');
+          let pendingRef = sessionStorage.getItem('pendingReferral');
+          if(pendingRef) document.getElementById('signupReferral').value = pendingRef;
+          toast('Bienvenue ! Un code parrain a été détecté.');
+        }, 500);
+      }
     }
+    // Si on ouvre la modale inscription manuellement, vérifier aussi
   }
   
-  // Retrait
+  // Retrait (minimum 5000 FCF)
   window.openWithdrawModal = () => { if(!currentUser) toast('Connectez-vous'); else document.getElementById('withdrawModal').classList.add('active'); };
   window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
   window.processWithdraw = () => {
     let amount = parseInt(document.getElementById('withdrawAmount').value);
     let phone = document.getElementById('withdrawPhone').value;
     let method = document.getElementById('withdrawMethod').value;
-    if(!amount || amount<500) { toast('Minimum 500 FCF'); return; }
-    if(!phone) { toast('Numéro requis'); return; }
-    if((usersDB[currentUser].totalFcf||0) < amount) { toast('Solde insuffisant'); return; }
+    if(!amount || amount < 5000) { toast('❌ Montant minimum de retrait : 5000 FCF'); return; }
+    if(!phone) { toast('Numéro de téléphone requis'); return; }
+    if((usersDB[currentUser].totalFcf || 0) < amount) { toast('Solde insuffisant'); return; }
     usersDB[currentUser].totalFcf -= amount;
     saveUsersDB();
     toast(`✅ Retrait de ${amount} FCF via ${method} vers ${phone} effectué !`);
