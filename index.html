@@ -81,7 +81,7 @@
   <div class="main-card">
     <div id="startScreen" class="screen active">
       <div class="info-banner">
-        📢 <strong>10 FCF par bonne réponse</strong> | Retrait minimum: <strong>300 FCF</strong> | Pub toutes les 8 réponses
+        📢 <strong>10 FCF par bonne réponse</strong> | Retrait minimum: <strong>300 FCF</strong> | Pub toutes les <strong>4 réponses</strong>
       </div>
       <h2 style="text-align:center;">🧠 Testez vos connaissances</h2>
       <p style="text-align:center; color:#aaa;">10 FCF par bonne réponse • 196 pays</p>
@@ -106,7 +106,6 @@
       <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
       <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 1500 FCF de bonus ! Retrait min 300 FCF</div>
       
-      <!-- Bloc pub fixe avec SLOT RÉEL (en attente validation) -->
       <div class="ad-fixed">
         <div class="ad-label">⭐ ESPACE PUBLICITAIRE</div>
         <ins class="adsbygoogle"
@@ -132,9 +131,8 @@
       <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px;"></div>
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ Question suivante</button>
       
-      <!-- BLOC PUB QUIZ avec SLOT RÉEL -->
       <div class="ad-container" id="quizAdBlock">
-        <div class="ad-label">📢 ANNONCE</div>
+        <div class="ad-label">📢 ANNONCE - Merci de soutenir le quiz !</div>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-6876086925672856"
@@ -174,7 +172,7 @@
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6876086925672856" crossorigin="anonymous"></script>
 <script>
-// ==================== DONNÉES PAYS COMPLÈTES ====================
+// ==================== DONNÉES PAYS ====================
 const allCountries = [
   {name:"France",capital:"Paris",code:"fr",diff:"easy"},{name:"Allemagne",capital:"Berlin",code:"de",diff:"easy"},{name:"Italie",capital:"Rome",code:"it",diff:"easy"},{name:"Espagne",capital:"Madrid",code:"es",diff:"easy"},{name:"Portugal",capital:"Lisbonne",code:"pt",diff:"easy"},{name:"Belgique",capital:"Bruxelles",code:"be",diff:"easy"},{name:"Canada",capital:"Ottawa",code:"ca",diff:"easy"},{name:"Brésil",capital:"Brasilia",code:"br",diff:"easy"},{name:"Japon",capital:"Tokyo",code:"jp",diff:"easy"},{name:"Chine",capital:"Pékin",code:"cn",diff:"easy"},{name:"Inde",capital:"New Delhi",code:"in",diff:"easy"},{name:"Mexique",capital:"Mexico",code:"mx",diff:"easy"},{name:"Sénégal",capital:"Dakar",code:"sn",diff:"medium"},{name:"Maroc",capital:"Rabat",code:"ma",diff:"easy"},{name:"Algérie",capital:"Alger",code:"dz",diff:"easy"},{name:"Nigeria",capital:"Abuja",code:"ng",diff:"medium"},{name:"Kenya",capital:"Nairobi",code:"ke",diff:"medium"},{name:"Egypte",capital:"Le Caire",code:"eg",diff:"easy"},{name:"Tunisie",capital:"Tunis",code:"tn",diff:"easy"},{name:"Suède",capital:"Stockholm",code:"se",diff:"easy"},{name:"Norvège",capital:"Oslo",code:"no",diff:"easy"},{name:"Finlande",capital:"Helsinki",code:"fi",diff:"easy"},{name:"Islande",capital:"Reykjavik",code:"is",diff:"medium"},{name:"Australie",capital:"Canberra",code:"au",diff:"easy"},{name:"Nouvelle-Zélande",capital:"Wellington",code:"nz",diff:"medium"},{name:"Royaume-Uni",capital:"Londres",code:"gb",diff:"easy"},{name:"Irlande",capital:"Dublin",code:"ie",diff:"easy"},{name:"Pays-Bas",capital:"Amsterdam",code:"nl",diff:"easy"},{name:"Suisse",capital:"Berne",code:"ch",diff:"easy"},{name:"Autriche",capital:"Vienne",code:"at",diff:"easy"},{name:"Pologne",capital:"Varsovie",code:"pl",diff:"easy"},{name:"Ukraine",capital:"Kiev",code:"ua",diff:"medium"},{name:"Russie",capital:"Moscou",code:"ru",diff:"easy"},{name:"Turquie",capital:"Ankara",code:"tr",diff:"easy"},{name:"Grèce",capital:"Athènes",code:"gr",diff:"easy"},{name:"Argentine",capital:"Buenos Aires",code:"ar",diff:"easy"},{name:"Chili",capital:"Santiago",code:"cl",diff:"easy"},{name:"Pérou",capital:"Lima",code:"pe",diff:"easy"},{name:"Colombie",capital:"Bogota",code:"co",diff:"easy"},{name:"Venezuela",capital:"Caracas",code:"ve",diff:"medium"},{name:"Cuba",capital:"La Havane",code:"cu",diff:"easy"},{name:"Indonésie",capital:"Jakarta",code:"id",diff:"easy"},{name:"Thaïlande",capital:"Bangkok",code:"th",diff:"easy"},{name:"Vietnam",capital:"Hanoï",code:"vn",diff:"medium"},{name:"Philippines",capital:"Manille",code:"ph",diff:"medium"},{name:"Malaisie",capital:"Kuala Lumpur",code:"my",diff:"medium"},{name:"Singapour",capital:"Singapour",code:"sg",diff:"easy"}
 ];
@@ -191,10 +189,10 @@ let streak = 0, bestStreak = 0, answered = false, currentQObj = null, timerInter
 let answeredCount = 0;
 let adVisible = false;
 let adHideTimeout = null;
-const AD_INTERVAL = 8;        // Pub toutes les 8 réponses
+const AD_INTERVAL = 4;        // 🔥 Pub TOUTES LES 4 RÉPONSES (modifié)
 const AD_VISIBLE_MS = 20000;  // 20 secondes visibles
-const GAIN_PAR_REPONSE = 10;  // 🔥 10 FCF par bonne réponse
-const RETRAIT_MIN = 300;      // 🔥 Retrait minimum 300 FCF
+const GAIN_PAR_REPONSE = 10;  // 10 FCF par bonne réponse
+const RETRAIT_MIN = 300;      // Retrait minimum 300 FCF
 
 function saveUsersDB() { localStorage.setItem('quiz_users', JSON.stringify(usersDB)); }
 function generateReferralCode(userId) { return 'REF' + btoa(userId).replace(/=/g,'').substring(0,8).toUpperCase(); }
@@ -229,7 +227,7 @@ function generateQuestions() {
   return pool.sort(()=>0.5-Math.random()).slice(0, currentCount);
 }
 
-// Affichage de la pub
+// Affichage de la pub - TOUTES LES 4 RÉPONSES
 function showQuizAd() {
   if(answeredCount === 0) return;
   if(answeredCount % AD_INTERVAL !== 0) return;
@@ -238,20 +236,22 @@ function showQuizAd() {
   const adContainer = document.getElementById('quizAdBlock');
   if(!adContainer) return;
   
-  console.log(`📢 Affichage de la pub après ${answeredCount} réponses`);
+  console.log(`📢 [PUB] Affichage après ${answeredCount} réponses (intervalle ${AD_INTERVAL})`);
   
   if(adHideTimeout) clearTimeout(adHideTimeout);
   
   adContainer.classList.add('visible');
   adVisible = true;
   
+  // Rafraîchir AdSense
   try {
     (adsbygoogle = window.adsbygoogle || []).push({});
-  } catch(e) { console.log("AdSense:", e); }
+  } catch(e) { console.log("AdSense push:", e); }
   
   adHideTimeout = setTimeout(() => {
     adContainer.classList.remove('visible');
     adVisible = false;
+    console.log("📢 [PUB] Masquée après 20s");
   }, AD_VISIBLE_MS);
 }
 
@@ -343,7 +343,7 @@ function handleAnswer(btn, selected) {
   if(currentUser) saveProgress();
   
   answeredCount++;
-  showQuizAd();
+  showQuizAd(); // ← Déclenchement de la pub TOUTES LES 4 RÉPONSES
 }
 
 function nextQuestion() { if(!answered) return; currentIndex++; saveProgress(); renderCurrentQuestion(); }
@@ -379,7 +379,7 @@ document.querySelectorAll('.diff-btn').forEach(el => { el.onclick = () => { docu
 document.querySelectorAll('.count-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.count-btn').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); currentCount = parseInt(el.dataset.count); }; });
 document.querySelector('.mode-card')?.click(); document.querySelector('.diff-btn')?.click(); document.querySelector('.count-btn.selected')?.click();
 
-// Auth
+// Auth functions
 function updateUserDisplay() {
   if(currentUser && usersDB[currentUser]) {
     document.getElementById('displayName').innerText = usersDB[currentUser].name;
