@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="google-adsense-account" content="ca-pub-6876086925672856">
 <title>🌍 Quiz World - Tous les Pays | 10 FCF/rép</title>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif; }
   body { background: linear-gradient(145deg, #0a1a1f 0%, #051015 100%); min-height: 100vh; padding: 20px; }
@@ -74,6 +78,7 @@
   .modal-content input, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 30px; border: none; background: rgba(255,255,255,0.1); color: white; }
   .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 50px; z-index: 1100; display: none; }
   .info-banner { background: #2c3e50; border-radius: 15px; padding: 10px; margin-bottom: 15px; font-size: 0.8rem; color: #ffd966; text-align: center; }
+  .loading { text-align: center; color: #FFD700; padding: 20px; }
   
   @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
 </style>
@@ -160,7 +165,7 @@
     <div id="communiquesScreen" class="screen">
       <button class="btn-icon" style="margin-bottom:15px; background:#e94560;" onclick="backToMenuFromCommuniques()">← Retour au menu</button>
       <h2 style="text-align:center; margin-bottom:20px; color:#FFD700;">📢 Communiqués officiels</h2>
-      <div id="communiquesList"></div>
+      <div id="communiquesList" class="loading">⏳ Chargement des communiqués...</div>
     </div>
 
     <div id="resultsScreen" class="screen">
@@ -199,6 +204,21 @@
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6876086925672856" crossorigin="anonymous"></script>
 <script>
+  // ==================== CONFIGURATION FIREBASE ====================
+  // 🔴 REMPLACEZ AVEC VOS VALEURS FIREBASE 🔴
+  const firebaseConfig = {
+    apiKey: "VOTRE_API_KEY",
+    authDomain: "universite-taak.firebaseapp.com",
+    projectId: "universite-taak",
+    storageBucket: "universite-taak.firebasestorage.app",
+    messagingSenderId: "550634728649",
+    appId: "1:550634728649:web:adbf8ab70883a2688c3118"
+  };
+  
+  // Initialiser Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  
   // ==================== SONS ET VIBRATIONS ====================
   let audioCtx = null;
   function playSound(type) {
@@ -228,7 +248,7 @@
     {name:"France",capital:"Paris",code:"fr",diff:"easy"},{name:"Allemagne",capital:"Berlin",code:"de",diff:"easy"},{name:"Italie",capital:"Rome",code:"it",diff:"easy"},{name:"Espagne",capital:"Madrid",code:"es",diff:"easy"},{name:"Portugal",capital:"Lisbonne",code:"pt",diff:"easy"},{name:"Belgique",capital:"Bruxelles",code:"be",diff:"easy"},{name:"Canada",capital:"Ottawa",code:"ca",diff:"easy"},{name:"Brésil",capital:"Brasilia",code:"br",diff:"easy"},{name:"Japon",capital:"Tokyo",code:"jp",diff:"easy"},{name:"Chine",capital:"Pékin",code:"cn",diff:"easy"},{name:"Inde",capital:"New Delhi",code:"in",diff:"easy"},{name:"Mexique",capital:"Mexico",code:"mx",diff:"easy"},{name:"Sénégal",capital:"Dakar",code:"sn",diff:"medium"},{name:"Maroc",capital:"Rabat",code:"ma",diff:"easy"},{name:"Algérie",capital:"Alger",code:"dz",diff:"easy"},{name:"Nigeria",capital:"Abuja",code:"ng",diff:"medium"},{name:"Kenya",capital:"Nairobi",code:"ke",diff:"medium"},{name:"Égypte",capital:"Le Caire",code:"eg",diff:"easy"},{name:"Tunisie",capital:"Tunis",code:"tn",diff:"easy"},{name:"Suède",capital:"Stockholm",code:"se",diff:"easy"},{name:"Norvège",capital:"Oslo",code:"no",diff:"easy"},{name:"Finlande",capital:"Helsinki",code:"fi",diff:"easy"},{name:"Islande",capital:"Reykjavik",code:"is",diff:"medium"},{name:"Australie",capital:"Canberra",code:"au",diff:"easy"},{name:"Nouvelle-Zélande",capital:"Wellington",code:"nz",diff:"medium"},{name:"Royaume-Uni",capital:"Londres",code:"gb",diff:"easy"},{name:"Irlande",capital:"Dublin",code:"ie",diff:"easy"},{name:"Pays-Bas",capital:"Amsterdam",code:"nl",diff:"easy"},{name:"Suisse",capital:"Berne",code:"ch",diff:"easy"},{name:"Autriche",capital:"Vienne",code:"at",diff:"easy"},{name:"Pologne",capital:"Varsovie",code:"pl",diff:"easy"},{name:"Ukraine",capital:"Kiev",code:"ua",diff:"medium"},{name:"Russie",capital:"Moscou",code:"ru",diff:"easy"},{name:"Turquie",capital:"Ankara",code:"tr",diff:"easy"},{name:"Grèce",capital:"Athènes",code:"gr",diff:"easy"},{name:"Argentine",capital:"Buenos Aires",code:"ar",diff:"easy"},{name:"Chili",capital:"Santiago",code:"cl",diff:"easy"},{name:"Pérou",capital:"Lima",code:"pe",diff:"easy"},{name:"Colombie",capital:"Bogota",code:"co",diff:"easy"},{name:"Venezuela",capital:"Caracas",code:"ve",diff:"medium"},{name:"Cuba",capital:"La Havane",code:"cu",diff:"easy"},{name:"Indonésie",capital:"Jakarta",code:"id",diff:"easy"},{name:"Thaïlande",capital:"Bangkok",code:"th",diff:"easy"},{name:"Vietnam",capital:"Hanoï",code:"vn",diff:"medium"},{name:"Philippines",capital:"Manille",code:"ph",diff:"medium"},{name:"Malaisie",capital:"Kuala Lumpur",code:"my",diff:"medium"},{name:"Singapour",capital:"Singapour",code:"sg",diff:"easy"}
   ];
 
-  // ==================== STOCKAGE LOCAL ====================
+  // ==================== STOCKAGE LOCAL (utilisateurs et retraits) ====================
   let usersDB = JSON.parse(localStorage.getItem('quiz_users')) || {};
   let currentUser = null;
   let savedSession = localStorage.getItem('quiz_current_user_id');
@@ -245,6 +265,10 @@
   const AD_VISIBLE_MS = 20000;
   const GAIN_PAR_REPONSE = 10;
   const RETRAIT_MIN = 300;
+  
+  // Communiqués Firebase
+  let firebaseCommuniques = [];
+  let lastCommuniqueId = 0;
 
   function saveUsersDB() { localStorage.setItem('quiz_users', JSON.stringify(usersDB)); }
   function generateReferralCode(userId) { return 'REF' + btoa(userId).replace(/=/g,'').substring(0,8).toUpperCase(); }
@@ -427,43 +451,72 @@
   function restartSameMode() { startQuiz(); }
   function backToMenu() { document.getElementById('resultsScreen').classList.remove('active'); document.getElementById('startScreen').classList.add('active'); }
 
-  // ==================== COMMUNIQUÉS (localStorage) ====================
-  function getCommuniques() {
-    return JSON.parse(localStorage.getItem('admin_communiques')) || [];
-  }
-  
-  function checkNewCommuniques() {
-    const communiques = getCommuniques();
-    const lastSeen = parseInt(localStorage.getItem('lastCommuniqueSeen') || '0');
-    const newestDate = communiques.length > 0 ? communiques[0].id : 0;
-    if(newestDate > lastSeen) {
-      document.getElementById('notifBubble').style.display = 'inline-flex';
-      if(window.navigator && window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
-    } else {
-      document.getElementById('notifBubble').style.display = 'none';
-    }
-  }
-  
-  window.showCommuniques = () => {
-    localStorage.setItem('lastCommuniqueSeen', Date.now());
-    document.getElementById('notifBubble').style.display = 'none';
-    document.getElementById('startScreen').classList.remove('active');
-    document.getElementById('communiquesScreen').classList.add('active');
-    const communiques = getCommuniques();
+  // ==================== COMMUNIQUÉS DEPUIS FIREBASE ====================
+  function displayCommuniques() {
     const container = document.getElementById('communiquesList');
-    container.innerHTML = '';
+    if(!container) return;
     
-    if(communiques.length === 0) {
+    if(firebaseCommuniques.length === 0) {
       container.innerHTML = '<p style="text-align:center; color:#aaa;">Aucun communiqué pour le moment.</p>';
       return;
     }
     
-    communiques.slice().reverse().forEach(c => {
+    let html = '';
+    firebaseCommuniques.slice().reverse().forEach(c => {
       let media = '';
       if(c.imageUrl) media += `<img src="${c.imageUrl}" class="communique-media" onerror="this.style.display='none'">`;
       if(c.audioUrl) media += `<audio controls src="${c.audioUrl}"></audio>`;
-      container.innerHTML += `<div class="communique-card"><div class="communique-date">📅 ${c.date}</div><div class="communique-text">${c.text || ''}</div>${media}</div>`;
+      html += `
+        <div class="communique-card">
+          <div class="communique-date">📅 ${c.date} | par ${c.author || 'Admin'}</div>
+          <div class="communique-text">${c.text || ''}</div>
+          ${media}
+        </div>
+      `;
     });
+    container.innerHTML = html;
+  }
+  
+  function checkNewCommuniques() {
+    if(firebaseCommuniques.length === 0) return;
+    const newestId = firebaseCommuniques[0].id;
+    if(newestId && newestId !== lastCommuniqueId && lastCommuniqueId !== 0) {
+      document.getElementById('notifBubble').style.display = 'inline-flex';
+      if(window.navigator && window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
+    }
+    lastCommuniqueId = newestId;
+  }
+  
+  // Écouter les changements Firestore en temps réel
+  function listenToCommuniques() {
+    db.collection('communiques').orderBy('date', 'desc').onSnapshot((snapshot) => {
+      firebaseCommuniques = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        firebaseCommuniques.push({
+          id: doc.id,
+          text: data.text || '',
+          imageUrl: data.imageUrl || null,
+          audioUrl: data.audioUrl || null,
+          date: data.date ? new Date(data.date).toLocaleString() : new Date().toLocaleString(),
+          author: data.author || 'Admin'
+        });
+      });
+      displayCommuniques();
+      checkNewCommuniques();
+    }, (error) => {
+      console.error("Erreur Firestore:", error);
+    });
+  }
+  
+  window.showCommuniques = () => {
+    if(firebaseCommuniques.length > 0 && firebaseCommuniques[0].id) {
+      localStorage.setItem('lastCommuniqueSeen', firebaseCommuniques[0].id);
+    }
+    document.getElementById('notifBubble').style.display = 'none';
+    document.getElementById('startScreen').classList.remove('active');
+    document.getElementById('communiquesScreen').classList.add('active');
+    displayCommuniques();
   };
   
   window.backToMenuFromCommuniques = () => {
@@ -549,14 +602,25 @@
   document.querySelectorAll('.diff-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.diff-btn').forEach(d=>d.classList.remove('selected')); el.classList.add('selected'); currentDifficulty = el.dataset.diff; }; });
   document.querySelectorAll('.count-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.count-btn').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); currentCount = parseInt(el.dataset.count); }; });
   
-  // Initialisation des communiqués par défaut
-  if(getCommuniques().length === 0) {
-    localStorage.setItem('admin_communiques', JSON.stringify([{ id: Date.now(), text: "🎉 Bienvenue sur Quiz World ! Amusez-vous bien et gagnez des FCF !", date: new Date().toLocaleString(), author: "Admin" }]));
+  // ==================== INITIALISATION ====================
+  function initDemoCommunique() {
+    const testCommunique = db.collection('communiques').limit(1);
+    testCommunique.get().then((snapshot) => {
+      if(snapshot.empty) {
+        db.collection('communiques').add({
+          text: "🎉 Bienvenue sur Quiz World ! Gagnez 10 FCF par bonne réponse !",
+          imageUrl: null,
+          audioUrl: null,
+          author: "Admin",
+          date: new Date().toISOString()
+        }).then(() => console.log("Communiqué de démo ajouté"));
+      }
+    });
   }
   
-  updateUserDisplay(); 
-  checkNewCommuniques();
-  setInterval(checkNewCommuniques, 5000);
+  updateUserDisplay();
+  listenToCommuniques();
+  initDemoCommunique();
 </script>
 </body>
 </html>
