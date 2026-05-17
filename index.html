@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#667eea">
 <meta name="google-adsense-account" content="ca-pub-6876086925672856">
-<title>🌍 Quiz World | 10 FCF/rép</title>
+<title>🌍 Quiz World Live | 10 FCF/rép</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -128,7 +128,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  .btn-communiques { 
+  .btn-communiques, .btn-live { 
     width: 100%;
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
@@ -140,6 +140,11 @@
     margin-bottom: 12px;
     position: relative;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+  
+  .btn-live {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
   }
   
   .notification-bubble { 
@@ -248,8 +253,16 @@
   .stat-card span { font-size: 1.5rem; font-weight: 800; color: #667eea; display: block; margin-top: 4px; }
   .result-emoji { font-size: 3.5rem; margin-bottom: 8px; }
   
-  .ad-container { background: rgba(251, 191, 36, 0.1); border: 2px solid rgba(251, 191, 36, 0.4); border-radius: 12px; padding: 12px; margin: 12px 0; display: none; text-align: center; }
-  .ad-container.visible { display: block; }
+  .ad-container, .ad-native { 
+    background: rgba(251, 191, 36, 0.1); 
+    border: 2px solid rgba(251, 191, 36, 0.4); 
+    border-radius: 12px; 
+    padding: 12px; 
+    margin: 12px 0; 
+    display: none; 
+    text-align: center; 
+  }
+  .ad-container.visible, .ad-native.visible { display: block; }
   .ad-label { font-size: 0.65rem; color: #fbbf24; margin-bottom: 8px; font-weight: 700; }
   
   .communique-card { background: rgba(255,255,255,0.05); border-left: 4px solid #667eea; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
@@ -324,7 +337,6 @@
   .legal-buttons { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
   .legal-buttons .btn { flex: 1; min-width: 100px; }
   
-  /* Support page styles */
   .support-card {
     background: rgba(255,255,255,0.05);
     border-radius: 16px;
@@ -413,6 +425,376 @@
   .faq-question { font-weight: 600; margin-bottom: 6px; color: var(--text); }
   .faq-answer { font-size: 0.85rem; color: var(--text-muted); }
   
+  /* === LIVE ROOMS STYLES === */
+  .live-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .live-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-badge {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    animation: pulse 2s infinite;
+  }
+
+  .create-live-btn {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #1e1b4b;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .live-rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .live-room-card {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .live-room-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+  }
+
+  .live-room-card.full {
+    opacity: 0.7;
+    border-color: #f56565;
+  }
+
+  .live-room-card.full::after {
+    content: "COMPLET";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: #f56565;
+    color: white;
+    padding: 4px 20px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .room-id {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #667eea;
+  }
+
+  .room-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #48bb78;
+    animation: blink 1.5s infinite;
+  }
+
+  .status-dot.red { background: #f56565; animation: none; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .room-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    font-size: 0.75rem;
+  }
+
+  .stat-value {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 0.9rem;
+    display: block;
+  }
+
+  .room-prize {
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(72,187,120,0.15), rgba(56,161,105,0.15));
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(72,187,120,0.3);
+  }
+
+  .prize-amount {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #48bb78;
+  }
+
+  .prize-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .join-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .join-btn:disabled {
+    background: #475569;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .join-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  /* === LIVE GAME SCREEN === */
+  .live-game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .live-players-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+
+  .live-timer {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #1e1b4b;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .live-leaderboard {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 12px 0;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .leaderboard-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+  }
+
+  .leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.05);
+    font-size: 0.85rem;
+  }
+
+  .leaderboard-item.winner {
+    background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.2));
+    border: 1px solid #fbbf24;
+  }
+  
+  .leaderboard-item.current-user {
+    border: 1px solid #667eea;
+    background: rgba(102, 126, 234, 0.15);
+  }
+
+  .leaderboard-rank {
+    font-weight: 700;
+    width: 24px;
+    text-align: center;
+  }
+
+  .leaderboard-name {
+    flex: 1;
+    margin-left: 12px;
+  }
+
+  .leaderboard-score {
+    font-weight: 700;
+    color: #48bb78;
+  }
+
+  .live-chat {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 12px 0;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .chat-message {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+  }
+
+  .chat-message .sender {
+    font-weight: 600;
+    color: #667eea;
+    margin-right: 6px;
+  }
+
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 0.85rem;
+  }
+
+  .chat-send {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* === CREATE LIVE MODAL === */
+  .create-requirement {
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    border-radius: 12px;
+    padding: 14px;
+    margin: 12px 0;
+    text-align: center;
+  }
+
+  .requirement-icon {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .requirement-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .requirement-count {
+    font-weight: 700;
+    color: #fbbf24;
+    font-size: 1.1rem;
+  }
+
+  /* === WINNER HISTORY === */
+  .history-list {
+    margin-top: 16px;
+  }
+
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+  }
+
+  .history-winner {
+    font-weight: 600;
+    color: #48bb78;
+  }
+
+  .history-prize {
+    color: #fbbf24;
+    font-weight: 600;
+  }
+
   @media (max-width: 480px) {
     body { padding: 6px; font-size: 13px; }
     .main-card { padding: 14px; border-radius: 16px; }
@@ -444,10 +826,15 @@
   </div>
 
   <div class="main-card">
+    <!-- START SCREEN -->
     <div id="startScreen" class="screen active">
       <button class="btn-communiques" onclick="showCommuniques()">
         📢 COMMUNIQUÉS OFFICIELS
         <span id="notifBubble" class="notification-bubble">NEW</span>
+      </button>
+      
+      <button class="btn-live" onclick="showLiveRooms()">
+        🔴 SALONS LIVE • 10 FCF • CAGNOTTE
       </button>
       
       <div class="legal-buttons">
@@ -496,8 +883,122 @@
       <div style="text-align:center; margin-top:14px; font-size:0.75rem; color:var(--text-muted);">
         🎁 Parrainage: 500 FCF par ami
       </div>
+      
+      <!-- AdSense: Fixed banner on home page (compliant placement) -->
+      <div class="ad-native visible" style="margin-top:20px;">
+        <span class="ad-label">Sponsorisé</span>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6876086925672856"
+             data-ad-slot="6066344349"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
     </div>
 
+    <!-- LIVE ROOMS SCREEN -->
+    <div id="liveScreen" class="screen">
+      <div class="live-header">
+        <div class="live-title">
+          🔴 Salons Live
+          <span class="live-badge" id="liveCountBadge">0 en cours</span>
+        </div>
+        <button class="create-live-btn" onclick="openCreateLiveModal()">
+          ➕ Créer
+        </button>
+      </div>
+
+      <!-- AdSense: Native banner between header and list -->
+      <div class="ad-native visible">
+        <span class="ad-label">Sponsorisé</span>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6876086925672856"
+             data-ad-slot="6066344349"
+             data-ad-format="fluid"
+             data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="live-rooms-list" id="liveRoomsList">
+        <div style="text-align:center; padding:20px; color:var(--text-muted);">
+          🔍 Recherche de salons...
+        </div>
+      </div>
+
+      <!-- Winner History -->
+      <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
+        <h3 style="font-size:0.95rem; margin-bottom:12px;">🏆 Gagnants récents</h3>
+        <div class="history-list" id="winnerHistory">
+          <div style="color:var(--text-muted); font-size:0.85rem;">Chargement...</div>
+        </div>
+      </div>
+
+      <button class="btn btn-icon" style="width:100%; margin-top:16px; background:#475569;" onclick="backToMenu()">
+        🏠 Retour au menu
+      </button>
+    </div>
+
+    <!-- LIVE GAME SCREEN -->
+    <div id="liveGameScreen" class="screen">
+      <div class="live-game-header">
+        <div class="live-players-count">
+          <span class="status-dot"></span>
+          <span id="livePlayersCount">0</span> joueurs
+        </div>
+        <div class="live-timer" id="liveGameTimer">⏱️ --:--</div>
+      </div>
+
+      <div class="room-prize">
+        <span class="prize-label">Cagnotte en jeu</span>
+        <div class="prize-amount" id="livePrizeDisplay">💰 0 FCF</div>
+      </div>
+
+      <div class="question-text" id="liveQuestionText">
+        En attente de la question...
+      </div>
+
+      <div class="options-grid" id="liveOptionsContainer">
+        <!-- Options injected by JS -->
+      </div>
+
+      <div class="feedback" id="liveFeedback"></div>
+
+      <!-- Live Leaderboard -->
+      <div class="live-leaderboard">
+        <div class="leaderboard-title">📊 Classement en direct</div>
+        <div id="liveLeaderboardContent">
+          <div style="text-align:center; color:var(--text-muted); font-size:0.8rem;">En attente...</div>
+        </div>
+      </div>
+
+      <!-- Optional Chat -->
+      <div class="live-chat">
+        <div class="chat-messages" id="liveChatMessages">
+          <div style="text-align:center; color:var(--text-muted); font-size:0.75rem;">💬 Chat rapide</div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="liveChatInput" placeholder="Message..." maxlength="100" onkeypress="if(event.key==='Enter')sendLiveChat()">
+          <button class="chat-send" onclick="sendLiveChat()">➤</button>
+        </div>
+      </div>
+
+      <!-- AdSense: Post-question native ad (non-disruptive) -->
+      <div class="ad-native" id="livePostQuestionAd">
+        <span class="ad-label">Publicité</span>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6876086925672856"
+             data-ad-slot="6066344349"
+             data-ad-format="fluid"
+             data-full-width-responsive="true"></ins>
+      </div>
+
+      <button class="btn btn-icon" style="width:100%; margin-top:16px; background:#f56565;" onclick="leaveLiveGame()">
+        🚪 Quitter
+      </button>
+    </div>
+
+    <!-- QUIZ SCREEN (original) -->
     <div id="quizScreen" class="screen">
       <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
       <div class="quiz-header">
@@ -515,18 +1016,21 @@
       </div>
     </div>
 
+    <!-- COMMUNIQUES SCREEN -->
     <div id="communiquesScreen" class="screen">
       <button class="btn btn-icon" style="margin-bottom:12px; background:#f56565;" onclick="backToMenu()">← Retour</button>
       <h2 style="margin-bottom:14px; font-size:1.1rem;">📢 Communiqués</h2>
       <div id="communiquesList"></div>
     </div>
 
+    <!-- LEGAL SCREEN -->
     <div id="legalScreen" class="screen">
       <button class="btn btn-icon" style="margin-bottom:12px; background:#f56565;" onclick="backToMenu()">← Retour</button>
       <h2 id="legalTitle" style="margin-bottom:14px; font-size:1.1rem;"></h2>
       <div id="legalContent"></div>
     </div>
 
+    <!-- RESULTS SCREEN -->
     <div id="resultsScreen" class="screen">
       <div style="text-align:center;">
         <div class="result-emoji" id="resultEmoji">🏆</div>
@@ -550,7 +1054,7 @@
   </div>
 </div>
 
-<!-- MODALS -->
+<!-- AUTH MODAL -->
 <div id="authModal" class="modal">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -578,6 +1082,7 @@
   </div>
 </div>
 
+<!-- INVITE MODAL -->
 <div id="inviteModal" class="modal">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -591,6 +1096,7 @@
   </div>
 </div>
 
+<!-- WITHDRAW MODAL -->
 <div id="withdrawModal" class="modal">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -610,9 +1116,55 @@
   </div>
 </div>
 
+<!-- CREATE LIVE MODAL -->
+<div id="createLiveModal" class="modal">
+  <div class="modal-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h3 style="font-size:1.2rem;">➕ Créer un salon live</h3>
+      <button class="btn btn-icon" onclick="closeCreateLiveModal()">✕</button>
+    </div>
+
+    <div class="create-requirement">
+      <div class="requirement-icon">👥</div>
+      <div class="requirement-text">Pour créer un live, vous devez avoir parrainé</div>
+      <div class="requirement-count" id="referralRequirement">0/10 amis</div>
+    </div>
+
+    <div style="margin:16px 0;">
+      <label class="selector-label">Durée du quiz</label>
+      <div class="selector-row">
+        <div class="selector-btn selected" data-duration="120">2 min</div>
+        <div class="selector-btn" data-duration="240">4 min</div>
+        <div class="selector-btn" data-duration="360">6 min</div>
+      </div>
+    </div>
+
+    <div style="margin:16px 0;">
+      <label class="selector-label">Nombre max de joueurs</label>
+      <div class="selector-row">
+        <div class="selector-btn" data-max="10">10</div>
+        <div class="selector-btn selected" data-max="20">20</div>
+        <div class="selector-btn" data-max="50">50</div>
+      </div>
+    </div>
+
+    <div style="background:rgba(72,187,120,0.1); padding:12px; border-radius:10px; margin:16px 0;">
+      <div style="font-size:0.85rem; color:var(--text-muted);">
+        💡 Chaque joueur ajoute <strong>10 FCF</strong> à la cagnotte.<br>
+        Le premier à répondre correctement remporte tout !
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; padding:14px;" id="startLiveBtn" disabled onclick="createLiveRoom()">
+      🚀 Lancer le salon
+    </button>
+  </div>
+</div>
+
 <div id="toastMsg" class="toast"></div>
 
 <script>
+  // === FIREBASE CONFIG ===
   const firebaseConfig = {
     apiKey: "VOTRE_API_KEY",
     authDomain: "universite-taak.firebaseapp.com",
@@ -625,6 +1177,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   
+  // === COUNTRIES DATA ===
   const countries = [
     {nom:"France",capitale:"Paris",code:"fr",diff:"facile"},
     {nom:"Allemagne",capitale:"Berlin",code:"de",diff:"facile"},
@@ -648,6 +1201,7 @@
     {nom:"Mexique",capitale:"Mexico",code:"mx",diff:"facile"}
   ];
 
+  // === GLOBAL VARIABLES ===
   let currentUser = null;
   let currentUserData = null;
   let currentMode = "mixed";
@@ -669,7 +1223,17 @@
   const AD_INTERVAL = 4;
   let firebaseCommuniques = [];
   let userMessages = [];
+  
+  // === LIVE ROOMS VARIABLES ===
+  let currentLiveRoom = null;
+  let liveRoomUnsubscribers = [];
+  let liveGameTimer = null;
+  let liveGameTimeLeft = 0;
+  let selectedDuration = 240;
+  let selectedMaxPlayers = 20;
+  let liveAnswered = false;
 
+  // === SOUND UTILS ===
   function playSound(type) {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -686,6 +1250,7 @@
     } catch(e) {}
   }
 
+  // === FIREBASE USER FUNCTIONS ===
   async function loadUserFromFirebase(userId) {
     try {
       const doc = await db.collection('users').doc(userId).get();
@@ -698,7 +1263,8 @@
     if(!currentUser || !currentUserData) return;
     await db.collection('users').doc(currentUser).set({
       name: currentUserData.name, email: currentUserData.email, phone: currentUserData.phone,
-      password: currentUserData.password, totalFcf: currentUserData.totalFcf || 0, referralCode: currentUserData.referralCode
+      password: currentUserData.password, totalFcf: currentUserData.totalFcf || 0, 
+      referralCode: currentUserData.referralCode, referredBy: currentUserData.referredBy
     });
   }
   
@@ -710,6 +1276,7 @@
     return null;
   }
 
+  // === QUIZ LOGIC ===
   function getFilteredCountries() {
     if(currentDifficulty === "facile") return countries.filter(c => c.diff === "facile");
     if(currentDifficulty === "moyen") return countries.filter(c => c.diff === "facile" || c.diff === "moyen");
@@ -874,10 +1441,16 @@
   
   function restartSameMode() { startQuiz(); }
   function backToMenu() {
-    ['resultsScreen','communiquesScreen','legalScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
+    ['resultsScreen','communiquesScreen','legalScreen','liveScreen','liveGameScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
     document.getElementById('startScreen').classList.add('active');
+    // Cleanup live listeners
+    liveRoomUnsubscribers.forEach(unsub => unsub());
+    liveRoomUnsubscribers = [];
+    if(liveGameTimer) { clearInterval(liveGameTimer); liveGameTimer = null; }
+    currentLiveRoom = null;
   }
 
+  // === COMMUNIQUES ===
   function listenToCommuniques() {
     db.collection('communiques').orderBy('date', 'desc').onSnapshot((snapshot) => {
       firebaseCommuniques = [];
@@ -899,6 +1472,7 @@
     document.getElementById('communiquesScreen').classList.add('active');
   }
 
+  // === SUPPORT & MESSAGES ===
   function listenToUserMessages() {
     if(!currentUser || !currentUserData) return;
     db.collection('contacts').where('email', '==', currentUserData.email).orderBy('date', 'desc').onSnapshot((snapshot) => {
@@ -928,6 +1502,7 @@
     } catch(e) { toast("❌ Erreur d'envoi"); }
   }
 
+  // === LEGAL PAGES ===
   function showLegalPage(page) {
     document.getElementById('startScreen').classList.remove('active');
     document.getElementById('legalScreen').classList.add('active');
@@ -940,21 +1515,12 @@
         <div class="privacy-content">
           <h3>📋 Collecte des données</h3>
           <p>Nous collectons uniquement les informations nécessaires : nom, email et téléphone.</p>
-          
           <h3>🔐 Sécurité</h3>
           <p>Vos données sont cryptées et stockées sur Firebase (Google Cloud) avec les plus hauts standards de sécurité.</p>
-          
           <h3>👁️ Utilisation</h3>
-          <ul>
-            <li>Gestion de votre compte</li>
-            <li>Traitement des retraits</li>
-            <li>Système de parrainage</li>
-            <li>Support client</li>
-          </ul>
-          
+          <ul><li>Gestion de votre compte</li><li>Traitement des retraits</li><li>Système de parrainage</li><li>Support client</li></ul>
           <h3>✅ Vos droits</h3>
           <p>Vous pouvez demander la suppression de vos données à tout moment via le support.</p>
-          
           <h3>🚫 Partage</h3>
           <p>Nous ne vendons ni ne partageons vos données avec des tiers.</p>
         </div>
@@ -965,56 +1531,27 @@
         <div class="support-card">
           <div class="support-item" onclick="window.location.href='mailto:support@quizworld.com'">
             <div class="support-icon">📧</div>
-            <div class="support-info">
-              <div class="support-label">Email officiel</div>
-              <div class="support-value">support@quizworld.com</div>
-            </div>
+            <div class="support-info"><div class="support-label">Email officiel</div><div class="support-value">support@quizworld.com</div></div>
           </div>
-          
-          <div class="support-item">
-            <div class="support-icon">⏱️</div>
-            <div class="support-info">
-              <div class="support-label">Temps de réponse</div>
-              <div class="support-value">24-48 heures</div>
-            </div>
-          </div>
-          
-          <div class="support-item">
-            <div class="support-icon">💡</div>
-            <div class="support-info">
-              <div class="support-label">Disponibilité</div>
-              <div class="support-value">Lun-Ven, 9h-18h</div>
-            </div>
-          </div>
+          <div class="support-item"><div class="support-icon">⏱️</div><div class="support-info"><div class="support-label">Temps de réponse</div><div class="support-value">24-48 heures</div></div></div>
+          <div class="support-item"><div class="support-icon">💡</div><div class="support-info"><div class="support-label">Disponibilité</div><div class="support-value">Lun-Ven, 9h-18h</div></div></div>
         </div>
-        
         <div class="contact-form">
           <h3 style="margin-bottom:16px; font-size:1rem;">📝 Envoyer un message</h3>
-          <div class="form-group">
-            <textarea id="supportMessage" placeholder="Décrivez votre problème ou question..." style="width:100%;"></textarea>
-          </div>
+          <div class="form-group"><textarea id="supportMessage" placeholder="Décrivez votre problème ou question..." style="width:100%;"></textarea></div>
           <button class="btn btn-primary" style="width:100%;" onclick="sendSupportMessage()">📤 Envoyer</button>
         </div>
-        
         <div style="margin-top:20px;">
           <h3 style="margin-bottom:12px; font-size:0.95rem;">❓ Questions fréquentes</h3>
-          <div class="faq-item">
-            <div class="faq-question">Comment retirer mes gains ?</div>
-            <div class="faq-answer">Allez dans le menu principal, cliquez sur 💸 Retrait, entrez le montant (min 300 FCF) et votre numéro.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-question">Comment fonctionne le parrainage ?</div>
-            <div class="faq-answer">Partagez votre lien d'invitation. Vous recevez 500 FCF quand un ami s'inscrit et joue.</div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-question">Mes gains sont-ils sécurisés ?</div>
-            <div class="faq-answer">Oui, vos gains sont stockés de manière sécurisée sur Firebase et ne peuvent être perdus.</div>
-          </div>
+          <div class="faq-item"><div class="faq-question">Comment retirer mes gains ?</div><div class="faq-answer">Allez dans le menu principal, cliquez sur 💸 Retrait, entrez le montant (min 300 FCF) et votre numéro.</div></div>
+          <div class="faq-item"><div class="faq-question">Comment fonctionne le parrainage ?</div><div class="faq-answer">Partagez votre lien d'invitation. Vous recevez 500 FCF quand un ami s'inscrit et joue.</div></div>
+          <div class="faq-item"><div class="faq-question">Mes gains sont-ils sécurisés ?</div><div class="faq-answer">Oui, vos gains sont stockés de manière sécurisée sur Firebase et ne peuvent être perdus.</div></div>
         </div>
       `;
     }
   }
 
+  // === USER DISPLAY ===
   function updateUserDisplay() {
     if(currentUser && currentUserData) {
       document.getElementById('displayName').textContent = currentUserData.name;
@@ -1033,6 +1570,7 @@
     }
   }
   
+  // === AUTH MODALS ===
   function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
   function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
   function showAuthTab(tab) {
@@ -1098,6 +1636,7 @@
   
   function logout() { currentUser = null; currentUserData = null; localStorage.removeItem('quiz_current_user_id'); updateUserDisplay(); toast("👋 Déconnecté"); }
   
+  // === INVITE & WITHDRAW ===
   function openInviteModal() {
     if(!currentUser) { toast("Connectez-vous"); openAuthModal(); return; }
     let code = currentUserData.referralCode || "REF" + currentUser.substring(0,8).toUpperCase();
@@ -1133,6 +1672,7 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
+  // === UI SELECTORS ===
   document.querySelectorAll('.mode-card').forEach(el => {
     el.onclick = () => { document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); currentMode = el.dataset.mode; };
   });
@@ -1146,15 +1686,300 @@
       if(parent.id === 'countRow') currentCount = parseInt(el.dataset.count);
     };
   });
-  
-  listenToCommuniques();
-  const savedUserId = localStorage.getItem('quiz_current_user_id');
-  if(savedUserId) {
-    loadUserFromFirebase(savedUserId).then(loaded => {
-      if(loaded) { currentUser = savedUserId; updateUserDisplay(); listenToUserMessages(); }
+
+  // === LIVE ROOMS FUNCTIONS ===
+  function listenToLiveRooms() {
+    const roomsRef = db.collection('liveRooms')
+      .where('status', '==', 'waiting')
+      .orderBy('createdAt', 'desc')
+      .limit(10);
+
+    const unsubscribe = roomsRef.onSnapshot((snapshot) => {
+      const rooms = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const playerCount = Object.keys(data.players || {}).length;
+        rooms.push({ id: doc.id, ...data, playerCount });
+      });
+      renderLiveRoomsList(rooms);
+      document.getElementById('liveCountBadge').textContent = `${rooms.length} en cours`;
+    });
+    liveRoomUnsubscribers.push(unsubscribe);
+  }
+
+  function renderLiveRoomsList(rooms) {
+    const container = document.getElementById('liveRoomsList');
+    if (rooms.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:30px; color:var(--text-muted);">
+          <div style="font-size:2rem; margin-bottom:10px;">🔍</div>
+          <p>Aucun salon en attente</p>
+          <button class="btn btn-primary" style="margin-top:12px;" onclick="openCreateLiveModal()">➕ Créer le premier !</button>
+        </div>
+      `;
+      return;
+    }
+    container.innerHTML = rooms.map(room => {
+      const isFull = room.playerCount >= room.maxPlayers;
+      const prize = room.playerCount * (room.entryFee || 10);
+      const durationMin = Math.floor((room.duration || 240) / 60);
+      return `
+        <div class="live-room-card ${isFull ? 'full' : ''}">
+          <div class="room-header">
+            <span class="room-id">🎮 Live #${room.id.slice(-3).toUpperCase()}</span>
+            <div class="room-status"><span class="status-dot ${isFull ? 'red' : ''}"></span><span>${isFull ? 'Complet' : 'En attente'}</span></div>
+          </div>
+          <div class="room-stats">
+            <div class="stat-item"><span class="stat-value">${room.playerCount}/${room.maxPlayers}</span><div>Joueurs</div></div>
+            <div class="stat-item"><span class="stat-value">${durationMin} min</span><div>Durée</div></div>
+            <div class="stat-item"><span class="stat-value">10 FCF</span><div>Entrée</div></div>
+          </div>
+          <div class="room-prize"><span class="prize-label">Cagnotte actuelle</span><div class="prize-amount">💰 ${prize} FCF</div></div>
+          <button class="join-btn" ${isFull ? 'disabled' : ''} onclick="joinLiveRoom('${room.id}')">${isFull ? '🔒 Salon complet' : '▶️ Rejoindre'}</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function joinLiveRoom(roomId) {
+    if (!currentUser) { toast("🔐 Connectez-vous pour rejoindre un live"); openAuthModal(); return; }
+    try {
+      const roomRef = db.collection('liveRooms').doc(roomId);
+      const roomSnap = await roomRef.get();
+      if (!roomSnap.exists) { toast("❌ Salon introuvable"); return; }
+      const room = roomSnap.data();
+      const playerCount = Object.keys(room.players || {}).length;
+      if (playerCount >= room.maxPlayers) { toast("❌ Ce salon est complet"); return; }
+      if ((currentUserData.totalFcf || 0) < (room.entryFee || 10)) { toast("❌ Solde insuffisant (10 FCF requis)"); return; }
+      await roomRef.update({
+        [`players.${currentUser}`]: { name: currentUserData.name, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), score: 0, answered: false },
+        prizePool: firebase.firestore.FieldValue.increment(room.entryFee || 10)
+      });
+      currentUserData.totalFcf -= (room.entryFee || 10);
+      await saveUserToFirebase(); updateUserDisplay();
+      enterLiveGame(roomId);
+      toast("✅ Vous avez rejoint le salon !");
+    } catch (error) { console.error("Join error:", error); toast("❌ Erreur lors de la connexion au salon"); }
+  }
+
+  function enterLiveGame(roomId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('liveGameScreen').classList.add('active');
+    currentLiveRoom = roomId;
+    
+    const unsubscribe = db.collection('liveRooms').doc(roomId).onSnapshot(async (doc) => {
+      if (!doc.exists) { toast("❌ Salon fermé"); leaveLiveGame(); return; }
+      const room = doc.data();
+      document.getElementById('livePlayersCount').textContent = Object.keys(room.players || {}).length;
+      document.getElementById('livePrizeDisplay').textContent = `💰 ${room.prizePool || 0} FCF`;
+      if (room.currentQuestion && room.status === 'active') renderLiveQuestion(room.currentQuestion);
+      renderLiveLeaderboard(room.players);
+      if (room.winner && room.winner === currentUser) handleLiveWin(room.prizePool);
+      else if (room.winner && room.status === 'finished') showLiveResults(room);
+      if (room.chat) renderLiveChat(room.chat.slice(-20));
+    });
+    liveRoomUnsubscribers.push(unsubscribe);
+    setupLiveChatListener(roomId);
+  }
+
+  function renderLiveQuestion(question) {
+    document.getElementById('liveQuestionText').textContent = question.text;
+    const container = document.getElementById('liveOptionsContainer');
+    container.innerHTML = '';
+    liveAnswered = false;
+    question.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.innerHTML = `<span class="opt-letter">${String.fromCharCode(65+idx)}</span><span>${opt}</span>`;
+      btn.onclick = () => submitLiveAnswer(idx);
+      container.appendChild(btn);
+    });
+    if (!liveGameTimer && question.askedAt) startLiveTimer(question.duration || 15);
+  }
+
+  function submitLiveAnswer(selectedIndex) {
+    if (!currentLiveRoom || liveAnswered) return;
+    liveAnswered = true;
+    db.collection('liveRooms').doc(currentLiveRoom).get().then(doc => {
+      const room = doc.data();
+      if (!room.currentQuestion || room.winner) return;
+      const isCorrect = selectedIndex === room.currentQuestion.correctIndex;
+      if (isCorrect && !room.winner) {
+        db.collection('liveRooms').doc(currentLiveRoom).update({
+          winner: currentUser, status: 'finished',
+          [`players.${currentUser}.score`]: firebase.firestore.FieldValue.increment(1)
+        }).then(() => { playSound('correct'); toast(`🎉 BRAVO ! Vous gagnez ${room.prizePool} FCF !`); });
+      } else {
+        db.collection('liveRooms').doc(currentLiveRoom).update({
+          [`players.${currentUser}.answered`]: true,
+          [`players.${currentUser}.score`]: isCorrect ? firebase.firestore.FieldValue.increment(1) : 0
+        });
+        const feedback = document.getElementById('liveFeedback');
+        feedback.textContent = isCorrect ? '✅ Bonne réponse !' : '❌ Essayez la prochaine !';
+        feedback.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+        playSound(isCorrect ? 'correct' : 'wrong');
+        showLivePostQuestionAd();
+      }
     });
   }
+
+  function startLiveTimer(seconds) {
+    liveGameTimeLeft = seconds;
+    updateLiveTimerDisplay();
+    liveGameTimer = setInterval(() => {
+      liveGameTimeLeft--;
+      updateLiveTimerDisplay();
+      if (liveGameTimeLeft <= 0) { clearInterval(liveGameTimer); liveGameTimer = null; handleLiveTimeUp(); }
+    }, 1000);
+  }
+
+  function updateLiveTimerDisplay() {
+    const mins = Math.floor(liveGameTimeLeft / 60);
+    const secs = liveGameTimeLeft % 60;
+    document.getElementById('liveGameTimer').textContent = `⏱️ ${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  function handleLiveTimeUp() {
+    if (!currentLiveRoom) return;
+    db.collection('liveRooms').doc(currentLiveRoom).update({ currentQuestion: null });
+    toast("⏰ Temps écoulé !");
+  }
+
+  function renderLiveLeaderboard(players) {
+    const container = document.getElementById('liveLeaderboardContent');
+    if (!players) { container.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:0.8rem;">En attente...</div>'; return; }
+    const sorted = Object.entries(players).sort((a, b) => (b[1].score - a[1].score) || 0);
+    container.innerHTML = sorted.slice(0, 10).map(([playerId, data], idx) => {
+      const isCurrentUser = playerId === currentUser;
+      return `<div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}"><span class="leaderboard-rank">#${idx + 1}</span><span class="leaderboard-name">${data.name}${isCurrentUser ? ' (vous)' : ''}</span><span class="leaderboard-score">${data.score} pts</span></div>`;
+    }).join('');
+  }
+
+  function setupLiveChatListener(roomId) {
+    db.collection('liveRooms').doc(roomId).onSnapshot(doc => {
+      const chat = doc.data()?.chat?.slice(-20) || [];
+      renderLiveChat(chat);
+    });
+  }
+
+  function renderLiveChat(messages) {
+    const container = document.getElementById('liveChatMessages');
+    container.innerHTML = messages.map(msg => `<div class="chat-message"><span class="sender">${escapeHtml(msg.userName || 'Joueur')}:</span> ${escapeHtml(msg.message)}</div>`).join('');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendLiveChat() {
+    const input = document.getElementById('liveChatInput');
+    const message = input.value.trim();
+    if (!message || !currentLiveRoom) return;
+    db.collection('liveRooms').doc(currentLiveRoom).update({
+      chat: firebase.firestore.FieldValue.arrayUnion({ userId: currentUser, userName: currentUserData?.name || 'Anonyme', message: message, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+    });
+    input.value = '';
+  }
+
+  function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
+  function handleLiveWin(prizeAmount) {
+    if (currentUserData) { currentUserData.totalFcf = (currentUserData.totalFcf || 0) + prizeAmount; saveUserToFirebase(); updateUserDisplay(); }
+    document.getElementById('liveFeedback').innerHTML = `🎉 <strong>VICTOIRE !</strong> +${prizeAmount} FCF ajoutés à votre solde !`;
+    document.getElementById('liveFeedback').className = 'feedback correct';
+    db.collection('winnerHistory').add({ roomId: currentLiveRoom, winnerId: currentUser, winnerName: currentUserData?.name, prize: prizeAmount, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+  }
+
+  function showLiveResults(room) {
+    const winnerName = room.players?.[room.winner]?.name || 'Inconnu';
+    document.getElementById('liveFeedback').innerHTML = `🏆 Partie terminée !<br>Vainqueur: <strong>${winnerName}</strong><br>Cagnotte: ${room.prizePool} FCF`;
+    document.getElementById('liveFeedback').className = 'feedback';
+    showLivePostQuestionAd();
+  }
+
+  function leaveLiveGame() {
+    liveRoomUnsubscribers.forEach(unsub => unsub());
+    liveRoomUnsubscribers = [];
+    if (liveGameTimer) { clearInterval(liveGameTimer); liveGameTimer = null; }
+    currentLiveRoom = null;
+    backToMenu();
+  }
+
+  function openCreateLiveModal() {
+    if (!currentUser) { toast("🔐 Connectez-vous pour créer un live"); openAuthModal(); return; }
+    checkReferralRequirement();
+    document.getElementById('createLiveModal').classList.add('active');
+  }
+
+  function closeCreateLiveModal() { document.getElementById('createLiveModal').classList.remove('active'); }
+
+  async function checkReferralRequirement() {
+    if (!currentUser) return;
+    try {
+      const snapshot = await db.collection('users').where('referredBy', '==', currentUser).get();
+      const referredCount = snapshot.size;
+      const required = 10;
+      document.getElementById('referralRequirement').textContent = `${referredCount}/${required} amis`;
+      document.getElementById('startLiveBtn').disabled = referredCount < required;
+      if (referredCount < required) toast(`👥 Parrainez ${required - referredCount} ami(s) de plus pour débloquer`);
+    } catch (e) { console.error("Referral check error:", e); }
+  }
+
+  async function createLiveRoom() {
+    if (!currentUser) return;
+    const snapshot = await db.collection('users').where('referredBy', '==', currentUser).get();
+    if (snapshot.size < 10) { toast("❌ Vous devez parrainer 10 amis pour créer un live"); return; }
+    try {
+      const roomId = "room_" + Date.now().toString(36);
+      await db.collection('liveRooms').doc(roomId).set({
+        roomId: roomId, creatorId: currentUser, status: 'waiting',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        duration: selectedDuration, maxPlayers: selectedMaxPlayers, entryFee: 10,
+        prizePool: 10,
+        players: { [currentUser]: { name: currentUserData.name, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), score: 0, answered: false } },
+        winner: null, chat: [], history: []
+      });
+      closeCreateLiveModal();
+      toast("✅ Salon créé ! En attente de joueurs...");
+      enterLiveGame(roomId);
+    } catch (error) { console.error("Create room error:", error); toast("❌ Erreur lors de la création du salon"); }
+  }
+
+  document.querySelectorAll('[data-duration]').forEach(btn => {
+    btn.onclick = () => { document.querySelectorAll('[data-duration]').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedDuration = parseInt(btn.dataset.duration); };
+  });
+  document.querySelectorAll('[data-max]').forEach(btn => {
+    btn.onclick = () => { document.querySelectorAll('[data-max]').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedMaxPlayers = parseInt(btn.dataset.max); };
+  });
+
+  function showLiveRooms() {
+    document.getElementById('startScreen').classList.remove('active');
+    document.getElementById('liveScreen').classList.add('active');
+    listenToLiveRooms();
+    loadWinnerHistory();
+  }
+
+  function loadWinnerHistory() {
+    db.collection('winnerHistory').orderBy('timestamp', 'desc').limit(5).onSnapshot(snapshot => {
+      const container = document.getElementById('winnerHistory');
+      if (snapshot.empty) { container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">Aucun gagnant récent</div>'; return; }
+      container.innerHTML = snapshot.docs.map(doc => { const w = doc.data(); return `<div class="history-item"><span class="history-winner">👑 ${w.winnerName || 'Anonyme'}</span><span class="history-prize">+${w.prize} FCF</span></div>`; }).join('');
+    });
+  }
+
+  function showLivePostQuestionAd() {
+    const adContainer = document.getElementById('livePostQuestionAd');
+    if (!adContainer) return;
+    adContainer.classList.add('visible');
+    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) { console.log("AdSense:", e); }
+    setTimeout(() => { adContainer.classList.remove('visible'); }, 15000);
+  }
+
+  // === INIT ===
+  listenToCommuniques();
+  const savedUserId = localStorage.getItem('quiz_current_user_id');
+  if(savedUserId) { loadUserFromFirebase(savedUserId).then(loaded => { if(loaded) { currentUser = savedUserId; updateUserDisplay(); listenToUserMessages(); } }); }
   detectReferralCode();
+  
+  // Initialize AdSense on page load
+  setTimeout(() => { try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {} }, 1000);
 </script>
 </body>
 </html>
