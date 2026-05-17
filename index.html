@@ -403,6 +403,16 @@
   .privacy-content ul { margin-left: 20px; color: var(--text-muted); }
   .privacy-content li { margin-bottom: 6px; }
   
+  .faq-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-left: 3px solid #667eea;
+  }
+  .faq-question { font-weight: 600; margin-bottom: 6px; color: var(--text); }
+  .faq-answer { font-size: 0.85rem; color: var(--text-muted); }
+  
   @media (max-width: 480px) {
     body { padding: 6px; font-size: 13px; }
     .main-card { padding: 14px; border-radius: 16px; }
@@ -956,14 +966,8 @@
           <div class="support-item" onclick="window.location.href='mailto:support@quizworld.com'">
             <div class="support-icon">📧</div>
             <div class="support-info">
-              <div class="support-label">Email</div>
+              <div class="support-label">Email officiel</div>
               <div class="support-value">support@quizworld.com</div>
-            </div>
-          </div>
-          
-          <div class="support-item" onclick="window.open('https://wa.me/221XXXXXXXXX', '_blank')">
-            <div class="support-icon">💬</div>
-            <div class="support-info">
             </div>
           </div>
           
@@ -974,6 +978,14 @@
               <div class="support-value">24-48 heures</div>
             </div>
           </div>
+          
+          <div class="support-item">
+            <div class="support-icon">💡</div>
+            <div class="support-info">
+              <div class="support-label">Disponibilité</div>
+              <div class="support-value">Lun-Ven, 9h-18h</div>
+            </div>
+          </div>
         </div>
         
         <div class="contact-form">
@@ -982,6 +994,22 @@
             <textarea id="supportMessage" placeholder="Décrivez votre problème ou question..." style="width:100%;"></textarea>
           </div>
           <button class="btn btn-primary" style="width:100%;" onclick="sendSupportMessage()">📤 Envoyer</button>
+        </div>
+        
+        <div style="margin-top:20px;">
+          <h3 style="margin-bottom:12px; font-size:0.95rem;">❓ Questions fréquentes</h3>
+          <div class="faq-item">
+            <div class="faq-question">Comment retirer mes gains ?</div>
+            <div class="faq-answer">Allez dans le menu principal, cliquez sur 💸 Retrait, entrez le montant (min 300 FCF) et votre numéro.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Comment fonctionne le parrainage ?</div>
+            <div class="faq-answer">Partagez votre lien d'invitation. Vous recevez 500 FCF quand un ami s'inscrit et joue.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Mes gains sont-ils sécurisés ?</div>
+            <div class="faq-answer">Oui, vos gains sont stockés de manière sécurisée sur Firebase et ne peuvent être perdus.</div>
+          </div>
         </div>
       `;
     }
