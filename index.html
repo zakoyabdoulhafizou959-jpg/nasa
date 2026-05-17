@@ -14,94 +14,858 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6876086925672856" crossorigin="anonymous"></script>
 
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif; }
-  body { background: linear-gradient(145deg, #0a1a1f 0%, #051015 100%); min-height: 100vh; padding: 20px; }
-  .app-container { max-width: 500px; margin: 0 auto; }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
   
-  .top-bar { background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border-radius: 30px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; border: 1px solid rgba(255,215,0,0.3); }
-  .logo h1 { font-size: 1.5rem; background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .logo p { font-size: 0.7rem; color: #aaa; }
-  .user-card { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.08); padding: 5px 15px; border-radius: 50px; flex-wrap: wrap; }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+  
+  body { 
+    background: linear-gradient(135deg, #1e3c32 0%, #2a5298 50%, #7e8ba3 100%);
+    min-height: 100vh; 
+    padding: 15px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Effet de feuilles décoratives */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 Q70,30 80,50 Q90,70 50,90 Q10,70 20,50 Q30,30 50,10" fill="rgba(255,255,255,0.05)"/></svg>');
+    background-size: contain;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .app-container { 
+    max-width: 900px; 
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Top Bar améliorée */
+  .top-bar { 
+    background: linear-gradient(135deg, rgba(46,125,50,0.9) 0%, rgba(27,94,32,0.9) 100%);
+    backdrop-filter: blur(12px); 
+    border-radius: 25px; 
+    padding: 15px 25px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    margin-bottom: 25px; 
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+  
+  .logo h1 { 
+    font-size: 1.6rem; 
+    background: linear-gradient(135deg, #fff 0%, #c8e6c9 100%); 
+    -webkit-background-clip: text; 
+    background-clip: text; 
+    color: transparent;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .logo p { 
+    font-size: 0.75rem; 
+    color: #c8e6c9;
+    font-weight: 300;
+  }
+  
+  .user-card { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    background: rgba(255,255,255,0.15); 
+    padding: 8px 18px; 
+    border-radius: 50px; 
+    flex-wrap: wrap;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
   .user-info { text-align: right; }
-  .user-name { font-weight: bold; font-size: 0.9rem; color: #FFD966; }
-  .user-balance { font-size: 1.1rem; font-weight: bold; color: #4ade80; }
-  .user-phone { font-size: 0.7rem; color: #aaa; }
+  .user-name { 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    color: #fff; 
+  }
+  .user-balance { 
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    color: #a5d6a7;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .user-phone { font-size: 0.7rem; color: #c8e6c9; }
   
-  .btn-icon { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 14px; border-radius: 40px; cursor: pointer; transition: 0.2s; }
-  .btn-icon:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
-  .btn-withdraw { background: linear-gradient(135deg, #e94560, #c82333); color: white; }
-  .btn-invite { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
-  .btn-primary { background: linear-gradient(135deg, #FFD700, #FFA500); border: none; padding: 12px 28px; border-radius: 40px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.2s; color: #1a1a2e; }
-  .btn-primary:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(255,215,0,0.3); }
-  .btn-legal { background: #2c3e50; color: white; }
-  .btn-legal:hover { background: #34495e; }
+  /* Boutons améliorés */
+  .btn-icon { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%); 
+    border: 1px solid rgba(255,255,255,0.3); 
+    color: white; 
+    padding: 10px 16px; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+  }
   
-  .btn-communiques { position: relative; background: linear-gradient(135deg, #2196F3, #0b5e9e); color: white; font-weight: bold; padding: 14px 24px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer; transition: 0.3s; margin-bottom: 20px; width: 100%; box-shadow: 0 4px 15px rgba(33,150,243,0.3); }
-  .btn-communiques:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(33,150,243,0.4); }
-  .notification-bubble { position: absolute; top: -8px; right: -8px; background: #4ade80; color: #1a1a2e; border-radius: 50px; padding: 4px 10px; font-size: 0.7rem; font-weight: bold; animation: pulse 1s infinite; display: none; }
-  @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  .btn-icon:hover { 
+    background: rgba(255,255,255,0.3); 
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
   
-  .main-card { background: rgba(10,25,30,0.85); backdrop-filter: blur(12px); border-radius: 32px; padding: 20px 24px; border: 1px solid rgba(255,215,0,0.2); }
-  .screen { display: none; animation: fadeIn 0.3s ease; }
-  .screen.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .btn-withdraw { 
+    background: linear-gradient(135deg, #e57373 0%, #ef5350 100%); 
+    border: none;
+    box-shadow: 0 4px 15px rgba(239,83,80,0.3);
+  }
   
-  .mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0; }
-  .mode-card { background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
-  .mode-card.selected { border-color: #FFD700; background: rgba(255,215,0,0.1); }
-  .mode-icon { font-size: 2rem; }
-  .mode-title { font-weight: bold; margin-top: 5px; }
+  .btn-withdraw:hover {
+    box-shadow: 0 6px 20px rgba(239,83,80,0.4);
+  }
   
-  .difficulty-row, .count-selector { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
-  .diff-btn, .count-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 30px; cursor: pointer; transition: 0.2s; }
-  .diff-btn.selected, .count-btn.selected { background: #FFD700; color: #1a1a2e; }
+  .btn-invite { 
+    background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%); 
+    border: none;
+    box-shadow: 0 4px 15px rgba(102,187,106,0.3);
+  }
   
-  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-  .opt-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 14px; border-radius: 50px; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; transition: 0.1s; font-size: 1rem; text-align: left; }
-  .opt-btn:active { transform: scale(0.98); }
-  .opt-btn.correct { background: #2e7d32; border-color: #4ade80; }
-  .opt-btn.wrong { background: #c62828; text-decoration: line-through; }
+  .btn-invite:hover {
+    box-shadow: 0 6px 20px rgba(102,187,106,0.4);
+  }
   
-  .timer-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; margin: 10px 0; }
-  .timer-fill { height: 100%; width: 100%; background: #4ade80; transition: width 1s linear; }
-  .next-btn { background: #FFD700; color: #1a1a2e; border: none; padding: 12px; border-radius: 40px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 15px; }
-  .result-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin: 20px 0; }
-  .stat-card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; text-align: center; color: white; }
-  .stat-card span { font-size: 1.8rem; font-weight: bold; color: #FFD700; display: block; margin-top: 5px; }
+  .btn-primary { 
+    background: linear-gradient(135deg, #81c784 0%, #4caf50 100%); 
+    border: none; 
+    padding: 14px 32px; 
+    border-radius: 50px; 
+    font-weight: 600; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    color: white;
+    box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
   
-  .ad-container { margin: 20px 0 10px; text-align: center; background: #0a2a2a; border-radius: 20px; padding: 15px; min-height: 130px; border: 2px solid #FFD700; display: none; }
-  .ad-container.visible { display: block; }
-  .ad-label { font-size: 0.7rem; color: #FFD700; text-align: center; margin-bottom: 8px; letter-spacing: 2px; font-weight: bold; }
+  .btn-primary:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 8px 25px rgba(76,175,80,0.5);
+  }
   
-  .communique-card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #FFD700; }
-  .communique-date { font-size: 0.7rem; color: #FFD966; margin-bottom: 5px; }
-  .communique-text { font-size: 0.95rem; color: white; line-height: 1.4; }
-  .communique-media { max-width: 100%; border-radius: 15px; margin-top: 10px; max-height: 200px; }
-  audio { width: 100%; margin-top: 10px; }
+  .btn-primary:active {
+    transform: translateY(-1px);
+  }
   
-  .legal-content { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; line-height: 1.6; color: white; max-height: 70vh; overflow-y: auto; }
-  .legal-content h1, .legal-content h2, .legal-content h3 { color: #FFD700; margin-top: 20px; }
-  .legal-content p { margin-bottom: 15px; }
+  .btn-legal { 
+    background: linear-gradient(135deg, #5d4037 0%, #4e342e 100%); 
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
   
-  .messages-list { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 15px; max-height: 500px; overflow-y: auto; }
-  .user-message-card { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 12px; margin-bottom: 12px; border-left: 3px solid #FFD700; }
-  .user-message-date { font-size: 0.7rem; color: #FFD966; margin-bottom: 5px; }
-  .user-message-text { font-size: 0.9rem; color: white; margin-bottom: 8px; }
-  .user-reply-card { background: rgba(46,125,50,0.2); border-radius: 12px; padding: 10px; margin-top: 12px; border-left: 3px solid #4ade80; }
-  .user-reply-text { font-size: 0.85rem; color: #4ade80; margin-top: 5px; }
+  .btn-legal:hover { 
+    background: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
+    transform: translateY(-2px);
+  }
   
-  .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 500; visibility: hidden; opacity: 0; transition: 0.2s; }
-  .modal.active { visibility: visible; opacity: 1; }
-  .modal-content { background: #1e2a2f; border-radius: 32px; padding: 28px; width: 90%; max-width: 500px; border: 1px solid gold; max-height: 80vh; overflow-y: auto; }
-  .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 30px; border: none; background: rgba(255,255,255,0.1); color: white; }
-  .modal-content textarea { border-radius: 20px; resize: vertical; }
+  /* Bouton Communiqués */
+  .btn-communiques { 
+    position: relative; 
+    background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%); 
+    color: white; 
+    font-weight: 600; 
+    padding: 16px 28px; 
+    font-size: 1rem; 
+    border: none; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    margin-bottom: 25px; 
+    width: 100%; 
+    box-shadow: 0 6px 20px rgba(33,150,243,0.3);
+    overflow: hidden;
+  }
   
-  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 50px; z-index: 1100; display: none; }
-  .info-banner { background: #2c3e50; border-radius: 15px; padding: 10px; margin-bottom: 15px; font-size: 0.8rem; color: #ffd966; text-align: center; }
-  .loading { text-align: center; color: #FFD700; padding: 20px; }
-  .legal-buttons { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .btn-communiques::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+  }
   
-  @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+  .btn-communiques:hover::before {
+    left: 100%;
+  }
+  
+  .btn-communiques:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 30px rgba(33,150,243,0.4); 
+  }
+  
+  .notification-bubble { 
+    position: absolute; 
+    top: -8px; 
+    right: -8px; 
+    background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%); 
+    color: white; 
+    border-radius: 50px; 
+    padding: 5px 12px; 
+    font-size: 0.75rem; 
+    font-weight: 700; 
+    animation: pulse 2s infinite;
+    display: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  
+  @keyframes pulse { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.1); } 
+  }
+  
+  /* Carte principale */
+  .main-card { 
+    background: linear-gradient(135deg, rgba(46,125,50,0.95) 0%, rgba(27,94,32,0.95) 100%); 
+    backdrop-filter: blur(16px); 
+    border-radius: 35px; 
+    padding: 30px; 
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  
+  .screen { 
+    display: none; 
+    animation: fadeIn 0.4s ease; 
+  }
+  
+  .screen.active { 
+    display: block; 
+  }
+  
+  @keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(20px); } 
+    to { opacity: 1; transform: translateY(0); } 
+  }
+  
+  /* Grille des modes */
+  .mode-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    gap: 15px; 
+    margin: 25px 0; 
+  }
+  
+  .mode-card { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); 
+    border: 2px solid rgba(255,255,255,0.2); 
+    border-radius: 25px; 
+    padding: 20px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+  
+  .mode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+  
+  .mode-card.selected { 
+    border-color: #81c784; 
+    background: linear-gradient(135deg, rgba(129,199,132,0.3) 0%, rgba(76,175,80,0.2) 100%);
+    box-shadow: 0 5px 20px rgba(129,199,132,0.3);
+  }
+  
+  .mode-icon { 
+    font-size: 2.5rem; 
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  .mode-title { 
+    font-weight: 600; 
+    color: white;
+    font-size: 0.95rem;
+  }
+  
+  /* Sélecteurs */
+  .difficulty-row, .count-selector { 
+    display: flex; 
+    gap: 12px; 
+    flex-wrap: wrap; 
+    margin: 20px 0; 
+    justify-content: center;
+  }
+  
+  .diff-btn, .count-btn { 
+    background: rgba(255,255,255,0.1); 
+    border: 2px solid rgba(255,255,255,0.3); 
+    padding: 10px 20px; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    color: white;
+    font-weight: 500;
+  }
+  
+  .diff-btn:hover, .count-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  
+  .diff-btn.selected, .count-btn.selected { 
+    background: linear-gradient(135deg, #81c784 0%, #4caf50 100%); 
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+  }
+  
+  /* Options de réponse */
+  .options-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+    margin: 25px 0; 
+  }
+  
+  .opt-btn { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 100%); 
+    border: 2px solid rgba(255,255,255,0.3); 
+    padding: 18px; 
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    cursor: pointer; 
+    color: white; 
+    transition: all 0.2s ease; 
+    font-size: 1rem; 
+    text-align: left;
+    backdrop-filter: blur(5px);
+  }
+  
+  .opt-btn:hover:not(:disabled) { 
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  .opt-btn:active:not(:disabled) { 
+    transform: scale(0.98); 
+  }
+  
+  .opt-btn.correct { 
+    background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%); 
+    border-color: #81c784;
+    box-shadow: 0 5px 20px rgba(102,187,106,0.4);
+  }
+  
+  .opt-btn.wrong { 
+    background: linear-gradient(135deg, #ef5350 0%, #e53935 100%); 
+    border-color: #ef5350;
+    opacity: 0.8;
+  }
+  
+  .opt-btn:disabled {
+    cursor: not-allowed;
+  }
+  
+  /* Timer */
+  .timer-bar { 
+    height: 8px; 
+    background: rgba(255,255,255,0.2); 
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin: 15px 0;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .timer-fill { 
+    height: 100%; 
+    width: 100%; 
+    background: linear-gradient(90deg, #81c784 0%, #66bb6a 100%); 
+    transition: width 1s linear;
+    border-radius: 10px;
+  }
+  
+  .timer-fill.warning {
+    background: linear-gradient(90deg, #ffb74d 0%, #ffa726 100%);
+  }
+  
+  .timer-fill.danger {
+    background: linear-gradient(90deg, #ef5350 0%, #e53935 100%);
+  }
+  
+  .next-btn { 
+    background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%); 
+    color: white; 
+    border: none; 
+    padding: 15px; 
+    border-radius: 50px; 
+    width: 100%; 
+    font-weight: 700; 
+    cursor: pointer; 
+    margin-top: 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255,183,77,0.3);
+  }
+  
+  .next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,183,77,0.4);
+  }
+  
+  /* Stats de résultats */
+  .result-stats { 
+    display: grid; 
+    grid-template-columns: repeat(2,1fr); 
+    gap: 15px; 
+    margin: 25px 0; 
+  }
+  
+  .stat-card { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); 
+    padding: 20px; 
+    border-radius: 25px; 
+    text-align: center; 
+    color: white;
+    border: 2px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .stat-card span { 
+    font-size: 2rem; 
+    font-weight: 700; 
+    color: #81c784; 
+    display: block; 
+    margin-top: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  /* Publicité */
+  .ad-container { 
+    margin: 25px 0 15px; 
+    text-align: center; 
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); 
+    border-radius: 25px; 
+    padding: 20px; 
+    min-height: 140px; 
+    border: 2px solid rgba(255,215,0,0.4);
+    display: none;
+    backdrop-filter: blur(5px);
+  }
+  
+  .ad-container.visible { 
+    display: block;
+    animation: slideIn 0.3s ease;
+  }
+  
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .ad-label { 
+    font-size: 0.75rem; 
+    color: #ffd54f; 
+    text-align: center; 
+    margin-bottom: 12px; 
+    letter-spacing: 2px; 
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  
+  /* Communiqués */
+  .communique-card { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 100%); 
+    border-radius: 25px; 
+    padding: 20px; 
+    margin-bottom: 15px; 
+    border-left: 5px solid #81c784;
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease;
+  }
+  
+  .communique-card:hover {
+    transform: translateX(5px);
+  }
+  
+  .communique-date { 
+    font-size: 0.8rem; 
+    color: #c8e6c9; 
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .communique-text { 
+    font-size: 1rem; 
+    color: white; 
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  
+  .communique-media { 
+    max-width: 100%; 
+    border-radius: 15px; 
+    margin-top: 15px; 
+    max-height: 250px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  audio { 
+    width: 100%; 
+    margin-top: 15px;
+    border-radius: 50px;
+  }
+  
+  /* Contenu légal */
+  .legal-content { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); 
+    border-radius: 25px; 
+    padding: 25px; 
+    line-height: 1.8; 
+    color: white; 
+    max-height: 70vh; 
+    overflow-y: auto;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+  
+  .legal-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .legal-content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+  }
+  
+  .legal-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+  }
+  
+  .legal-content h1, .legal-content h2, .legal-content h3 { 
+    color: #81c784; 
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
+  
+  .legal-content p { 
+    margin-bottom: 15px;
+    color: #e8f5e9;
+  }
+  
+  /* Messages */
+  .messages-list { 
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); 
+    border-radius: 25px; 
+    padding: 20px; 
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+  
+  .user-message-card { 
+    background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.2) 100%); 
+    border-radius: 20px; 
+    padding: 18px; 
+    margin-bottom: 15px; 
+    border-left: 4px solid #81c784;
+    backdrop-filter: blur(5px);
+  }
+  
+  .user-message-date { 
+    font-size: 0.75rem; 
+    color: #c8e6c9; 
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .user-message-text { 
+    font-size: 0.95rem; 
+    color: white; 
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  
+  .user-reply-card { 
+    background: linear-gradient(135deg, rgba(102,187,106,0.2) 0%, rgba(76,175,80,0.1) 100%); 
+    border-radius: 15px; 
+    padding: 15px; 
+    margin-top: 15px; 
+    border-left: 4px solid #66bb6a;
+  }
+  
+  .user-reply-text { 
+    font-size: 0.9rem; 
+    color: #a5d6a7; 
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  
+  /* Modals */
+  .modal { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(5px);
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+    visibility: hidden; 
+    opacity: 0; 
+    transition: all 0.3s ease;
+  }
+  
+  .modal.active { 
+    visibility: visible; 
+    opacity: 1; 
+  }
+  
+  .modal-content { 
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); 
+    border-radius: 35px; 
+    padding: 35px; 
+    width: 90%; 
+    max-width: 500px; 
+    border: 2px solid rgba(255,255,255,0.3);
+    max-height: 85vh; 
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  
+  .modal-content input, 
+  .modal-content select, 
+  .modal-content textarea { 
+    width: 100%; 
+    padding: 14px 18px; 
+    margin: 10px 0; 
+    border-radius: 50px; 
+    border: 2px solid rgba(255,255,255,0.3); 
+    background: rgba(255,255,255,0.15); 
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .modal-content input:focus, 
+  .modal-content select:focus, 
+  .modal-content textarea:focus {
+    outline: none;
+    border-color: #81c784;
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 0 3px rgba(129,199,132,0.2);
+  }
+  
+  .modal-content input::placeholder,
+  .modal-content textarea::placeholder {
+    color: rgba(255,255,255,0.7);
+  }
+  
+  .modal-content textarea { 
+    border-radius: 20px; 
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  /* Toast */
+  .toast { 
+    position: fixed; 
+    bottom: 30px; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); 
+    color: white; 
+    padding: 15px 30px; 
+    border-radius: 50px; 
+    z-index: 1100; 
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,0.2);
+    font-weight: 500;
+    animation: slideUp 0.3s ease forwards;
+  }
+  
+  @keyframes slideUp {
+    to { transform: translateX(-50%) translateY(0); }
+  }
+  
+  /* Banner info */
+  .info-banner { 
+    background: linear-gradient(135deg, rgba(255,193,7,0.2) 0%, rgba(255,152,0,0.2) 100%); 
+    border-radius: 20px; 
+    padding: 15px 20px; 
+    margin-bottom: 20px; 
+    font-size: 0.9rem; 
+    color: #fff9c4; 
+    text-align: center; 
+    border: 2px solid rgba(255,193,7,0.4);
+    font-weight: 500;
+  }
+  
+  .info-banner strong {
+    color: #ffd54f;
+  }
+  
+  .loading { 
+    text-align: center; 
+    color: #81c784; 
+    padding: 30px;
+    font-size: 1.1rem;
+  }
+  
+  .legal-buttons { 
+    display: flex; 
+    gap: 12px; 
+    justify-content: center; 
+    margin-bottom: 25px; 
+    flex-wrap: wrap; 
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) { 
+    .options-grid { 
+      grid-template-columns: 1fr; 
+    }
+    
+    .top-bar {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .user-card {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .user-info {
+      text-align: center;
+    }
+    
+    .mode-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .main-card {
+      padding: 20px;
+    }
+  }
+  
+  /* Animation de chargement */
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+  
+  .loading-skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 15px;
+    height: 60px;
+    margin-bottom: 15px;
+  }
+  
+  /* Emoji animations */
+  .emoji-bounce {
+    animation: bounce 1s ease infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Question display */
+  .question-container {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    border-radius: 25px;
+    padding: 25px;
+    margin: 20px 0;
+    border: 2px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+  }
+  
+  .question-text {
+    font-size: 1.4rem; 
+    text-align: center; 
+    color: white; 
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 15px 0;
+  }
+  
+  .flag-display {
+    text-align: center;
+    font-size: 5rem;
+    margin: 20px 0;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+  }
+  
+  .flag-display img {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 3px solid rgba(255,255,255,0.3);
+  }
+  
+  .score-display {
+    background: linear-gradient(135deg, rgba(129,199,132,0.3) 0%, rgba(76,175,80,0.2) 100%);
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: inline-block;
+    font-weight: 700;
+    color: #81c784;
+    border: 2px solid rgba(129,199,132,0.4);
+  }
+  
+  .feedback-area {
+    text-align: center; 
+    padding: 15px; 
+    margin: 15px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .feedback-area.correct {
+    background: linear-gradient(135deg, rgba(102,187,106,0.3) 0%, rgba(76,175,80,0.2) 100%);
+    color: #a5d6a7;
+    border: 2px solid rgba(102,187,106,0.4);
+  }
+  
+  .feedback-area.wrong {
+    background: linear-gradient(135deg, rgba(239,83,80,0.3) 0%, rgba(229,57,53,0.2) 100%);
+    color: #ffcdd2;
+    border: 2px solid rgba(239,83,80,0.4);
+  }
 </style>
 </head>
 <body>
@@ -143,22 +907,36 @@
         <button class="btn-icon btn-legal" onclick="showLegalPage('contact')">📧 Support</button>
       </div>
       
-      <h2 style="text-align:center;">🧠 Testez vos connaissances</h2>
-      <p style="text-align:center; color:#aaa;">10 FCF par bonne réponse • 196 pays</p>
+      <h2 style="text-align:center; color: white; margin-bottom: 10px; font-size: 1.8rem;">🧠 Testez vos connaissances</h2>
+      <p style="text-align:center; color: #c8e6c9; margin-bottom: 25px;">10 FCF par bonne réponse • 196 pays disponibles</p>
       
       <div class="mode-grid" id="modeGrid">
-        <div class="mode-card selected" data-mode="mixed"><div class="mode-icon">🎲</div><div class="mode-title">Mixte</div></div>
-        <div class="mode-card" data-mode="capitals"><div class="mode-icon">🏛️</div><div class="mode-title">Capitales</div></div>
-        <div class="mode-card" data-mode="flags"><div class="mode-icon">🏳️</div><div class="mode-title">Drapeaux</div></div>
-        <div class="mode-card" data-mode="reverse"><div class="mode-icon">🔄</div><div class="mode-title">Pays→Capitale</div></div>
+        <div class="mode-card selected" data-mode="mixed">
+          <div class="mode-icon">🎲</div>
+          <div class="mode-title">Mixte</div>
+        </div>
+        <div class="mode-card" data-mode="capitals">
+          <div class="mode-icon">🏛️</div>
+          <div class="mode-title">Capitales</div>
+        </div>
+        <div class="mode-card" data-mode="flags">
+          <div class="mode-icon">🏳️</div>
+          <div class="mode-title">Drapeaux</div>
+        </div>
+        <div class="mode-card" data-mode="reverse">
+          <div class="mode-icon">🔄</div>
+          <div class="mode-title">Pays→Capitale</div>
+        </div>
       </div>
 
+      <div style="text-align: center; color: #c8e6c9; margin: 15px 0; font-weight: 500;">Niveau de difficulté :</div>
       <div class="difficulty-row" id="diffRow">
         <div class="diff-btn selected" data-diff="facile">🟢 Facile</div>
         <div class="diff-btn" data-diff="moyen">🟡 Moyen</div>
         <div class="diff-btn" data-diff="difficile">🔴 Difficile</div>
       </div>
 
+      <div style="text-align: center; color: #c8e6c9; margin: 15px 0; font-weight: 500;">Nombre de questions :</div>
       <div class="count-selector" id="countRow">
         <div class="count-btn" data-count="5">5 Q</div>
         <div class="count-btn" data-count="10">10 Q</div>
@@ -166,20 +944,34 @@
         <div class="count-btn" data-count="50">50 Q</div>
       </div>
 
-      <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
-      <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 500 FCF de bonus ! Retrait min 300 FCF</div>
+      <button class="btn-primary" style="width:100%; margin-top:25px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
+      
+      <div style="margin-top:25px; text-align:center; font-size:0.85rem; color:#c8e6c9; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 20px;">
+        💡 <strong>Parrainez un ami</strong> → 1500 FCF de bonus !<br>
+        🎯 Retrait minimum 300 FCF
+      </div>
     </div>
 
     <div id="quizScreen" class="screen">
-      <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
-      <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-        <span id="qCounter" style="color:white;">Question 1 / 0</span>
-        <span id="scoreLive" style="color:#4ade80;">💰 0 FCF</span>
+      <div class="timer-bar">
+        <div class="timer-fill" id="timerFill"></div>
       </div>
-      <div style="text-align:center; font-size:4rem;" id="flagDisplay">🌍</div>
-      <div class="question-text" id="questionText" style="font-size:1.3rem; text-align:center; margin:15px 0; color:white; font-weight:bold;"></div>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap: wrap; gap: 10px;">
+        <span id="qCounter" style="color: white; font-weight: 600; font-size: 1.1rem;">Question 1 / 0</span>
+        <span id="scoreLive" class="score-display">💰 0 FCF</span>
+      </div>
+      
+      <div class="flag-display" id="flagDisplay">🌍</div>
+      
+      <div class="question-container">
+        <div class="question-text" id="questionText"></div>
+      </div>
+      
       <div class="options-grid" id="optionsContainer"></div>
-      <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px; color:white;"></div>
+      
+      <div class="feedback-area" id="feedbackMsg"></div>
+      
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ QUESTION SUIVANTE</button>
       
       <div class="ad-container" id="quizAdBlock">
@@ -190,46 +982,67 @@
              data-ad-slot="6066344349"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
-        <div style="font-size:0.6rem; color:#aaa; margin-top:5px; text-align:center;">Publicité</div>
+        <div style="font-size:0.7rem; color:#c8e6c9; margin-top:10px; text-align:center;">Publicité</div>
       </div>
     </div>
 
     <div id="communiquesScreen" class="screen">
-      <button class="btn-icon" style="margin-bottom:15px; background:#e94560;" onclick="backToMenuFromCommuniques()">← Retour au menu</button>
-      <h2 style="text-align:center; margin-bottom:20px; color:#FFD700;">📢 Communiqués officiels</h2>
+      <button class="btn-icon" style="margin-bottom:20px; background: #ef5350; color: white; border: none;" onclick="backToMenuFromCommuniques()">← Retour au menu</button>
+      <h2 style="text-align:center; margin-bottom:25px; color: #81c784; font-size: 1.8rem;">📢 Communiqués officiels</h2>
       <div id="communiquesList" class="loading">⏳ Chargement...</div>
     </div>
 
     <div id="messagesScreen" class="screen">
-      <button class="btn-icon" style="margin-bottom:15px; background:#e94560;" onclick="backToMenuFromMessages()">← Retour au menu</button>
-      <h2 style="text-align:center; margin-bottom:20px; color:#FFD700;">💬 Mes messages au support</h2>
+      <button class="btn-icon" style="margin-bottom:20px; background: #ef5350; color: white; border: none;" onclick="backToMenuFromMessages()">← Retour au menu</button>
+      <h2 style="text-align:center; margin-bottom:25px; color: #81c784; font-size: 1.8rem;">💬 Mes messages au support</h2>
       <div id="messagesList" class="messages-list">⏳ Chargement...</div>
-      <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="showLegalPage('contact')">📝 Nouveau message</button>
+      <button class="btn-primary" style="width:100%; margin-top:20px;" onclick="showLegalPage('contact')">📝 Nouveau message</button>
     </div>
 
     <div id="legalScreen" class="screen">
-      <button class="btn-icon" style="margin-bottom:15px; background:#e94560;" onclick="backToMenuFromLegal()">← Retour au menu</button>
-      <h2 style="text-align:center; margin-bottom:20px; color:#FFD700;" id="legalTitle">📜 Page légale</h2>
+      <button class="btn-icon" style="margin-bottom:20px; background: #ef5350; color: white; border: none;" onclick="backToMenuFromLegal()">← Retour au menu</button>
+      <h2 style="text-align:center; margin-bottom:25px; color: #81c784; font-size: 1.8rem;" id="legalTitle">📜 Page légale</h2>
       <div id="legalContent" class="legal-content"></div>
     </div>
 
     <div id="resultsScreen" class="screen">
       <div style="text-align:center;">
-        <div style="font-size:3rem;" id="resultEmoji">🏆</div>
-        <h2 id="resultTitle" style="color:white;">Quiz terminé !</h2>
+        <div style="font-size:4rem; margin-bottom: 15px;" id="resultEmoji" class="emoji-bounce">🏆</div>
+        <h2 id="resultTitle" style="color: white; margin-bottom: 25px; font-size: 2rem;">Quiz terminé !</h2>
+        
         <div class="result-stats">
-          <div class="stat-card">✔️ Bonnes<br><span id="resCorrect">0</span></div>
-          <div class="stat-card">❌ Erreurs<br><span id="resWrong">0</span></div>
-          <div class="stat-card">📊 Précision<br><span id="resAcc">0%</span></div>
-          <div class="stat-card">💰 Gains<br><span id="resEarn">0 FCF</span></div>
+          <div class="stat-card">
+            ✔️ Bonnes
+            <span id="resCorrect">0</span>
+          </div>
+          <div class="stat-card">
+            ❌ Erreurs
+            <span id="resWrong">0</span>
+          </div>
+          <div class="stat-card">
+            📊 Précision
+            <span id="resAcc">0%</span>
+          </div>
+          <div class="stat-card">
+            💰 Gains
+            <span id="resEarn">0 FCF</span>
+          </div>
         </div>
+        
         <div class="result-stats">
-          <div class="stat-card">🔥 Meilleure série<br><span id="resStreak">0</span></div>
-          <div class="stat-card">💎 Total FCF<br><span id="resTotal">0</span></div>
+          <div class="stat-card">
+            🔥 Meilleure série
+            <span id="resStreak">0</span>
+          </div>
+          <div class="stat-card">
+            💎 Total FCF
+            <span id="resTotal">0</span>
+          </div>
         </div>
-        <div style="display:flex; gap:12px; justify-content:center; margin-top:15px;">
+        
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:25px; flex-wrap: wrap;">
           <button class="btn-primary" onclick="restartSameMode()">🔄 Rejouer</button>
-          <button class="btn-icon" onclick="backToMenu()">🏠 Menu</button>
+          <button class="btn-icon" onclick="backToMenu()" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3);">🏠 Menu</button>
         </div>
       </div>
     </div>
@@ -237,13 +1050,72 @@
 </div>
 
 <!-- MODALS -->
-<div id="authModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeAuthModal()">&times;</span><h3 style="color:#FFD700;">🔐 Authentification</h3><div style="display:flex; gap:10px; margin-bottom:15px;"><button id="tabLoginBtn" class="btn-icon" style="background:#FFD700; color:#1a1a2e;" onclick="showAuthTab('login')">Connexion</button><button id="tabSignupBtn" class="btn-icon" onclick="showAuthTab('signup')">Inscription</button></div>
-<div id="loginForm"><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPassword" placeholder="Mot de passe"><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="handleLogin()">Se connecter</button></div>
-<div id="signupForm" style="display:none;"><input type="text" id="signupName" placeholder="Nom"><input type="email" id="signupEmail" placeholder="Email"><input type="tel" id="signupPhone" placeholder="Téléphone"><input type="password" id="signupPassword" placeholder="Mot de passe (min 6)"><input type="text" id="signupReferral" placeholder="Code parrain"><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="handleSignup()">Créer mon compte</button></div><div id="authError" style="color:#e94560; text-align:center; margin-top:10px;"></div></div></div>
+<div id="authModal" class="modal">
+  <div class="modal-content">
+    <span style="float:right; font-size:28px; cursor:pointer; color: white;" onclick="closeAuthModal()">&times;</span>
+    <h3 style="color:#81c784; margin-bottom: 20px; text-align: center; font-size: 1.8rem;">🔐 Authentification</h3>
+    
+    <div style="display:flex; gap:10px; margin-bottom:25px; justify-content: center;">
+      <button id="tabLoginBtn" class="btn-icon" style="background:#81c784; color: white; border: none; font-weight: 600;" onclick="showAuthTab('login')">Connexion</button>
+      <button id="tabSignupBtn" class="btn-icon" style="background: rgba(255,255,255,0.2); color: white;" onclick="showAuthTab('signup')">Inscription</button>
+    </div>
+    
+    <div id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Mot de passe">
+      <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="handleLogin()">Se connecter</button>
+    </div>
+    
+    <div id="signupForm" style="display:none;">
+      <input type="text" id="signupName" placeholder="Nom complet">
+      <input type="email" id="signupEmail" placeholder="Email">
+      <input type="tel" id="signupPhone" placeholder="Téléphone">
+      <input type="password" id="signupPassword" placeholder="Mot de passe (min 6 caractères)">
+      <input type="text" id="signupReferral" placeholder="Code parrain (optionnel)">
+      <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="handleSignup()">Créer mon compte</button>
+    </div>
+    
+    <div id="authError" style="color:#ffcdd2; text-align:center; margin-top:15px; font-weight: 500;"></div>
+  </div>
+</div>
 
-<div id="inviteModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span><h3 style="color:#FFD700;">👥 Inviter un ami</h3><div class="invite-link-box" id="inviteLinkDisplay" style="background:#0a1a1f; padding:12px; border-radius:30px; word-break:break-all;"></div><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button><p style="margin-top:10px; font-size:0.8rem; color:#aaa;">🎁 Pour chaque ami inscrit via votre lien → 500 FCF bonus !</p></div></div>
+<div id="inviteModal" class="modal">
+  <div class="modal-content">
+    <span style="float:right; font-size:28px; cursor:pointer; color: white;" onclick="closeInviteModal()">&times;</span>
+    <h3 style="color:#81c784; margin-bottom: 20px; text-align: center; font-size: 1.8rem;">👥 Inviter un ami</h3>
+    <p style="margin-bottom:15px; color: #c8e6c9; text-align: center;">Partagez ce lien avec vos amis :</p>
+    
+    <div class="invite-link-box" id="inviteLinkDisplay" style="background: rgba(0,0,0,0.3); padding:15px; border-radius: 20px; word-break:break-all; margin-bottom:15px; color: #81c784; font-weight: 500; border: 2px solid rgba(129,199,132,0.4);"></div>
+    
+    <button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button>
+    
+    <p style="margin-top:20px; font-size:0.9rem; color:#a5d6a7; text-align: center; padding: 15px; background: rgba(102,187,106,0.2); border-radius: 15px;">
+      🎁 Quand votre ami s'inscrit via ce lien, vous recevez <strong>1500 FCF</strong> de bonus !
+    </p>
+  </div>
+</div>
 
-<div id="withdrawModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeWithdrawModal()">&times;</span><h3 style="color:#FFD700;">💸 Demande de retrait</h3><input type="number" id="withdrawAmount" placeholder="Montant (min 300 FCF)"><input type="tel" id="withdrawPhone" placeholder="Numéro de téléphone"><select id="withdrawMethod"><option value="MTN">MTN Money</option><option value="Moov">Moov Money</option></select><div style="display:flex; gap:10px; margin-top:15px;"><button class="btn-primary" onclick="submitWithdrawRequest()">Envoyer</button><button class="btn-icon" onclick="closeWithdrawModal()">Annuler</button></div><div id="withdrawMsg" style="color:gold; text-align:center; margin-top:8px;"></div></div></div>
+<div id="withdrawModal" class="modal">
+  <div class="modal-content">
+    <span style="float:right; font-size:28px; cursor:pointer; color: white;" onclick="closeWithdrawModal()">&times;</span>
+    <h3 style="color:#81c784; margin-bottom: 20px; text-align: center; font-size: 1.8rem;">💸 Demande de retrait</h3>
+    
+    <input type="number" id="withdrawAmount" placeholder="Montant (min 300 FCF)">
+    <input type="tel" id="withdrawPhone" placeholder="Numéro de téléphone">
+    
+    <select id="withdrawMethod" style="width: 100%; padding: 14px; margin: 10px 0; border-radius: 50px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: white;">
+      <option value="MTN" style="background: #2e7d32;">MTN Money</option>
+      <option value="Moov" style="background: #2e7d32;">Moov Money</option>
+    </select>
+    
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button class="btn-primary" style="flex: 1;" onclick="submitWithdrawRequest()">Envoyer</button>
+      <button class="btn-icon" style="flex: 1; background: rgba(255,255,255,0.2); color: white;" onclick="closeWithdrawModal()">Annuler</button>
+    </div>
+    
+    <div id="withdrawMsg" style="color:#81c784; text-align:center; margin-top:15px; font-weight: 500;"></div>
+  </div>
+</div>
 
 <div id="toastMsg" class="toast"></div>
 
@@ -261,7 +1133,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   
-  // ==================== BANQUE DE PAYS ====================
+  // ==================== BANQUE DE PAYS ÉTENDUE ====================
   const countries = [
     {nom:"France",capitale:"Paris",code:"fr",diff:"facile"},
     {nom:"Allemagne",capitale:"Berlin",code:"de",diff:"facile"},
@@ -294,7 +1166,149 @@
     {nom:"Maroc",capitale:"Rabat",code:"ma",diff:"facile"},
     {nom:"Algérie",capitale:"Alger",code:"dz",diff:"facile"},
     {nom:"Côte d'Ivoire",capitale:"Yamoussoukro",code:"ci",diff:"moyen"},
-    {nom:"Cameroun",capitale:"Yaoundé",code:"cm",diff:"moyen"}
+    {nom:"Cameroun",capitale:"Yaoundé",code:"cm",diff:"moyen"},
+    {nom:"Mali",capitale:"Bamako",code:"ml",diff:"moyen"},
+    {nom:"Burkina Faso",capitale:"Ouagadougou",code:"bf",diff:"moyen"},
+    {nom:"Niger",capitale:"Niamey",code:"ne",diff:"moyen"},
+    {nom:"Guinée",capitale:"Conakry",code:"gn",diff:"moyen"},
+    {nom:"Togo",capitale:"Lomé",code:"tg",diff:"moyen"},
+    {nom:"Bénin",capitale:"Porto-Novo",code:"bj",diff:"moyen"},
+    {nom:"Gabon",capitale:"Libreville",code:"ga",diff:"moyen"},
+    {nom:"Congo",capitale:"Brazzaville",code:"cg",diff:"moyen"},
+    {nom:"RDC",capitale:"Kinshasa",code:"cd",diff:"moyen"},
+    {nom:"Kenya",capitale:"Nairobi",code:"ke",diff:"moyen"},
+    {nom:"Tanzanie",capitale:"Dodoma",code:"tz",diff:"moyen"},
+    {nom:"Ouganda",capitale:"Kampala",code:"ug",diff:"moyen"},
+    {nom:"Éthiopie",capitale:"Addis-Abeba",code:"et",diff:"moyen"},
+    {nom:"Nigeria",capitale:"Abuja",code:"ng",diff:"moyen"},
+    {nom:"Ghana",capitale:"Accra",code:"gh",diff:"moyen"},
+    {nom:"Afrique du Sud",capitale:"Pretoria",code:"za",diff:"moyen"},
+    {nom:"Égypte",capitale:"Le Caire",code:"eg",diff:"facile"},
+    {nom:"Turquie",capitale:"Ankara",code:"tr",diff:"facile"},
+    {nom:"Russie",capitale:"Moscou",code:"ru",diff:"facile"},
+    {nom:"Australie",capitale:"Canberra",code:"au",diff:"moyen"},
+    {nom:"Nouvelle-Zélande",capitale:"Wellington",code:"nz",diff:"moyen"},
+    {nom:"Indonésie",capitale:"Jakarta",code:"id",diff:"moyen"},
+    {nom:"Malaisie",capitale:"Kuala Lumpur",code:"my",diff:"moyen"},
+    {nom:"Thaïlande",capitale:"Bangkok",code:"th",diff:"facile"},
+    {nom:"Vietnam",capitale:"Hanoï",code:"vn",diff:"moyen"},
+    {nom:"Philippines",capitale:"Manille",code:"ph",diff:"moyen"},
+    {nom:"Corée du Sud",capitale:"Séoul",code:"kr",diff:"facile"},
+    {nom:"Arabie Saoudite",capitale:"Riyad",code:"sa",diff:"moyen"},
+    {nom:"Émirats Arabes Unis",capitale:"Abu Dhabi",code:"ae",diff:"moyen"},
+    {nom:"Israël",capitale:"Jérusalem",code:"il",diff:"moyen"},
+    {nom:"Iran",capitale:"Téhéran",code:"ir",diff:"moyen"},
+    {nom:"Pakistan",capitale:"Islamabad",code:"pk",diff:"moyen"},
+    {nom:"Bangladesh",capitale:"Dacca",code:"bd",diff:"difficile"},
+    {nom:"Afghanistan",capitale:"Kaboul",code:"af",diff:"moyen"},
+    {nom:"Irak",capitale:"Bagdad",code:"iq",diff:"moyen"},
+    {nom:"Syrie",capitale:"Damas",code:"sy",diff:"moyen"},
+    {nom:"Liban",capitale:"Beyrouth",code:"lb",diff:"moyen"},
+    {nom:"Jordanie",capitale:"Amman",code:"jo",diff:"moyen"},
+    {nom:"Cuba",capitale:"La Havane",code:"cu",diff:"facile"},
+    {nom:"Haïti",capitale:"Port-au-Prince",code:"ht",diff:"moyen"},
+    {nom:"République Dominicaine",capitale:"Saint-Domingue",code:"do",diff:"moyen"},
+    {nom:"Jamaïque",capitale:"Kingston",code:"jm",diff:"moyen"},
+    {nom:"Venezuela",capitale:"Caracas",code:"ve",diff:"facile"},
+    {nom:"Équateur",capitale:"Quito",code:"ec",diff:"moyen"},
+    {nom:"Bolivie",capitale:"Sucre",code:"bo",diff:"moyen"},
+    {nom:"Paraguay",capitale:"Asuncion",code:"py",diff:"difficile"},
+    {nom:"Uruguay",capitale:"Montevideo",code:"uy",diff:"moyen"},
+    {nom:"Costa Rica",capitale:"San José",code:"cr",diff:"moyen"},
+    {nom:"Panama",capitale:"Panama",code:"pa",diff:"moyen"},
+    {nom:"Guatemala",capitale:"Guatemala",code:"gt",diff:"moyen"},
+    {nom:"Honduras",capitale:"Tegucigalpa",code:"hn",diff:"difficile"},
+    {nom:"Salvador",capitale:"San Salvador",code:"sv",diff:"moyen"},
+    {nom:"Nicaragua",capitale:"Managua",code:"ni",diff:"difficile"},
+    {nom:"Irlande",capitale:"Dublin",code:"ie",diff:"facile"},
+    {nom:"Islande",capitale:"Reykjavik",code:"is",diff:"moyen"},
+    {nom:"Luxembourg",capitale:"Luxembourg",code:"lu",diff:"moyen"},
+    {nom:"Monaco",capitale:"Monaco",code:"mc",diff:"facile"},
+    {nom:"Andorre",capitale:"Andorre-la-Vieille",code:"ad",diff:"moyen"},
+    {nom:"Malte",capitale:"La Valette",code:"mt",diff:"difficile"},
+    {nom:"Chypre",capitale:"Nicosie",code:"cy",diff:"difficile"},
+    {nom:"Estonie",capitale:"Tallinn",code:"ee",diff:"moyen"},
+    {nom:"Lettonie",capitale:"Riga",code:"lv",diff:"moyen"},
+    {nom:"Lituanie",capitale:"Vilnius",code:"lt",diff:"moyen"},
+    {nom:"République Tchèque",capitale:"Prague",code:"cz",diff:"facile"},
+    {nom:"Slovaquie",capitale:"Bratislava",code:"sk",diff:"moyen"},
+    {nom:"Hongrie",capitale:"Budapest",code:"hu",diff:"facile"},
+    {nom:"Roumanie",capitale:"Bucarest",code:"ro",diff:"moyen"},
+    {nom:"Bulgarie",capitale:"Sofia",code:"bg",diff:"moyen"},
+    {nom:"Serbie",capitale:"Belgrade",code:"rs",diff:"moyen"},
+    {nom:"Croatie",capitale:"Zagreb",code:"hr",diff:"moyen"},
+    {nom:"Bosnie-Herzégovine",capitale:"Sarajevo",code:"ba",diff:"moyen"},
+    {nom:"Slovénie",capitale:"Ljubljana",code:"si",diff:"difficile"},
+    {nom:"Albanie",capitale:"Tirana",code:"al",diff:"moyen"},
+    {nom:"Macédoine",capitale:"Skopje",code:"mk",diff:"difficile"},
+    {nom:"Monténégro",capitale:"Podgorica",code:"me",diff:"difficile"},
+    {nom:"Kosovo",capitale:"Pristina",code:"xk",diff:"difficile"},
+    {nom:"Ukraine",capitale:"Kiev",code:"ua",diff:"facile"},
+    {nom:"Biélorussie",capitale:"Minsk",code:"by",diff:"moyen"},
+    {nom:"Moldavie",capitale:"Chisinau",code:"md",diff:"difficile"},
+    {nom:"Géorgie",capitale:"Tbilissi",code:"ge",diff:"difficile"},
+    {nom:"Arménie",capitale:"Erevan",code:"am",diff:"difficile"},
+    {nom:"Azerbaïdjan",capitale:"Bakou",code:"az",diff:"difficile"},
+    {nom:"Kazakhstan",capitale:"Astana",code:"kz",diff:"difficile"},
+    {nom:"Ouzbékistan",capitale:"Tachkent",code:"uz",diff:"difficile"},
+    {nom:"Turkménistan",capitale:"Achgabat",code:"tm",diff:"difficile"},
+    {nom:"Tadjikistan",capitale:"Douchanbé",code:"tj",diff:"difficile"},
+    {nom:"Kirghizistan",capitale:"Bichkek",code:"kg",diff:"difficile"},
+    {nom:"Mongolie",capitale:"Oulan-Bator",code:"mn",diff:"difficile"},
+    {nom:"Népal",capitale:"Katmandou",code:"np",diff:"moyen"},
+    {nom:"Bhoutan",capitale:"Thimphou",code:"bt",diff:"difficile"},
+    {nom:"Sri Lanka",capitale:"Colombo",code:"lk",diff:"moyen"},
+    {nom:"Maldives",capitale:"Malé",code:"mv",diff:"difficile"},
+    {nom:"Myanmar",capitale:"Naypyidaw",code:"mm",diff:"difficile"},
+    {nom:"Laos",capitale:"Vientiane",code:"la",diff:"difficile"},
+    {nom:"Cambodge",capitale:"Phnom Penh",code:"kh",diff:"moyen"},
+    {nom:"Brunei",capitale:"Bandar Seri Begawan",code:"bn",diff:"difficile"},
+    {nom:"Singapour",capitale:"Singapour",code:"sg",diff:"facile"},
+    {nom:"Timor Oriental",capitale:"Dili",code:"tl",diff:"difficile"},
+    {nom:"Papouasie-Nouvelle-Guinée",capitale:"Port Moresby",code:"pg",diff:"difficile"},
+    {nom:"Fidji",capitale:"Suva",code:"fj",diff:"difficile"},
+    {nom:"Samoa",capitale:"Apia",code:"ws",diff:"difficile"},
+    {nom:"Tonga",capitale:"Nuku'alofa",code:"to",diff:"difficile"},
+    {nom:"Vanuatu",capitale:"Port-Vila",code:"vu",diff:"difficile"},
+    {nom:"Îles Salomon",capitale:"Honiara",code:"sb",diff:"difficile"},
+    {nom:"Kiribati",capitale:"Tarawa",code:"ki",diff:"difficile"},
+    {nom:"Nauru",capitale:"Yaren",code:"nr",diff:"difficile"},
+    {nom:"Tuvalu",capitale:"Funafuti",code:"tv",diff:"difficile"},
+    {nom:"Palau",capitale:"Ngerulmud",code:"pw",diff:"difficile"},
+    {nom:"Micronésie",capitale:"Palikir",code:"fm",diff:"difficile"},
+    {nom:"Îles Marshall",capitale:"Majuro",code:"mh",diff:"difficile"},
+    {nom:"Libye",capitale:"Tripoli",code:"ly",diff:"moyen"},
+    {nom:"Tunisie",capitale:"Tunis",code:"tn",diff:"facile"},
+    {nom:"Mauritanie",capitale:"Nouakchott",code:"mr",diff:"moyen"},
+    {nom:"Cap-Vert",capitale:"Praia",code:"cv",diff:"difficile"},
+    {nom:"Guinée-Bissau",capitale:"Bissau",code:"gw",diff:"difficile"},
+    {nom:"Sierra Leone",capitale:"Freetown",code:"sl",diff:"moyen"},
+    {nom:"Liberia",capitale:"Monrovia",code:"lr",diff:"moyen"},
+    {nom:"Gambie",capitale:"Banjul",code:"gm",diff:"difficile"},
+    {nom:"Guinée équatoriale",capitale:"Malabo",code:"gq",diff:"difficile"},
+    {nom:"Sao Tomé-et-Principe",capitale:"Sao Tomé",code:"st",diff:"difficile"},
+    {nom:"Angola",capitale:"Luanda",code:"ao",diff:"moyen"},
+    {nom:"Zambie",capitale:"Lusaka",code:"zm",diff:"moyen"},
+    {nom:"Zimbabwe",capitale:"Harare",code:"zw",diff:"moyen"},
+    {nom:"Botswana",capitale:"Gaborone",code:"bw",diff:"difficile"},
+    {nom:"Namibie",capitale:"Windhoek",code:"na",diff:"moyen"},
+    {nom:"Lesotho",capitale:"Maseru",code:"ls",diff:"difficile"},
+    {nom:"Eswatini",capitale:"Mbabane",code:"sz",diff:"difficile"},
+    {nom:"Mozambique",capitale:"Maputo",code:"mz",diff:"moyen"},
+    {nom:"Madagascar",capitale:"Antananarivo",code:"mg",diff:"moyen"},
+    {nom:"Maurice",capitale:"Port-Louis",code:"mu",diff:"difficile"},
+    {nom:"Seychelles",capitale:"Victoria",code:"sc",diff:"difficile"},
+    {nom:"Comores",capitale:"Moroni",code:"km",diff:"difficile"},
+    {nom:"Djibouti",capitale:"Djibouti",code:"dj",diff:"difficile"},
+    {nom:"Érythrée",capitale:"Asmara",code:"er",diff:"difficile"},
+    {nom:"Somalie",capitale:"Mogadiscio",code:"so",diff:"moyen"},
+    {nom:"Soudan",capitale:"Khartoum",code:"sd",diff:"moyen"},
+    {nom:"Soudan du Sud",capitale:"Djouba",code:"ss",diff:"difficile"},
+    {nom:"Rwanda",capitale:"Kigali",code:"rw",diff:"moyen"},
+    {nom:"Burundi",capitale:"Gitega",code:"bi",diff:"moyen"},
+    {nom:"République Centrafricaine",capitale:"Bangui",code:"cf",diff:"difficile"},
+    {nom:"Tchad",capitale:"N'Djamena",code:"td",diff:"difficile"},
+    {nom:"Sao Tomé",capitale:"Sao Tomé",code:"st",diff:"difficile"}
   ];
 
   // ==================== DONNÉES ====================
@@ -431,7 +1445,7 @@
     adHideTimeout = setTimeout(() => {
       adContainer.classList.remove('visible');
       adVisible = false;
-    }, 5000);
+    }, 15000);
   }
   
   function showQuizAd() {
@@ -462,7 +1476,7 @@
     let q = questions[currentIndex];
     document.getElementById('qCounter').innerHTML = `Question ${currentIndex+1} / ${questions.length}`;
     document.getElementById('scoreLive').innerHTML = `💰 ${score} FCF`;
-    document.getElementById('flagDisplay').innerHTML = `<img src="https://flagcdn.com/w80/${q.flag}.png" style="border-radius:8px;" onerror="this.style.display='none'">`;
+    document.getElementById('flagDisplay').innerHTML = `<img src="https://flagcdn.com/w160/${q.flag}.png" alt="Drapeau" onerror="this.outerHTML='<div style=\'font-size:6rem\'>🌍</div>'">`;
     document.getElementById('questionText').innerHTML = q.text;
     let container = document.getElementById('optionsContainer');
     container.innerHTML = '';
@@ -470,12 +1484,13 @@
     q.options.forEach((opt, idx) => {
       let btn = document.createElement('button');
       btn.className = 'opt-btn';
-      btn.innerHTML = `<span style="background:rgba(255,255,255,0.2); width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;">${letters[idx]}</span><span>${opt}</span>`;
+      btn.innerHTML = `<span style="background:rgba(255,255,255,0.3); width:35px; height:35px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700;">${letters[idx]}</span><span>${opt}</span>`;
       btn.onclick = () => handleAnswer(btn, opt);
       container.appendChild(btn);
     });
     document.getElementById('nextBtn').style.display = 'none';
     document.getElementById('feedbackMsg').innerHTML = '';
+    document.getElementById('feedbackMsg').className = 'feedback-area';
     startTimer();
   }
   
@@ -487,13 +1502,17 @@
     let isCorrect = (selected === q.answer);
     let allBtns = document.querySelectorAll('.opt-btn');
     allBtns.forEach(b => b.disabled = true);
+    
+    const feedbackEl = document.getElementById('feedbackMsg');
+    
     if(isCorrect) {
       score += 10;
       correctCount++;
       streak++;
       if(streak > bestStreak) bestStreak = streak;
       btn.classList.add('correct');
-      document.getElementById('feedbackMsg').innerHTML = `<div style="background:#2e7d3233; padding:8px; border-radius:50px;">✅ +10 FCF ! Série: ${streak}</div>`;
+      feedbackEl.innerHTML = `<div>✅ Bravo ! +10 FCF | Série: ${streak} 🔥</div>`;
+      feedbackEl.className = 'feedback-area correct';
       playSound('correct');
       if(currentUser) {
         currentUserData.totalFcf = (currentUserData.totalFcf || 0) + 10;
@@ -504,8 +1523,11 @@
       wrongCount++;
       streak = 0;
       btn.classList.add('wrong');
-      allBtns.forEach(b => { if(b.innerText.includes(q.answer)) b.classList.add('correct'); });
-      document.getElementById('feedbackMsg').innerHTML = `<div style="background:#c6282833; padding:8px; border-radius:50px;">❌ Réponse: ${q.answer}</div>`;
+      allBtns.forEach(b => { 
+        if(b.innerHTML.includes(q.answer)) b.classList.add('correct'); 
+      });
+      feedbackEl.innerHTML = `<div>❌ Réponse: ${q.answer}</div>`;
+      feedbackEl.className = 'feedback-area wrong';
       playSound('wrong');
     }
     document.getElementById('scoreLive').innerHTML = `💰 ${score} FCF`;
@@ -521,10 +1543,21 @@
     timeLeft = 15;
     let fill = document.getElementById('timerFill');
     fill.style.width = '100%';
+    fill.className = 'timer-fill';
+    
     timer = setInterval(() => {
       if(!answered && timeLeft > 0) {
         timeLeft--;
         fill.style.width = (timeLeft/15)*100+'%';
+        
+        if(timeLeft <= 5 && timeLeft > 2) {
+          fill.classList.add('warning');
+        }
+        if(timeLeft <= 2) {
+          fill.classList.remove('warning');
+          fill.classList.add('danger');
+        }
+        
         if(timeLeft <= 0 && !answered) {
           clearInterval(timer);
           answered = true;
@@ -532,14 +1565,16 @@
           streak = 0;
           document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
           let q = questions[currentIndex];
-          document.getElementById('feedbackMsg').innerHTML = `<div style="background:#c6282833; padding:8px;">⏰ Temps écoulé ! Réponse: ${q.answer}</div>`;
+          const feedbackEl = document.getElementById('feedbackMsg');
+          feedbackEl.innerHTML = `<div>⏰ Temps écoulé ! Réponse: ${q.answer}</div>`;
+          feedbackEl.className = 'feedback-area wrong';
           document.getElementById('nextBtn').style.display = 'block';
           answeredTotal++;
           showQuizAd();
           playSound('wrong');
         }
       }
-    }, 500);
+    }, 1000);
   }
   
   function stopTimer() { if(timer) clearInterval(timer); }
@@ -554,7 +1589,14 @@
     document.getElementById('resEarn').innerHTML = score + ' FCF';
     document.getElementById('resStreak').innerText = bestStreak;
     document.getElementById('resTotal').innerHTML = (currentUser ? (currentUserData?.totalFcf || 0) : score) + ' FCF';
-    document.getElementById('resultEmoji').innerHTML = acc >= 70 ? '🏆🎉' : '👍';
+    
+    let emoji = '👍';
+    if(acc >= 90) emoji = '🏆🎉';
+    else if(acc >= 70) emoji = '🌟';
+    else if(acc >= 50) emoji = '👍';
+    else emoji = '💪';
+    
+    document.getElementById('resultEmoji').innerHTML = emoji;
     document.getElementById('quizScreen').classList.remove('active');
     document.getElementById('resultsScreen').classList.add('active');
   }
@@ -576,7 +1618,7 @@
           text: data.text || '',
           imageUrl: data.imageUrl || null,
           audioUrl: data.audioUrl || null,
-          date: data.date ? new Date(data.date).toLocaleString() : new Date().toLocaleString(),
+          date: data.date ? new Date(data.date).toLocaleString('fr-FR') : new Date().toLocaleString('fr-FR'),
           author: data.author || 'Admin'
         });
       });
@@ -586,14 +1628,18 @@
   function showCommuniques() {
     const container = document.getElementById('communiquesList');
     if(firebaseCommuniques.length === 0) {
-      container.innerHTML = '<p style="text-align:center; color:#aaa;">Aucun communiqué</p>';
+      container.innerHTML = '<p style="text-align:center; color:#c8e6c9; padding: 30px;">Aucun communiqué pour le moment</p>';
     } else {
       let html = '';
-      firebaseCommuniques.slice().reverse().forEach(c => {
+      firebaseCommuniques.forEach(c => {
         let media = '';
-        if(c.imageUrl) media += `<img src="${c.imageUrl}" class="communique-media" onerror="this.style.display='none'">`;
+        if(c.imageUrl) media += `<img src="${c.imageUrl}" class="communique-media" onerror="this.style.display=\'none\'" alt="Image">`;
         if(c.audioUrl) media += `<audio controls src="${c.audioUrl}"></audio>`;
-        html += `<div class="communique-card"><div class="communique-date">📅 ${c.date} | ${c.author}</div><div class="communique-text">${c.text || ''}</div>${media}</div>`;
+        html += `<div class="communique-card">
+          <div class="communique-date">📅 ${c.date} | Par: ${c.author}</div>
+          <div class="communique-text">${c.text || ''}</div>
+          ${media}
+        </div>`;
       });
       container.innerHTML = html;
     }
@@ -606,26 +1652,22 @@
     document.getElementById('startScreen').classList.add('active');
   }
 
-  // ==================== MESSAGES SUPPORT - VERSION CORRIGÉE ====================
+  // ==================== MESSAGES SUPPORT ====================
   function listenToUserMessages() {
     if(!currentUser || !currentUserData) return;
-    
-    console.log("🔍 Écoute des messages pour:", currentUserData.email);
     
     db.collection('contacts')
       .where('email', '==', currentUserData.email)
       .orderBy('date', 'desc')
       .onSnapshot((snapshot) => {
-        console.log("📨 Messages trouvés:", snapshot.size);
         userMessages = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          console.log("Message:", data.message?.substring(0,30), "Réponse:", data.reply ? "OUI" : "NON");
           userMessages.push({ 
             id: doc.id, 
             ...data,
-            dateFormatted: data.date ? new Date(data.date).toLocaleString() : 'Date inconnue',
-            replyDateFormatted: data.replyDate ? new Date(data.replyDate).toLocaleString() : null
+            dateFormatted: data.date ? new Date(data.date).toLocaleString('fr-FR') : 'Date inconnue',
+            replyDateFormatted: data.replyDate ? new Date(data.replyDate).toLocaleString('fr-FR') : null
           });
         });
         
@@ -639,19 +1681,14 @@
   
   function checkNewReplies() {
     const messagesAvecReponse = userMessages.filter(msg => msg.reply && !msg.replySeen);
-    
     if(messagesAvecReponse.length > 0) {
       playSound('correct');
       toast(`📬 ${messagesAvecReponse.length} nouvelle(s) réponse(s) du support !`);
-      
       messagesAvecReponse.forEach(async (msg) => {
         if(msg.id) {
           try {
-            await db.collection('contacts').doc(msg.id).update({
-              replySeen: true,
-              replySeenAt: new Date().toISOString()
-            });
-          } catch(e) { console.error(e); }
+            await db.collection('contacts').doc(msg.id).update({ replySeen: true, replySeenAt: new Date().toISOString() });
+          } catch(e) {}
         }
       });
     }
@@ -660,46 +1697,29 @@
   function displayUserMessages() {
     const container = document.getElementById('messagesList');
     if(!container) return;
-    
     if(userMessages.length === 0) {
-      container.innerHTML = '<p style="text-align:center; color:#aaa;">📭 Vous n\'avez pas encore envoyé de message.</p>';
+      container.innerHTML = '<p style="text-align:center; color:#c8e6c9; padding: 30px;">📭 Vous n\'avez pas encore envoyé de message.</p>';
       return;
     }
-    
     let html = '';
     userMessages.forEach(msg => {
       const date = msg.dateFormatted || 'Date inconnue';
       const replyDate = msg.replyDateFormatted || '';
+      let statusIcon = '⏳', statusText = 'En attente', statusColor = '#ffb74d';
+      if(msg.reply) { statusIcon = '✅'; statusText = 'Répondu'; statusColor = '#66bb6a'; }
+      else if(msg.status === 'lu') { statusIcon = '📖'; statusText = 'Lu'; statusColor = '#42a5f5'; }
       
-      let statusIcon = '⏳';
-      let statusText = 'En attente';
-      let statusColor = '#f39c12';
-      
-      if(msg.reply) {
-        statusIcon = '✅';
-        statusText = 'Répondu';
-        statusColor = '#2ecc71';
-      } else if(msg.status === 'lu') {
-        statusIcon = '📖';
-        statusText = 'Lu';
-        statusColor = '#3498db';
-      }
-      
-      html += `
-        <div class="user-message-card" style="border-left-color: ${statusColor}; margin-bottom: 15px;">
-          <div class="user-message-date">📅 Envoyé le ${date}</div>
-          <div class="user-message-text"><strong>📝 Votre message:</strong><br>${escapeHtml(msg.message || 'Message vide')}</div>
-          <div style="font-size:0.75rem; margin-top: 8px;">
-            <span style="color:${statusColor};">${statusIcon} ${statusText}</span>
-          </div>
-          ${msg.reply ? `
-            <div class="user-reply-card">
-              <div class="user-message-date" style="color: #4ade80;">✉️ Réponse de l'admin (${replyDate})</div>
-              <div class="user-reply-text"><strong>Réponse:</strong><br>${escapeHtml(msg.reply)}</div>
-            </div>
-          ` : ''}
+      html += `<div class="user-message-card" style="border-left-color: ${statusColor};">
+        <div class="user-message-date">📅 Envoyé le ${date}</div>
+        <div class="user-message-text"><strong>📝 Votre message:</strong><br>${escapeHtml(msg.message || 'Message vide')}</div>
+        <div style="font-size:0.8rem; margin-top: 10px;">
+          <span style="color:${statusColor}; font-weight: 600;">${statusIcon} ${statusText}</span>
         </div>
-      `;
+        ${msg.reply ? `<div class="user-reply-card">
+          <div class="user-message-date" style="color: #81c784; font-weight: 600;">✉️ Réponse de l'admin (${replyDate})</div>
+          <div class="user-reply-text"><strong>Réponse:</strong><br>${escapeHtml(msg.reply)}</div>
+        </div>` : ''}
+      </div>`;
     });
     container.innerHTML = html;
   }
@@ -715,10 +1735,10 @@
   }
   
   function showMessages() {
-    if(!currentUser || !currentUserData) {
-      toast("Connectez-vous pour voir vos messages");
-      openAuthModal();
-      return;
+    if(!currentUser || !currentUserData) { 
+      toast("Connectez-vous pour voir vos messages"); 
+      openAuthModal(); 
+      return; 
     }
     displayUserMessages();
     document.getElementById('startScreen').classList.remove('active');
@@ -735,35 +1755,29 @@
     const name = document.getElementById('legalContactName')?.value;
     const email = document.getElementById('legalContactEmail')?.value;
     const message = document.getElementById('legalContactMessage')?.value;
-    
-    if(!name || !email || !message) {
-      toast("Veuillez remplir tous les champs", true);
-      return;
+    if(!name || !email || !message) { 
+      toast("Veuillez remplir tous les champs", true); 
+      return; 
     }
-    
     try {
-      await db.collection('contacts').add({
-        name: name,
-        email: email,
-        message: message,
-        userId: currentUser || null,
-        userEmail: email,
-        userName: name,
-        status: 'non lu',
-        date: new Date().toISOString()
+      await db.collection('contacts').add({ 
+        name, 
+        email, 
+        message, 
+        userId: currentUser || null, 
+        userEmail: email, 
+        userName: name, 
+        status: 'non lu', 
+        date: new Date().toISOString() 
       });
-      
       if(document.getElementById('legalContactName')) document.getElementById('legalContactName').value = '';
       if(document.getElementById('legalContactEmail')) document.getElementById('legalContactEmail').value = '';
       if(document.getElementById('legalContactMessage')) document.getElementById('legalContactMessage').value = '';
-      
       toast("✅ Message envoyé au support !");
       playSound('correct');
       showAdMessage();
-      
-    } catch (error) {
-      console.error("Erreur:", error);
-      toast("❌ Erreur lors de l'envoi", true);
+    } catch(error) { 
+      toast("❌ Erreur lors de l'envoi", true); 
     }
   }
 
@@ -773,7 +1787,6 @@
     document.getElementById('communiquesScreen').classList.remove('active');
     document.getElementById('messagesScreen').classList.remove('active');
     document.getElementById('legalScreen').classList.add('active');
-    
     const title = document.getElementById('legalTitle');
     const content = document.getElementById('legalContent');
     
@@ -781,44 +1794,63 @@
       title.innerHTML = '🔒 Politique de confidentialité';
       content.innerHTML = `
         <h1>🔒 Politique de confidentialité</h1>
-        <p><strong>Dernière mise à jour : 17 mai 2026</strong></p>
+        <p><strong>Dernière mise à jour : 18 mai 2026</strong></p>
+        
         <h2>1. Collecte des informations</h2>
-        <p>Nous collectons votre nom, email et numéro de téléphone lors de l'inscription.</p>
+        <p>Nous collectons votre nom, email et numéro de téléphone lors de l'inscription pour vous offrir la meilleure expérience possible.</p>
+        
         <h2>2. Utilisation des données</h2>
-        <p>Vos données sont utilisées pour gérer vos gains et vos retraits.</p>
-        <h2>3. Stockage</h2>
-        <p>Vos données sont stockées sur Firebase (Google Cloud).</p>
+        <p>Vos données sont utilisées pour gérer vos gains, vos retraits et améliorer notre service.</p>
+        
+        <h2>3. Stockage sécurisé</h2>
+        <p>Vos données sont stockées sur Firebase (Google Cloud) avec les plus hauts standards de sécurité.</p>
+        
         <h2>4. Vos droits</h2>
-        <p>Vous pouvez demander la suppression de vos données à tout moment.</p>
+        <p>Vous pouvez demander la suppression de vos données à tout moment en contactant le support.</p>
+        
+        <h2>5. Confidentialité</h2>
+        <p>Nous ne partageons jamais vos données personnelles avec des tiers sans votre consentement.</p>
       `;
     }
     else if(page === 'terms') {
       title.innerHTML = '📜 Conditions générales';
       content.innerHTML = `
-        <h1>📜 Conditions générales</h1>
-        <p><strong>Dernière mise à jour : 17 mai 2026</strong></p>
+        <h1>📜 Conditions générales d'utilisation</h1>
+        <p><strong>Dernière mise à jour : 18 mai 2026</strong></p>
+        
         <h2>1. Principe du jeu</h2>
-        <p>Chaque bonne réponse rapporte 10 FCF.</p>
+        <p>Chaque bonne réponse rapporte 10 FCF. Les questions portent sur les pays, capitales et drapeaux du monde entier.</p>
+        
         <h2>2. Retraits</h2>
-        <p>Retrait minimum : 300 FCF via MTN Money ou Moov Money.</p>
+        <p>Retrait minimum : 300 FCF via MTN Money ou Moov Money. Les demandes sont traitées sous 24-48h.</p>
+        
         <h2>3. Parrainage</h2>
-        <p>500 FCF de bonus par parrainage réussi.</p>
+        <p>1500 FCF de bonus par parrainage réussi. Votre ami doit s'inscrire avec votre code et jouer au moins une fois.</p>
+        
         <h2>4. Comportement interdit</h2>
-        <p>La triche entraîne l'annulation des gains.</p>
+        <p>La triche, l'utilisation de bots ou toute tentative de fraude entraîne l'annulation des gains et la suspension du compte.</p>
+        
+        <h2>5. Modifications</h2>
+        <p>Nous nous réservons le droit de modifier ces conditions à tout moment. Les utilisateurs seront notifiés des changements importants.</p>
       `;
     }
     else if(page === 'contact') {
       title.innerHTML = '📧 Contacter le support';
       content.innerHTML = `
         <h1>📧 Besoin d'aide ?</h1>
-        <p>Pour toute question ou problème, utilisez le formulaire ci-dessous.</p>
-        <div style="background: rgba(255,255,255,0.08); border-radius: 20px; padding: 15px; margin-top: 20px;">
-          <input type="text" id="legalContactName" placeholder="Votre nom" style="width:100%; margin-bottom:10px;" value="${currentUserData?.name || ''}">
-          <input type="email" id="legalContactEmail" placeholder="Votre email" style="width:100%; margin-bottom:10px;" value="${currentUserData?.email || ''}">
-          <textarea id="legalContactMessage" rows="4" placeholder="Votre message..." style="width:100%; margin-bottom:10px;"></textarea>
-          <button class="btn-primary" onclick="sendLegalContact()" style="width:100%;">📤 Envoyer</button>
+        <p>Pour toute question ou problème, utilisez le formulaire ci-dessous. Nous vous répondrons dans les plus brefs délais.</p>
+        
+        <div style="background: rgba(255,255,255,0.1); border-radius: 25px; padding: 25px; margin-top: 25px; border: 2px solid rgba(255,255,255,0.2);">
+          <input type="text" id="legalContactName" placeholder="Votre nom" style="width:100%; margin-bottom:15px;" value="${currentUserData?.name || ''}">
+          <input type="email" id="legalContactEmail" placeholder="Votre email" style="width:100%; margin-bottom:15px;" value="${currentUserData?.email || ''}">
+          <textarea id="legalContactMessage" rows="5" placeholder="Votre message..." style="width:100%; margin-bottom:15px;"></textarea>
+          <button class="btn-primary" onclick="sendLegalContact()" style="width:100%;">📤 Envoyer le message</button>
         </div>
-        <p style="margin-top:15px;">Email : <strong>support@quizworld.com</strong></p>
+        
+        <p style="margin-top:25px; text-align: center; color: #c8e6c9;">
+          Email : <strong style="color: #81c784;">support@quizworld.com</strong><br>
+          Temps de réponse moyen : 24h
+        </p>
       `;
     }
   }
@@ -828,7 +1860,7 @@
     document.getElementById('startScreen').classList.add('active');
   }
 
-  // ==================== AUTHENTIFICATION ====================
+  // ==================== AUTHENTIFICATION ET PARRAINAGE ====================
   function updateUserDisplay() {
     if(currentUser && currentUserData) {
       document.getElementById('displayName').innerText = currentUserData.name;
@@ -853,6 +1885,26 @@
   function showAuthTab(tab) {
     document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
     document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+    
+    document.getElementById('tabLoginBtn').style.background = tab === 'login' ? '#81c784' : 'rgba(255,255,255,0.2)';
+    document.getElementById('tabSignupBtn').style.background = tab === 'signup' ? '#81c784' : 'rgba(255,255,255,0.2)';
+  }
+  
+  // ==================== PARRAINAGE - OUVERTURE DIRECTE ====================
+  function detectReferralCode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if(refCode) {
+      localStorage.setItem('pending_referral', refCode);
+      if(!currentUser) {
+        setTimeout(() => {
+          openAuthModal();
+          showAuthTab('signup');
+          document.getElementById('signupReferral').value = refCode;
+          toast("🎁 Code parrain détecté ! 1500 FCF offerts à l'inscription !");
+        }, 500);
+      }
+    }
   }
   
   async function handleLogin() {
@@ -865,10 +1917,10 @@
       localStorage.setItem('quiz_current_user_id', currentUser);
       updateUserDisplay();
       closeAuthModal();
-      toast('Connexion réussie !');
+      toast('✅ Connexion réussie !');
       listenToUserMessages();
     } else {
-      document.getElementById('authError').innerText = 'Identifiants incorrects';
+      document.getElementById('authError').innerText = '❌ Identifiants incorrects';
     }
   }
   
@@ -877,29 +1929,53 @@
     let email = document.getElementById('signupEmail').value;
     let phone = document.getElementById('signupPhone').value;
     let pwd = document.getElementById('signupPassword').value;
+    let referralCode = document.getElementById('signupReferral').value.trim();
+    if(!referralCode) referralCode = localStorage.getItem('pending_referral') || '';
+    
     if(!name || !email || !phone || pwd.length < 6) {
-      document.getElementById('authError').innerText = 'Champs invalides';
+      document.getElementById('authError').innerText = '❌ Champs invalides (mot de passe min 6 caractères)';
       return;
     }
+    
     const existing = await findUserByEmail(email);
     if(existing) {
-      document.getElementById('authError').innerText = 'Email déjà utilisé';
+      document.getElementById('authError').innerText = '❌ Email déjà utilisé';
       return;
     }
+    
+    if(referralCode) {
+      const snapshot = await db.collection('users').where('referralCode', '==', referralCode).get();
+      if(!snapshot.empty) {
+        const referrerDoc = snapshot.docs[0];
+        const newTotal = (referrerDoc.data().totalFcf || 0) + 1500;
+        await db.collection('users').doc(referrerDoc.id).update({ totalFcf: newTotal });
+        toast(`🎉 Bonus 1500 FCF crédité au parrain !`);
+      }
+    }
+    
     const newUserRef = db.collection('users').doc();
     const userId = newUserRef.id;
-    await newUserRef.set({
-      name, email, phone, password: pwd,
-      totalFcf: 0,
-      referralCode: "REF" + userId.substring(0,8).toUpperCase(),
-      createdAt: new Date().toISOString()
+    const newReferralCode = "REF" + userId.substring(0,8).toUpperCase();
+    
+    await newUserRef.set({ 
+      name, 
+      email, 
+      phone, 
+      password: pwd, 
+      totalFcf: 0, 
+      referralCode: newReferralCode, 
+      referredBy: referralCode || null, 
+      createdAt: new Date().toISOString() 
     });
+    
     currentUser = userId;
-    currentUserData = { name, email, phone, totalFcf: 0 };
+    currentUserData = { name, email, phone, totalFcf: 0, referralCode: newReferralCode };
     localStorage.setItem('quiz_current_user_id', currentUser);
+    localStorage.removeItem('pending_referral');
     updateUserDisplay();
     closeAuthModal();
-    toast('Inscription réussie !');
+    toast('✅ Inscription réussie ! Bienvenue !');
+    playSound('correct');
     listenToUserMessages();
   }
   
@@ -908,46 +1984,73 @@
     currentUserData = null;
     localStorage.removeItem('quiz_current_user_id');
     updateUserDisplay();
-    toast('Déconnecté');
+    toast('👋 Déconnecté');
   }
   
   function openInviteModal() {
-    if(!currentUser) { toast('Connectez-vous'); return; }
-    let link = window.location.href.split('?')[0] + '?ref=' + currentUserData.referralCode;
-    document.getElementById('inviteLinkDisplay').innerHTML = link;
+    if(!currentUser) { 
+      toast("Connectez-vous pour générer votre lien de parrainage"); 
+      openAuthModal(); 
+      return; 
+    }
+    let code = currentUserData.referralCode;
+    if(!code) { 
+      code = "REF" + currentUser.substring(0,8).toUpperCase(); 
+      currentUserData.referralCode = code; 
+      saveUserToFirebase(); 
+    }
+    let baseUrl = window.location.origin + window.location.pathname;
+    let inviteLink = baseUrl + "?ref=" + code;
+    document.getElementById('inviteLinkDisplay').innerHTML = inviteLink;
     document.getElementById('inviteModal').classList.add('active');
   }
+  
   function closeInviteModal() { document.getElementById('inviteModal').classList.remove('active'); }
+  
   function copyInviteLink() {
     navigator.clipboard.writeText(document.getElementById('inviteLinkDisplay').innerText);
-    toast('Lien copié !');
+    toast("✅ Lien de parrainage copié ! Partagez-le avec vos amis.");
   }
   
-  function openWithdrawModal() {
-    if(!currentUser) toast('Connectez-vous');
-    else document.getElementById('withdrawModal').classList.add('active');
+  function openWithdrawModal() { 
+    if(!currentUser) toast('❌ Connectez-vous d\'abord'); 
+    else document.getElementById('withdrawModal').classList.add('active'); 
   }
+  
   function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); }
   
   async function submitWithdrawRequest() {
     let amount = parseInt(document.getElementById('withdrawAmount').value);
     let phone = document.getElementById('withdrawPhone').value;
     let method = document.getElementById('withdrawMethod').value;
-    if(!amount || amount < 300) { toast('Minimum 300 FCF'); return; }
-    if(!phone) { toast('Numéro requis'); return; }
-    if((currentUserData?.totalFcf || 0) < amount) { toast('Solde insuffisant'); return; }
+    
+    if(!amount || amount < 300) { 
+      toast('❌ Minimum 300 FCF'); 
+      return; 
+    }
+    if(!phone) { 
+      toast('❌ Numéro de téléphone requis'); 
+      return; 
+    }
+    if((currentUserData?.totalFcf || 0) < amount) { 
+      toast('❌ Solde insuffisant'); 
+      return; 
+    }
     
     currentUserData.totalFcf -= amount;
     await saveUserToFirebase();
     updateUserDisplay();
     
-    await db.collection('withdrawals').add({
-      userId: currentUser,
-      userName: currentUserData.name,
-      amount, phone, method,
-      status: 'pending',
-      date: new Date().toISOString()
+    await db.collection('withdrawals').add({ 
+      userId: currentUser, 
+      userName: currentUserData.name, 
+      amount, 
+      phone, 
+      method, 
+      status: 'pending', 
+      date: new Date().toISOString() 
     });
+    
     toast(`✅ Demande de ${amount} FCF envoyée !`);
     closeWithdrawModal();
     document.getElementById('withdrawAmount').value = '';
@@ -957,37 +2060,38 @@
   function toast(msg, isError = false) {
     let t = document.getElementById('toastMsg');
     t.innerText = msg;
-    t.style.backgroundColor = isError ? '#c62828' : '#2e7d32';
+    t.style.background = isError ? 
+      'linear-gradient(135deg, #ef5350 0%, #c62828 100%)' : 
+      'linear-gradient(135deg, #66bb6a 0%, #43a047 100%)';
     t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
+    setTimeout(() => t.style.display = 'none', 3500);
   }
 
   // ==================== INITIALISATION ====================
   document.querySelectorAll('.mode-card').forEach(el => {
-    el.onclick = () => {
-      document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      currentMode = el.dataset.mode;
+    el.onclick = () => { 
+      document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected')); 
+      el.classList.add('selected'); 
+      currentMode = el.dataset.mode; 
     };
   });
   
   document.querySelectorAll('.diff-btn').forEach(el => {
-    el.onclick = () => {
-      document.querySelectorAll('.diff-btn').forEach(d => d.classList.remove('selected'));
-      el.classList.add('selected');
-      currentDifficulty = el.dataset.diff;
+    el.onclick = () => { 
+      document.querySelectorAll('.diff-btn').forEach(d => d.classList.remove('selected')); 
+      el.classList.add('selected'); 
+      currentDifficulty = el.dataset.diff; 
     };
   });
   
   document.querySelectorAll('.count-btn').forEach(el => {
-    el.onclick = () => {
-      document.querySelectorAll('.count-btn').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      currentCount = parseInt(el.dataset.count);
+    el.onclick = () => { 
+      document.querySelectorAll('.count-btn').forEach(c => c.classList.remove('selected')); 
+      el.classList.add('selected'); 
+      currentCount = parseInt(el.dataset.count); 
     };
   });
   
-  // Exposer les fonctions globales
   window.startQuiz = startQuiz;
   window.nextQuestion = nextQuestion;
   window.restartSameMode = restartSameMode;
@@ -1012,7 +2116,6 @@
   window.closeWithdrawModal = closeWithdrawModal;
   window.submitWithdrawRequest = submitWithdrawRequest;
   
-  // Charger session utilisateur
   async function initUserSession() {
     const savedUserId = localStorage.getItem('quiz_current_user_id');
     if(savedUserId) {
@@ -1023,18 +2126,18 @@
         listenToUserMessages();
       }
     }
+    detectReferralCode();
   }
   
   listenToCommuniques();
   initUserSession();
   
-  // Ajouter un communiqué de démo si vide
   db.collection('communiques').limit(1).get().then(snapshot => {
     if(snapshot.empty) {
-      db.collection('communiques').add({
-        text: "🎉 Bienvenue sur Quiz World ! Gagnez 10 FCF par bonne réponse !",
-        author: "Admin",
-        date: new Date().toISOString()
+      db.collection('communiques').add({ 
+        text: "🎉 Bienvenue sur Quiz World ! Gagnez 10 FCF par bonne réponse ! Testez vos connaissances sur les pays du monde entier.", 
+        author: "Admin", 
+        date: new Date().toISOString() 
       });
     }
   });
