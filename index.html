@@ -427,7 +427,7 @@
   function restartSameMode() { startQuiz(); }
   function backToMenu() { document.getElementById('resultsScreen').classList.remove('active'); document.getElementById('startScreen').classList.add('active'); }
 
-  // ==================== COMMUNIQUÉS SYNCHRONISÉS ====================
+  // ==================== COMMUNIQUÉS (localStorage) ====================
   function getCommuniques() {
     return JSON.parse(localStorage.getItem('admin_communiques')) || [];
   }
@@ -452,13 +452,18 @@
     const communiques = getCommuniques();
     const container = document.getElementById('communiquesList');
     container.innerHTML = '';
+    
+    if(communiques.length === 0) {
+      container.innerHTML = '<p style="text-align:center; color:#aaa;">Aucun communiqué pour le moment.</p>';
+      return;
+    }
+    
     communiques.slice().reverse().forEach(c => {
       let media = '';
       if(c.imageUrl) media += `<img src="${c.imageUrl}" class="communique-media" onerror="this.style.display='none'">`;
       if(c.audioUrl) media += `<audio controls src="${c.audioUrl}"></audio>`;
       container.innerHTML += `<div class="communique-card"><div class="communique-date">📅 ${c.date}</div><div class="communique-text">${c.text || ''}</div>${media}</div>`;
     });
-    if(communiques.length === 0) container.innerHTML = '<p style="text-align:center;">Aucun communiqué pour le moment.</p>';
   };
   
   window.backToMenuFromCommuniques = () => {
@@ -548,11 +553,6 @@
   if(getCommuniques().length === 0) {
     localStorage.setItem('admin_communiques', JSON.stringify([{ id: Date.now(), text: "🎉 Bienvenue sur Quiz World ! Amusez-vous bien et gagnez des FCF !", date: new Date().toLocaleString(), author: "Admin" }]));
   }
-  
-  // Synchronisation communiqués
-  window.addEventListener('storage', (e) => {
-    if(e.key === 'admin_communiques') checkNewCommuniques();
-  });
   
   updateUserDisplay(); 
   checkNewCommuniques();
