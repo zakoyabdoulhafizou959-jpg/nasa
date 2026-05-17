@@ -148,6 +148,7 @@
       <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px; color:white;"></div>
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ Question suivante</button>
       
+      <!-- BLOC PUBLICITAIRE ADSENSE -->
       <div class="ad-container" id="quizAdBlock">
         <div class="ad-label">📢 ANNONCE - Merci de soutenir le quiz !</div>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6876086925672856" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -232,14 +233,15 @@
   let savedSession = localStorage.getItem('quiz_current_user_id');
   if(savedSession && usersDB[savedSession]) currentUser = savedSession;
 
+  // État du quiz
   let currentMode = 'mixed', currentDifficulty = 'easy', currentCount = 50;
   let currentQuestions = [], currentIndex = 0, earnings = 0, correctCount = 0, wrongCount = 0;
   let streak = 0, bestStreak = 0, answered = false, currentQObj = null, timerInterval = null, timeLeft = 15;
   let answeredCount = 0;
   let adVisible = false;
   let adHideTimeout = null;
-  const AD_INTERVAL = 4;
-  const AD_VISIBLE_MS = 20000;
+  const AD_INTERVAL = 4;        // Pub TOUTES LES 4 RÉPONSES
+  const AD_VISIBLE_MS = 20000;  // 20 secondes visibles
   const GAIN_PAR_REPONSE = 10;
   const RETRAIT_MIN = 300;
 
@@ -285,12 +287,16 @@
     const adContainer = document.getElementById('quizAdBlock');
     if(!adContainer) return;
     
+    console.log(`📢 [PUB] Affichage après ${answeredCount} réponses (intervalle ${AD_INTERVAL})`);
+    
     if(adHideTimeout) clearTimeout(adHideTimeout);
     
     adContainer.classList.add('visible');
     adVisible = true;
     
-    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch(e) { console.log("AdSense push:", e); }
     
     adHideTimeout = setTimeout(() => {
       adContainer.classList.remove('visible');
@@ -390,6 +396,7 @@
     document.getElementById('nextBtn').style.display = 'block';
     if(currentUser) saveProgress();
     
+    // DÉCLENCHEMENT DE LA PUB TOUTES LES 4 RÉPONSES
     answeredCount++;
     showQuizAd();
   }
@@ -434,7 +441,7 @@
     const newestDate = communiques.length > 0 ? communiques[0].id : 0;
     if(newestDate > lastSeen) {
       document.getElementById('notifBubble').style.display = 'inline-flex';
-      vibrate([200, 100, 200]);
+      if(window.navigator && window.navigator.vibrate) window.navigator.vibrate([200, 100, 200]);
     } else {
       document.getElementById('notifBubble').style.display = 'none';
     }
@@ -495,6 +502,7 @@
     let referralCode = document.getElementById('signupReferral').value.trim();
     if(!name || !email || !phone || pwd.length<6) { document.getElementById('authError').innerText = 'Champs invalides'; return; }
     let id = 'user'+Date.now();
+    // Gestion du parrainage
     let referrerId = null;
     for(let uid in usersDB) if(usersDB[uid].referralCode === referralCode) { referrerId = uid; break; }
     if(referrerId && usersDB[referrerId]) {
@@ -524,6 +532,7 @@
     if(!amount || amount < RETRAIT_MIN) { toast(`Minimum ${RETRAIT_MIN} FCF`); return; }
     if(!phone) { toast('Numéro requis'); return; }
     if((usersDB[currentUser]?.totalFcf||0) < amount) { toast('Solde insuffisant'); return; }
+    // Enregistrer la demande de retrait
     let withdrawals = JSON.parse(localStorage.getItem('quiz_withdrawals')) || [];
     withdrawals.push({ id: Date.now(), userId: currentUser, userName: usersDB[currentUser].name, amount, phone, method, status: 'pending', date: new Date().toLocaleString() });
     localStorage.setItem('quiz_withdrawals', JSON.stringify(withdrawals));
@@ -537,6 +546,12 @@
   document.querySelectorAll('.diff-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.diff-btn').forEach(d=>d.classList.remove('selected')); el.classList.add('selected'); currentDifficulty = el.dataset.diff; }; });
   document.querySelectorAll('.count-btn').forEach(el => { el.onclick = () => { document.querySelectorAll('.count-btn').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); currentCount = parseInt(el.dataset.count); }; });
   
+  // Initialisation des communiqués par défaut
+  if(getCommuniques().length === 0) {
+    localStorage.setItem('quiz_communiques', JSON.stringify([{ id: Date.now(), text: "🎉 Bienvenue sur Quiz World ! Amusez-vous bien et gagnez des FCF !", date: new Date().toLocaleString(), author: "Admin" }]));
+  }
+  
+  // Synchronisation communiqués
   window.addEventListener('storage', (e) => {
     if(e.key === 'quiz_communiques' || e.key === 'quiz_communiques_last_update') checkNewCommuniques();
   });
