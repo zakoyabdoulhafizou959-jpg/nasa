@@ -167,7 +167,7 @@
       </div>
 
       <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
-      <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 1500 FCF de bonus ! Retrait min 300 FCF</div>
+      <div style="margin-top:20px; text-align:center; font-size:0.75rem; color:#777;">💡 Parrainez un ami → 1000 FCF de bonus ! Retrait min 300 FCF</div>
     </div>
 
     <div id="quizScreen" class="screen">
@@ -241,7 +241,7 @@
 <div id="loginForm"><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPassword" placeholder="Mot de passe"><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="handleLogin()">Se connecter</button></div>
 <div id="signupForm" style="display:none;"><input type="text" id="signupName" placeholder="Nom"><input type="email" id="signupEmail" placeholder="Email"><input type="tel" id="signupPhone" placeholder="Téléphone"><input type="password" id="signupPassword" placeholder="Mot de passe (min 6)"><input type="text" id="signupReferral" placeholder="Code parrain"><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="handleSignup()">Créer mon compte</button></div><div id="authError" style="color:#e94560; text-align:center; margin-top:10px;"></div></div></div>
 
-<div id="inviteModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span><h3 style="color:#FFD700;">👥 Inviter un ami</h3><div class="invite-link-box" id="inviteLinkDisplay" style="background:#0a1a1f; padding:12px; border-radius:30px; word-break:break-all;"></div><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button><p style="margin-top:10px; font-size:0.8rem; color:#aaa;">🎁 Pour chaque ami inscrit via votre lien → 1500 FCF bonus !</p></div></div>
+<div id="inviteModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span><h3 style="color:#FFD700;">👥 Inviter un ami</h3><div class="invite-link-box" id="inviteLinkDisplay" style="background:#0a1a1f; padding:12px; border-radius:30px; word-break:break-all;"></div><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button><p style="margin-top:10px; font-size:0.8rem; color:#aaa;">🎁 Pour chaque ami inscrit via votre lien → 1000 FCF bonus !</p></div></div>
 
 <div id="withdrawModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeWithdrawModal()">&times;</span><h3 style="color:#FFD700;">💸 Demande de retrait</h3><input type="number" id="withdrawAmount" placeholder="Montant (min 300 FCF)"><input type="tel" id="withdrawPhone" placeholder="Numéro de téléphone"><select id="withdrawMethod"><option value="MTN">MTN Money</option><option value="Moov">Moov Money</option></select><div style="display:flex; gap:10px; margin-top:15px;"><button class="btn-primary" onclick="submitWithdrawRequest()">Envoyer</button><button class="btn-icon" onclick="closeWithdrawModal()">Annuler</button></div><div id="withdrawMsg" style="color:gold; text-align:center; margin-top:8px;"></div></div></div>
 
@@ -431,7 +431,7 @@
     adHideTimeout = setTimeout(() => {
       adContainer.classList.remove('visible');
       adVisible = false;
-    }, 15000);
+    }, 10000);
   }
   
   function showQuizAd() {
@@ -802,7 +802,7 @@
         <h2>2. Retraits</h2>
         <p>Retrait minimum : 300 FCF via MTN Money ou Moov Money.</p>
         <h2>3. Parrainage</h2>
-        <p>1500 FCF de bonus par parrainage réussi.</p>
+        <p>1000 FCF de bonus par parrainage réussi.</p>
         <h2>4. Comportement interdit</h2>
         <p>La triche entraîne l'annulation des gains.</p>
       `;
