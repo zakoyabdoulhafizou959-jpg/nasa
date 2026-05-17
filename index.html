@@ -65,6 +65,8 @@
   .communique-card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #FFD700; }
   .communique-date { font-size: 0.7rem; color: #FFD966; margin-bottom: 5px; }
   .communique-text { font-size: 0.95rem; color: white; line-height: 1.4; }
+  .communique-media { max-width: 100%; border-radius: 15px; margin-top: 10px; max-height: 200px; }
+  audio { width: 100%; margin-top: 10px; }
   
   .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
   .modal.active { visibility: visible; opacity: 1; }
@@ -148,7 +150,6 @@
       <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px; color:white;"></div>
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ Question suivante</button>
       
-      <!-- BLOC PUBLICITAIRE ADSENSE -->
       <div class="ad-container" id="quizAdBlock">
         <div class="ad-label">📢 ANNONCE - Merci de soutenir le quiz !</div>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6876086925672856" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -222,7 +223,7 @@
     }
   }
 
-  // ==================== TOUS LES PAYS (196) ====================
+  // ==================== TOUS LES PAYS ====================
   const allCountries = [
     {name:"France",capital:"Paris",code:"fr",diff:"easy"},{name:"Allemagne",capital:"Berlin",code:"de",diff:"easy"},{name:"Italie",capital:"Rome",code:"it",diff:"easy"},{name:"Espagne",capital:"Madrid",code:"es",diff:"easy"},{name:"Portugal",capital:"Lisbonne",code:"pt",diff:"easy"},{name:"Belgique",capital:"Bruxelles",code:"be",diff:"easy"},{name:"Canada",capital:"Ottawa",code:"ca",diff:"easy"},{name:"Brésil",capital:"Brasilia",code:"br",diff:"easy"},{name:"Japon",capital:"Tokyo",code:"jp",diff:"easy"},{name:"Chine",capital:"Pékin",code:"cn",diff:"easy"},{name:"Inde",capital:"New Delhi",code:"in",diff:"easy"},{name:"Mexique",capital:"Mexico",code:"mx",diff:"easy"},{name:"Sénégal",capital:"Dakar",code:"sn",diff:"medium"},{name:"Maroc",capital:"Rabat",code:"ma",diff:"easy"},{name:"Algérie",capital:"Alger",code:"dz",diff:"easy"},{name:"Nigeria",capital:"Abuja",code:"ng",diff:"medium"},{name:"Kenya",capital:"Nairobi",code:"ke",diff:"medium"},{name:"Égypte",capital:"Le Caire",code:"eg",diff:"easy"},{name:"Tunisie",capital:"Tunis",code:"tn",diff:"easy"},{name:"Suède",capital:"Stockholm",code:"se",diff:"easy"},{name:"Norvège",capital:"Oslo",code:"no",diff:"easy"},{name:"Finlande",capital:"Helsinki",code:"fi",diff:"easy"},{name:"Islande",capital:"Reykjavik",code:"is",diff:"medium"},{name:"Australie",capital:"Canberra",code:"au",diff:"easy"},{name:"Nouvelle-Zélande",capital:"Wellington",code:"nz",diff:"medium"},{name:"Royaume-Uni",capital:"Londres",code:"gb",diff:"easy"},{name:"Irlande",capital:"Dublin",code:"ie",diff:"easy"},{name:"Pays-Bas",capital:"Amsterdam",code:"nl",diff:"easy"},{name:"Suisse",capital:"Berne",code:"ch",diff:"easy"},{name:"Autriche",capital:"Vienne",code:"at",diff:"easy"},{name:"Pologne",capital:"Varsovie",code:"pl",diff:"easy"},{name:"Ukraine",capital:"Kiev",code:"ua",diff:"medium"},{name:"Russie",capital:"Moscou",code:"ru",diff:"easy"},{name:"Turquie",capital:"Ankara",code:"tr",diff:"easy"},{name:"Grèce",capital:"Athènes",code:"gr",diff:"easy"},{name:"Argentine",capital:"Buenos Aires",code:"ar",diff:"easy"},{name:"Chili",capital:"Santiago",code:"cl",diff:"easy"},{name:"Pérou",capital:"Lima",code:"pe",diff:"easy"},{name:"Colombie",capital:"Bogota",code:"co",diff:"easy"},{name:"Venezuela",capital:"Caracas",code:"ve",diff:"medium"},{name:"Cuba",capital:"La Havane",code:"cu",diff:"easy"},{name:"Indonésie",capital:"Jakarta",code:"id",diff:"easy"},{name:"Thaïlande",capital:"Bangkok",code:"th",diff:"easy"},{name:"Vietnam",capital:"Hanoï",code:"vn",diff:"medium"},{name:"Philippines",capital:"Manille",code:"ph",diff:"medium"},{name:"Malaisie",capital:"Kuala Lumpur",code:"my",diff:"medium"},{name:"Singapour",capital:"Singapour",code:"sg",diff:"easy"}
   ];
@@ -240,8 +241,8 @@
   let answeredCount = 0;
   let adVisible = false;
   let adHideTimeout = null;
-  const AD_INTERVAL = 4;        // Pub TOUTES LES 4 RÉPONSES
-  const AD_VISIBLE_MS = 20000;  // 20 secondes visibles
+  const AD_INTERVAL = 4;
+  const AD_VISIBLE_MS = 20000;
   const GAIN_PAR_REPONSE = 10;
   const RETRAIT_MIN = 300;
 
@@ -278,7 +279,6 @@
     return pool;
   }
 
-  // ==================== AFFICHAGE PUBLICITAIRE ====================
   function showQuizAd() {
     if(answeredCount === 0) return;
     if(answeredCount % AD_INTERVAL !== 0) return;
@@ -286,8 +286,6 @@
     
     const adContainer = document.getElementById('quizAdBlock');
     if(!adContainer) return;
-    
-    console.log(`📢 [PUB] Affichage après ${answeredCount} réponses (intervalle ${AD_INTERVAL})`);
     
     if(adHideTimeout) clearTimeout(adHideTimeout);
     
@@ -396,7 +394,6 @@
     document.getElementById('nextBtn').style.display = 'block';
     if(currentUser) saveProgress();
     
-    // DÉCLENCHEMENT DE LA PUB TOUTES LES 4 RÉPONSES
     answeredCount++;
     showQuizAd();
   }
@@ -430,9 +427,9 @@
   function restartSameMode() { startQuiz(); }
   function backToMenu() { document.getElementById('resultsScreen').classList.remove('active'); document.getElementById('startScreen').classList.add('active'); }
 
-  // ==================== COMMUNIQUÉS ====================
+  // ==================== COMMUNIQUÉS SYNCHRONISÉS ====================
   function getCommuniques() {
-    return JSON.parse(localStorage.getItem('quiz_communiques')) || [];
+    return JSON.parse(localStorage.getItem('admin_communiques')) || [];
   }
   
   function checkNewCommuniques() {
@@ -456,7 +453,10 @@
     const container = document.getElementById('communiquesList');
     container.innerHTML = '';
     communiques.slice().reverse().forEach(c => {
-      container.innerHTML += `<div class="communique-card"><div class="communique-date">📅 ${c.date}</div><div class="communique-text">${c.text}</div></div>`;
+      let media = '';
+      if(c.imageUrl) media += `<img src="${c.imageUrl}" class="communique-media" onerror="this.style.display='none'">`;
+      if(c.audioUrl) media += `<audio controls src="${c.audioUrl}"></audio>`;
+      container.innerHTML += `<div class="communique-card"><div class="communique-date">📅 ${c.date}</div><div class="communique-text">${c.text || ''}</div>${media}</div>`;
     });
     if(communiques.length === 0) container.innerHTML = '<p style="text-align:center;">Aucun communiqué pour le moment.</p>';
   };
@@ -502,7 +502,6 @@
     let referralCode = document.getElementById('signupReferral').value.trim();
     if(!name || !email || !phone || pwd.length<6) { document.getElementById('authError').innerText = 'Champs invalides'; return; }
     let id = 'user'+Date.now();
-    // Gestion du parrainage
     let referrerId = null;
     for(let uid in usersDB) if(usersDB[uid].referralCode === referralCode) { referrerId = uid; break; }
     if(referrerId && usersDB[referrerId]) {
@@ -532,7 +531,6 @@
     if(!amount || amount < RETRAIT_MIN) { toast(`Minimum ${RETRAIT_MIN} FCF`); return; }
     if(!phone) { toast('Numéro requis'); return; }
     if((usersDB[currentUser]?.totalFcf||0) < amount) { toast('Solde insuffisant'); return; }
-    // Enregistrer la demande de retrait
     let withdrawals = JSON.parse(localStorage.getItem('quiz_withdrawals')) || [];
     withdrawals.push({ id: Date.now(), userId: currentUser, userName: usersDB[currentUser].name, amount, phone, method, status: 'pending', date: new Date().toLocaleString() });
     localStorage.setItem('quiz_withdrawals', JSON.stringify(withdrawals));
@@ -548,12 +546,12 @@
   
   // Initialisation des communiqués par défaut
   if(getCommuniques().length === 0) {
-    localStorage.setItem('quiz_communiques', JSON.stringify([{ id: Date.now(), text: "🎉 Bienvenue sur Quiz World ! Amusez-vous bien et gagnez des FCF !", date: new Date().toLocaleString(), author: "Admin" }]));
+    localStorage.setItem('admin_communiques', JSON.stringify([{ id: Date.now(), text: "🎉 Bienvenue sur Quiz World ! Amusez-vous bien et gagnez des FCF !", date: new Date().toLocaleString(), author: "Admin" }]));
   }
   
   // Synchronisation communiqués
   window.addEventListener('storage', (e) => {
-    if(e.key === 'quiz_communiques' || e.key === 'quiz_communiques_last_update') checkNewCommuniques();
+    if(e.key === 'admin_communiques') checkNewCommuniques();
   });
   
   updateUserDisplay(); 
