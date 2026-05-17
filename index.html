@@ -947,7 +947,7 @@
       <button class="btn-primary" style="width:100%; margin-top:25px;" onclick="startQuiz()">🚀 COMMENCER LE QUIZ</button>
       
       <div style="margin-top:25px; text-align:center; font-size:0.85rem; color:#c8e6c9; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 20px;">
-        💡 <strong>Parrainez un ami</strong> → 1500 FCF de bonus !<br>
+        💡 <strong>Parrainez un ami</strong> → 500 FCF de bonus !<br>
         🎯 Retrait minimum 300 FCF
       </div>
     </div>
@@ -1090,7 +1090,7 @@
     <button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button>
     
     <p style="margin-top:20px; font-size:0.9rem; color:#a5d6a7; text-align: center; padding: 15px; background: rgba(102,187,106,0.2); border-radius: 15px;">
-      🎁 Quand votre ami s'inscrit via ce lien, vous recevez <strong>1500 FCF</strong> de bonus !
+      🎁 Quand votre ami s'inscrit via ce lien, vous recevez <strong>500 FCF</strong> de bonus !
     </p>
   </div>
 </div>
@@ -1825,7 +1825,7 @@
         <p>Retrait minimum : 300 FCF via MTN Money ou Moov Money. Les demandes sont traitées sous 24-48h.</p>
         
         <h2>3. Parrainage</h2>
-        <p>1500 FCF de bonus par parrainage réussi. Votre ami doit s'inscrire avec votre code et jouer au moins une fois.</p>
+        <p>500 FCF de bonus par parrainage réussi. Votre ami doit s'inscrire avec votre code et jouer au moins une fois.</p>
         
         <h2>4. Comportement interdit</h2>
         <p>La triche, l'utilisation de bots ou toute tentative de fraude entraîne l'annulation des gains et la suspension du compte.</p>
@@ -1901,7 +1901,7 @@
           openAuthModal();
           showAuthTab('signup');
           document.getElementById('signupReferral').value = refCode;
-          toast("🎁 Code parrain détecté ! 1500 FCF offerts à l'inscription !");
+          toast("🎁 Code parrain détecté ! 500 FCF offerts à l'inscription !");
         }, 500);
       }
     }
@@ -1949,7 +1949,7 @@
         const referrerDoc = snapshot.docs[0];
         const newTotal = (referrerDoc.data().totalFcf || 0) + 1500;
         await db.collection('users').doc(referrerDoc.id).update({ totalFcf: newTotal });
-        toast(`🎉 Bonus 1500 FCF crédité au parrain !`);
+        toast(`🎉 Bonus 500 FCF crédité au parrain !`);
       }
     }
     
