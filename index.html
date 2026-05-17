@@ -184,7 +184,6 @@
       <div class="feedback-area" id="feedbackMsg" style="text-align:center; padding:8px; color:white;"></div>
       <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ QUESTION SUIVANTE</button>
       
-      <!-- BLOC PUBLICITAIRE ADSENSE -->
       <div class="ad-container" id="quizAdBlock">
         <div class="ad-label">📢 ANNONCE - Merci de soutenir le quiz !</div>
         <ins class="adsbygoogle"
@@ -247,14 +246,6 @@
 <div id="inviteModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeInviteModal()">&times;</span><h3 style="color:#FFD700;">👥 Inviter un ami</h3><div class="invite-link-box" id="inviteLinkDisplay" style="background:#0a1a1f; padding:12px; border-radius:30px; word-break:break-all;"></div><button class="btn-primary" style="width:100%; margin-top:10px;" onclick="copyInviteLink()">📋 Copier le lien</button><p style="margin-top:10px; font-size:0.8rem; color:#aaa;">🎁 Pour chaque ami inscrit via votre lien → 1500 FCF bonus !</p></div></div>
 
 <div id="withdrawModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeWithdrawModal()">&times;</span><h3 style="color:#FFD700;">💸 Demande de retrait</h3><input type="number" id="withdrawAmount" placeholder="Montant (min 300 FCF)"><input type="tel" id="withdrawPhone" placeholder="Numéro de téléphone"><select id="withdrawMethod"><option value="MTN">MTN Money</option><option value="Moov">Moov Money</option></select><div style="display:flex; gap:10px; margin-top:15px;"><button class="btn-primary" onclick="submitWithdrawRequest()">Envoyer</button><button class="btn-icon" onclick="closeWithdrawModal()">Annuler</button></div><div id="withdrawMsg" style="color:gold; text-align:center; margin-top:8px;"></div></div></div>
-
-<div id="contactModal" class="modal"><div class="modal-content"><span style="float:right; font-size:24px; cursor:pointer;" onclick="closeContactModal()">&times;</span><h3 style="color:#FFD700;">📧 Contacter le support</h3>
-<input type="text" id="contactName" placeholder="Votre nom">
-<input type="email" id="contactEmail" placeholder="Votre email">
-<textarea id="contactMessage" rows="4" placeholder="Votre message..."></textarea>
-<button class="btn-primary" style="width:100%; margin-top:10px;" onclick="sendContactMessage()">📤 Envoyer le message</button>
-<div id="contactError" style="color:#e94560; text-align:center; margin-top:10px;"></div>
-</div></div>
 
 <div id="toastMsg" class="toast"></div>
 
@@ -665,22 +656,52 @@
     document.getElementById('startScreen').classList.add('active');
   }
 
-  // ==================== MESSAGES SUPPORT AVEC RÉPONSES ====================
+  // ==================== MESSAGES SUPPORT AVEC RÉPONSES EN TEMPS RÉEL ====================
   function listenToUserMessages() {
     if(!currentUser) return;
+    
+    console.log("🔍 Écoute des messages pour l'utilisateur:", currentUser);
     
     db.collection('contacts')
       .where('userId', '==', currentUser)
       .orderBy('date', 'desc')
       .onSnapshot((snapshot) => {
+        console.log("📨 Changement détecté, reçu:", snapshot.size, "messages");
         userMessages = [];
         snapshot.forEach(doc => {
-          userMessages.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          userMessages.push({ 
+            id: doc.id, 
+            ...data,
+            dateFormatted: data.date ? new Date(data.date).toLocaleString() : 'Date inconnue',
+            replyDateFormatted: data.replyDate ? new Date(data.replyDate).toLocaleString() : null
+          });
         });
+        
         if(document.getElementById('messagesScreen').classList.contains('active')) {
           displayUserMessages();
         }
+        
+        checkNewReplies();
       });
+  }
+  
+  function checkNewReplies() {
+    const messagesAvecReponse = userMessages.filter(msg => msg.reply && msg.replySeen !== true);
+    
+    if(messagesAvecReponse.length > 0) {
+      playSound('correct');
+      toast(`📬 Vous avez ${messagesAvecReponse.length} nouvelle(s) réponse(s) du support !`);
+      
+      messagesAvecReponse.forEach(async (msg) => {
+        if(msg.id && !msg.replySeen) {
+          await db.collection('contacts').doc(msg.id).update({
+            replySeen: true,
+            replySeenAt: new Date().toISOString()
+          });
+        }
+      });
+    }
   }
   
   function displayUserMessages() {
@@ -694,24 +715,47 @@
     
     let html = '';
     userMessages.forEach(msg => {
-      const date = msg.date ? new Date(msg.date).toLocaleString() : 'Date inconnue';
-      const replyDate = msg.replyDate ? new Date(msg.replyDate).toLocaleString() : '';
+      const date = msg.dateFormatted || 'Date inconnue';
+      const replyDate = msg.replyDateFormatted || '';
+      
+      let statusIcon = '⏳';
+      let statusText = 'En attente';
+      let statusColor = '#f39c12';
+      
+      if(msg.status === 'replied' || msg.reply) {
+        statusIcon = '✅';
+        statusText = 'Répondu';
+        statusColor = '#2ecc71';
+      } else if(msg.status === 'lu') {
+        statusIcon = '📖';
+        statusText = 'Lu';
+        statusColor = '#3498db';
+      }
       
       html += `
-        <div class="user-message-card">
+        <div class="user-message-card" style="border-left-color: ${statusColor};">
           <div class="user-message-date">📅 Envoyé le ${date}</div>
-          <div class="user-message-text"><strong>📝 Message:</strong><br>${msg.message || 'Message vide'}</div>
-          <div style="font-size:0.7rem; color:#aaa;">Statut: ${msg.status === 'replied' ? '✅ Répondu' : (msg.status === 'lu' ? '📖 Lu par l\'admin' : '⏳ En attente')}</div>
+          <div class="user-message-text"><strong>📝 Message:</strong><br>${escapeHtml(msg.message || 'Message vide')}</div>
+          <div style="font-size:0.7rem; margin-top:8px;">
+            <span style="color:${statusColor};">${statusIcon} ${statusText}</span>
+          </div>
           ${msg.reply ? `
             <div class="user-reply-card">
-              <div class="user-message-date">✉️ Réponse du ${replyDate}</div>
-              <div class="user-reply-text"><strong>Réponse:</strong><br>${msg.reply}</div>
+              <div class="user-message-date" style="color:#4ade80;">✉️ Réponse de l'admin (${replyDate})</div>
+              <div class="user-reply-text"><strong>Réponse:</strong><br>${escapeHtml(msg.reply)}</div>
             </div>
           ` : ''}
         </div>
       `;
     });
     container.innerHTML = html;
+  }
+  
+  function escapeHtml(text) {
+    if(!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
   
   function showMessages() {
@@ -730,51 +774,40 @@
     document.getElementById('startScreen').classList.add('active');
   }
 
-  // ==================== CONTACT SUPPORT AVEC PUB ====================
-  function openContactModal() {
-    document.getElementById('contactModal').classList.add('active');
-    document.getElementById('contactName').value = currentUserData?.name || '';
-    document.getElementById('contactEmail').value = currentUserData?.email || '';
-  }
-  
-  function closeContactModal() {
-    document.getElementById('contactModal').classList.remove('active');
-    document.getElementById('contactError').innerText = '';
-  }
-  
-  async function sendContactMessage() {
-    const name = document.getElementById('contactName').value;
-    const email = document.getElementById('contactEmail').value;
-    const message = document.getElementById('contactMessage').value;
+  // ==================== CONTACT SUPPORT ====================
+  async function sendLegalContact() {
+    const name = document.getElementById('legalContactName')?.value;
+    const email = document.getElementById('legalContactEmail')?.value;
+    const message = document.getElementById('legalContactMessage')?.value;
     
     if(!name || !email || !message) {
-      document.getElementById('contactError').innerText = 'Veuillez remplir tous les champs';
+      toast("Veuillez remplir tous les champs", true);
       return;
     }
     
     try {
-      // Envoyer le message
       await db.collection('contacts').add({
         name: name,
         email: email,
         message: message,
         userId: currentUser || null,
+        userEmail: email,
+        userName: name,
         status: 'non lu',
         date: new Date().toISOString()
       });
       
-      closeContactModal();
-      document.getElementById('contactMessage').value = '';
+      if(document.getElementById('legalContactName')) document.getElementById('legalContactName').value = '';
+      if(document.getElementById('legalContactEmail')) document.getElementById('legalContactEmail').value = '';
+      if(document.getElementById('legalContactMessage')) document.getElementById('legalContactMessage').value = '';
       
       toast("✅ Message envoyé au support !");
       playSound('correct');
-      
-      // === AFFICHER UNE PUB APRÈS L'ENVOI ===
       showAdMessage('contact');
       
     } catch (error) {
       console.error("Erreur:", error);
-      document.getElementById('contactError').innerText = 'Erreur lors de l\'envoi';
+      toast("❌ Erreur lors de l'envoi", true);
     }
   }
 
@@ -824,49 +857,13 @@
         <h1>📧 Besoin d'aide ?</h1>
         <p>Pour toute question ou problème, utilisez le formulaire ci-dessous.</p>
         <div style="background: rgba(255,255,255,0.08); border-radius: 20px; padding: 15px; margin-top: 20px;">
-          <input type="text" id="legalContactName" placeholder="Votre nom" style="width:100%; margin-bottom:10px;">
-          <input type="email" id="legalContactEmail" placeholder="Votre email" style="width:100%; margin-bottom:10px;">
+          <input type="text" id="legalContactName" placeholder="Votre nom" style="width:100%; margin-bottom:10px;" value="${currentUserData?.name || ''}">
+          <input type="email" id="legalContactEmail" placeholder="Votre email" style="width:100%; margin-bottom:10px;" value="${currentUserData?.email || ''}">
           <textarea id="legalContactMessage" rows="4" placeholder="Votre message..." style="width:100%; margin-bottom:10px;"></textarea>
           <button class="btn-primary" onclick="sendLegalContact()" style="width:100%;">📤 Envoyer</button>
         </div>
         <p style="margin-top:15px;">Vous pouvez aussi nous écrire directement à : <strong>support@quizworld.com</strong></p>
       `;
-    }
-  }
-  
-  async function sendLegalContact() {
-    const name = document.getElementById('legalContactName').value;
-    const email = document.getElementById('legalContactEmail').value;
-    const message = document.getElementById('legalContactMessage').value;
-    
-    if(!name || !email || !message) {
-      toast("Veuillez remplir tous les champs", true);
-      return;
-    }
-    
-    try {
-      await db.collection('contacts').add({
-        name: name,
-        email: email,
-        message: message,
-        userId: currentUser || null,
-        status: 'non lu',
-        date: new Date().toISOString()
-      });
-      
-      document.getElementById('legalContactName').value = '';
-      document.getElementById('legalContactEmail').value = '';
-      document.getElementById('legalContactMessage').value = '';
-      
-      toast("✅ Message envoyé au support !");
-      playSound('correct');
-      
-      // === AFFICHER UNE PUB APRÈS L'ENVOI ===
-      showAdMessage('contact');
-      
-    } catch (error) {
-      console.error("Erreur:", error);
-      toast("❌ Erreur lors de l'envoi", true);
     }
   }
   
