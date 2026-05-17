@@ -7,7 +7,6 @@
 <meta name="google-adsense-account" content="ca-pub-6876086925672856">
 <title>🌍 Quiz World | 10 FCF/rép</title>
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6876086925672856" crossorigin="anonymous"></script>
@@ -41,12 +40,8 @@
     line-height: 1.4;
   }
   
-  .app-container { 
-    max-width: 480px; 
-    margin: 0 auto;
-  }
+  .app-container { max-width: 480px; margin: 0 auto; }
   
-  /* Header compact */
   .top-bar { 
     background: var(--surface);
     backdrop-filter: blur(12px);
@@ -69,11 +64,7 @@
     background-clip: text;
   }
   
-  .logo p { 
-    font-size: 0.65rem; 
-    color: var(--text-muted);
-    font-weight: 500;
-  }
+  .logo p { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; }
   
   .user-card { 
     display: flex; 
@@ -86,17 +77,9 @@
   }
   
   .user-info { text-align: right; }
-  .user-name { 
-    font-weight: 600; 
-    font-size: 0.8rem;
-  }
-  .user-balance { 
-    font-size: 0.9rem; 
-    font-weight: 700; 
-    color: #48bb78;
-  }
+  .user-name { font-weight: 600; font-size: 0.8rem; }
+  .user-balance { font-size: 0.9rem; font-weight: 700; color: #48bb78; }
   
-  /* Buttons modernes */
   .btn { 
     border: none;
     padding: 10px 16px;
@@ -123,20 +106,11 @@
     transform: translateY(-2px);
   }
   
-  .btn-icon { 
-    background: rgba(255,255,255,0.1);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-  }
-  
+  .btn-icon { background: rgba(255,255,255,0.1); color: white; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; }
   .btn-icon:hover { background: rgba(255,255,255,0.2); }
-  
   .btn-withdraw { background: #f56565; color: white; }
   .btn-invite { background: #48bb78; color: white; }
   
-  /* Carte principale */
   .main-card { 
     background: var(--surface);
     backdrop-filter: blur(16px);
@@ -154,20 +128,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  /* Banner info */
-  .info-banner { 
-    background: linear-gradient(135deg, rgba(237, 137, 54, 0.2), rgba(245, 101, 101, 0.2));
-    border: 1px solid rgba(237, 137, 54, 0.4);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 12px;
-    font-size: 0.75rem;
-    text-align: center;
-  }
-  
-  .info-banner strong { color: #fbb6ce; }
-  
-  /* Bouton Communiqués */
   .btn-communiques { 
     width: 100%;
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -201,13 +161,7 @@
     50% { transform: scale(1.1); }
   }
   
-  /* Grille modes */
-  .mode-grid { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 10px; 
-    margin: 14px 0;
-  }
+  .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 14px 0; }
   
   .mode-card { 
     background: rgba(255,255,255,0.05);
@@ -219,28 +173,12 @@
     transition: all 0.2s;
   }
   
-  .mode-card.selected { 
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.15);
-  }
-  
+  .mode-card.selected { border-color: #667eea; background: rgba(102, 126, 234, 0.15); }
   .mode-icon { font-size: 1.8rem; margin-bottom: 6px; }
   .mode-title { font-size: 0.8rem; font-weight: 600; }
   
-  /* Sélecteurs */
-  .selector-row { 
-    display: flex; 
-    gap: 8px; 
-    margin: 12px 0;
-    flex-wrap: wrap;
-  }
-  
-  .selector-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
+  .selector-row { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+  .selector-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
   
   .selector-btn { 
     flex: 1;
@@ -256,50 +194,16 @@
     text-align: center;
   }
   
-  .selector-btn.selected { 
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: transparent;
-  }
+  .selector-btn.selected { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: transparent; }
   
-  /* Quiz screen */
-  .timer-bar { 
-    height: 6px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  
-  .timer-fill { 
-    height: 100%;
-    background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
-    transition: width 1s linear;
-    border-radius: 10px;
-  }
-  
+  .timer-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .timer-fill { height: 100%; background: linear-gradient(90deg, #48bb78 0%, #38a169 100%); transition: width 1s linear; border-radius: 10px; }
   .timer-fill.warning { background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%); }
   .timer-fill.danger { background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%); }
   
-  .quiz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-  }
-  
-  .flag-display {
-    text-align: center;
-    margin: 12px 0;
-  }
-  
-  .flag-display img {
-    max-width: 140px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    border: 3px solid rgba(255,255,255,0.2);
-  }
+  .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.85rem; font-weight: 600; }
+  .flag-display { text-align: center; margin: 12px 0; }
+  .flag-display img { max-width: 140px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 3px solid rgba(255,255,255,0.2); }
   
   .question-text {
     background: rgba(255,255,255,0.05);
@@ -312,12 +216,7 @@
     border: 1px solid var(--border);
   }
   
-  .options-grid { 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 10px;
-    margin: 14px 0;
-  }
+  .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 14px 0; }
   
   .opt-btn { 
     background: rgba(255,255,255,0.08);
@@ -334,107 +233,29 @@
   }
   
   .opt-btn:active { transform: scale(0.98); }
+  .opt-btn.correct { background: rgba(72, 187, 120, 0.3); border-color: #48bb78; }
+  .opt-btn.wrong { background: rgba(245, 101, 101, 0.3); border-color: #f56565; opacity: 0.7; }
+  .opt-letter { background: rgba(255,255,255,0.2); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
   
-  .opt-btn.correct { 
-    background: rgba(72, 187, 120, 0.3);
-    border-color: #48bb78;
-  }
-  
-  .opt-btn.wrong { 
-    background: rgba(245, 101, 101, 0.3);
-    border-color: #f56565;
-    opacity: 0.7;
-  }
-  
-  .opt-letter {
-    background: rgba(255,255,255,0.2);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  
-  .feedback {
-    text-align: center;
-    padding: 12px;
-    border-radius: 12px;
-    margin: 12px 0;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-  
+  .feedback { text-align: center; padding: 12px; border-radius: 12px; margin: 12px 0; font-weight: 600; font-size: 0.9rem; }
   .feedback.correct { background: rgba(72, 187, 120, 0.2); color: #86efac; }
   .feedback.wrong { background: rgba(245, 101, 101, 0.2); color: #fca5a5; }
   
-  .next-btn { 
-    width: 100%;
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #1e1b4b;
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-top: 12px;
-  }
+  .next-btn { width: 100%; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1e1b4b; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; margin-top: 12px; }
   
-  /* Stats */
-  .result-stats { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 10px; 
-    margin: 16px 0;
-  }
-  
-  .stat-card { 
-    background: rgba(255,255,255,0.05);
-    padding: 14px;
-    border-radius: 14px;
-    text-align: center;
-    border: 1px solid var(--border);
-  }
-  
-  .stat-card span { 
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #667eea;
-    display: block;
-    margin-top: 4px;
-  }
-  
+  .result-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+  .stat-card { background: rgba(255,255,255,0.05); padding: 14px; border-radius: 14px; text-align: center; border: 1px solid var(--border); }
+  .stat-card span { font-size: 1.5rem; font-weight: 800; color: #667eea; display: block; margin-top: 4px; }
   .result-emoji { font-size: 3.5rem; margin-bottom: 8px; }
   
-  /* Publicité */
-  .ad-container { 
-    background: rgba(251, 191, 36, 0.1);
-    border: 2px solid rgba(251, 191, 36, 0.4);
-    border-radius: 12px;
-    padding: 12px;
-    margin: 12px 0;
-    display: none;
-    text-align: center;
-  }
-  
+  .ad-container { background: rgba(251, 191, 36, 0.1); border: 2px solid rgba(251, 191, 36, 0.4); border-radius: 12px; padding: 12px; margin: 12px 0; display: none; text-align: center; }
   .ad-container.visible { display: block; }
   .ad-label { font-size: 0.65rem; color: #fbbf24; margin-bottom: 8px; font-weight: 700; }
   
-  /* Communiqués */
-  .communique-card { 
-    background: rgba(255,255,255,0.05);
-    border-left: 4px solid #667eea;
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  
+  .communique-card { background: rgba(255,255,255,0.05); border-left: 4px solid #667eea; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
   .communique-date { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; }
   .communique-text { font-size: 0.85rem; line-height: 1.5; }
   
-  /* Modals */
   .modal { 
     position: fixed;
     inset: 0;
@@ -468,7 +289,7 @@
   
   .modal input, .modal select, .modal textarea { 
     width: 100%;
-    padding: 12px 16px;
+    padding: 14px 16px;
     margin: 8px 0;
     border-radius: 12px;
     border: 2px solid var(--border);
@@ -478,14 +299,9 @@
     font-family: inherit;
   }
   
-  .modal input:focus, .modal textarea:focus {
-    outline: none;
-    border-color: #667eea;
-  }
+  .modal input:focus, .modal textarea:focus { outline: none; border-color: #667eea; }
+  .modal textarea { min-height: 120px; resize: vertical; }
   
-  .modal textarea { min-height: 100px; resize: vertical; }
-  
-  /* Toast */
   .toast { 
     position: fixed;
     bottom: 20px;
@@ -505,39 +321,96 @@
   
   .toast.show { transform: translateX(-50%) translateY(0); }
   
-  /* Legal buttons */
-  .legal-buttons { 
-    display: flex; 
-    gap: 8px; 
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-  
+  .legal-buttons { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
   .legal-buttons .btn { flex: 1; min-width: 100px; }
   
-  /* Responsive ultra-compact */
+  /* Support page styles */
+  .support-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+    border: 1px solid var(--border);
+  }
+  
+  .support-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+  }
+  
+  .support-item:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateX(4px);
+  }
+  
+  .support-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  
+  .support-info { flex: 1; }
+  .support-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
+  .support-value { font-weight: 600; font-size: 0.95rem; }
+  
+  .contact-form {
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+  }
+  
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
+  
+  .privacy-content {
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+    line-height: 1.7;
+    font-size: 0.85rem;
+  }
+  
+  .privacy-content h3 { color: #667eea; margin: 16px 0 8px 0; font-size: 0.95rem; }
+  .privacy-content p { color: var(--text-muted); margin-bottom: 8px; }
+  .privacy-content ul { margin-left: 20px; color: var(--text-muted); }
+  .privacy-content li { margin-bottom: 6px; }
+  
   @media (max-width: 480px) {
     body { padding: 6px; font-size: 13px; }
     .main-card { padding: 14px; border-radius: 16px; }
-    .mode-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .mode-card { padding: 12px 8px; }
-    .mode-icon { font-size: 1.6rem; }
-    .result-stats { gap: 8px; }
-    .stat-card { padding: 12px; }
   }
   
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
   ::-webkit-scrollbar-thumb { background: rgba(102, 126, 234, 0.5); border-radius: 10px; }
-  
-  /* Animations */
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .animate-up { animation: slideUp 0.4s ease; }
 </style>
 </head>
 <body>
@@ -562,18 +435,14 @@
 
   <div class="main-card">
     <div id="startScreen" class="screen active">
-      <div class="info-banner">
-        💰 <strong>10 FCF</strong> par réponse | 🎯 Min: <strong>300 FCF</strong> | 📺 Pub chaque <strong>4 questions</strong>
-      </div>
-      
       <button class="btn-communiques" onclick="showCommuniques()">
         📢 COMMUNIQUÉS OFFICIELS
         <span id="notifBubble" class="notification-bubble">NEW</span>
       </button>
       
       <div class="legal-buttons">
-        <button class="btn btn-icon" onclick="showMessages()">💬 Messages</button>
-        <button class="btn btn-icon" onclick="showLegalPage('contact')">📧 Support</button>
+        <button class="btn btn-icon" onclick="showLegalPage('privacy')">🔒 Confidentialité</button>
+        <button class="btn btn-icon" onclick="showLegalPage('support')">📧 Support</button>
       </div>
       
       <div class="mode-grid" id="modeGrid">
@@ -621,32 +490,18 @@
 
     <div id="quizScreen" class="screen">
       <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
-      
       <div class="quiz-header">
         <span id="qCounter">Q 1/20</span>
         <span id="scoreLive" style="color:#48bb78;">💰 0 FCF</span>
       </div>
-      
       <div class="flag-display" id="flagDisplay">🌍</div>
-      
       <div class="question-text" id="questionText"></div>
-      
       <div class="options-grid" id="optionsContainer"></div>
-      
       <div class="feedback" id="feedbackMsg"></div>
-      
-      <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">
-        ➡️ SUIVANTE
-      </button>
-      
+      <button class="next-btn" id="nextBtn" style="display:none;" onclick="nextQuestion()">➡️ SUIVANTE</button>
       <div class="ad-container" id="quizAdBlock">
         <div class="ad-label">📢 PUBLICITÉ</div>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6876086925672856"
-             data-ad-slot="6066344349"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6876086925672856" data-ad-slot="6066344349" data-ad-format="auto" data-full-width-responsive="true"></ins>
       </div>
     </div>
 
@@ -656,36 +511,26 @@
       <div id="communiquesList"></div>
     </div>
 
-    <div id="messagesScreen" class="screen">
-      <button class="btn btn-icon" style="margin-bottom:12px; background:#f56565;" onclick="backToMenu()">← Retour</button>
-      <h2 style="margin-bottom:14px; font-size:1.1rem;">💬 Messages</h2>
-      <div id="messagesList"></div>
-      <button class="btn btn-primary" style="width:100%; margin-top:12px;" onclick="showLegalPage('contact')">📝 Nouveau</button>
-    </div>
-
     <div id="legalScreen" class="screen">
       <button class="btn btn-icon" style="margin-bottom:12px; background:#f56565;" onclick="backToMenu()">← Retour</button>
       <h2 id="legalTitle" style="margin-bottom:14px; font-size:1.1rem;"></h2>
-      <div id="legalContent" style="font-size:0.85rem; line-height:1.6;"></div>
+      <div id="legalContent"></div>
     </div>
 
     <div id="resultsScreen" class="screen">
       <div style="text-align:center;">
         <div class="result-emoji" id="resultEmoji">🏆</div>
         <h2 style="margin-bottom:16px; font-size:1.2rem;">Quiz terminé!</h2>
-        
         <div class="result-stats">
           <div class="stat-card">✔️ Bonnes<div id="resCorrect">0</div></div>
           <div class="stat-card">❌ Erreurs<div id="resWrong">0</div></div>
           <div class="stat-card">📊 Précision<div id="resAcc">0%</div></div>
           <div class="stat-card">💰 Gains<div id="resEarn">0 FCF</div></div>
         </div>
-        
         <div class="result-stats">
           <div class="stat-card">🔥 Série<div id="resStreak">0</div></div>
           <div class="stat-card">💎 Total<div id="resTotal">0</div></div>
         </div>
-        
         <div style="display:flex; gap:10px; margin-top:16px;">
           <button class="btn btn-primary" style="flex:1;" onclick="restartSameMode()">🔄 Rejouer</button>
           <button class="btn btn-icon" style="flex:1;" onclick="backToMenu()">🏠 Menu</button>
@@ -702,18 +547,15 @@
       <h3 style="font-size:1.2rem;">🔐 Connexion</h3>
       <button class="btn btn-icon" onclick="closeAuthModal()">✕</button>
     </div>
-    
     <div style="display:flex; gap:10px; margin-bottom:20px;">
       <button id="tabLoginBtn" class="btn btn-primary" style="flex:1;" onclick="showAuthTab('login')">Connexion</button>
       <button id="tabSignupBtn" class="btn btn-icon" style="flex:1;" onclick="showAuthTab('signup')">Inscription</button>
     </div>
-    
     <div id="loginForm">
       <input type="email" id="loginEmail" placeholder="Email">
       <input type="password" id="loginPassword" placeholder="Mot de passe">
       <button class="btn btn-primary" style="width:100%; margin-top:12px;" onclick="handleLogin()">Se connecter</button>
     </div>
-    
     <div id="signupForm" style="display:none;">
       <input type="text" id="signupName" placeholder="Nom">
       <input type="email" id="signupEmail" placeholder="Email">
@@ -722,7 +564,6 @@
       <input type="text" id="signupReferral" placeholder="Code parrain (optionnel)">
       <button class="btn btn-primary" style="width:100%; margin-top:12px;" onclick="handleSignup()">Créer compte</button>
     </div>
-    
     <div id="authError" style="color:#f56565; text-align:center; margin-top:12px; font-size:0.85rem;"></div>
   </div>
 </div>
@@ -733,10 +574,8 @@
       <h3 style="font-size:1.2rem;">👥 Inviter</h3>
       <button class="btn btn-icon" onclick="closeInviteModal()">✕</button>
     </div>
-    
     <p style="margin-bottom:12px; font-size:0.9rem;">Votre lien de parrainage:</p>
     <div id="inviteLinkDisplay" style="background:rgba(255,255,255,0.1); padding:12px; border-radius:10px; word-break:break-all; margin-bottom:12px; font-size:0.85rem;"></div>
-    
     <button class="btn btn-primary" style="width:100%;" onclick="copyInviteLink()">📋 Copier</button>
     <p style="margin-top:16px; text-align:center; color:#48bb78; font-size:0.85rem;">🎁 +500 FCF par ami inscrit!</p>
   </div>
@@ -748,14 +587,12 @@
       <h3 style="font-size:1.2rem;">💸 Retrait</h3>
       <button class="btn btn-icon" onclick="closeWithdrawModal()">✕</button>
     </div>
-    
     <input type="number" id="withdrawAmount" placeholder="Montant (min 300 FCF)">
     <input type="tel" id="withdrawPhone" placeholder="Numéro">
     <select id="withdrawMethod" style="width:100%; padding:12px; margin:8px 0; border-radius:12px; border:2px solid var(--border); background:rgba(255,255,255,0.05); color:white;">
       <option value="MTN">MTN Money</option>
       <option value="Moov">Moov Money</option>
     </select>
-    
     <div style="display:flex; gap:10px; margin-top:16px;">
       <button class="btn btn-primary" style="flex:1;" onclick="submitWithdrawRequest()">Envoyer</button>
       <button class="btn btn-icon" style="flex:1;" onclick="closeWithdrawModal()">Annuler</button>
@@ -766,7 +603,6 @@
 <div id="toastMsg" class="toast"></div>
 
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "VOTRE_API_KEY",
     authDomain: "universite-taak.firebaseapp.com",
@@ -779,7 +615,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   
-  // Pays (version compacte - gardez votre liste complète)
   const countries = [
     {nom:"France",capitale:"Paris",code:"fr",diff:"facile"},
     {nom:"Allemagne",capitale:"Berlin",code:"de",diff:"facile"},
@@ -822,7 +657,6 @@
   let adVisible = false;
   let adHideTimeout = null;
   const AD_INTERVAL = 4;
-  
   let firebaseCommuniques = [];
   let userMessages = [];
 
@@ -845,10 +679,7 @@
   async function loadUserFromFirebase(userId) {
     try {
       const doc = await db.collection('users').doc(userId).get();
-      if(doc.exists) {
-        currentUserData = { id: doc.id, ...doc.data() };
-        return true;
-      }
+      if(doc.exists) { currentUserData = { id: doc.id, ...doc.data() }; return true; }
     } catch(e) { console.error(e); }
     return false;
   }
@@ -856,22 +687,15 @@
   async function saveUserToFirebase() {
     if(!currentUser || !currentUserData) return;
     await db.collection('users').doc(currentUser).set({
-      name: currentUserData.name,
-      email: currentUserData.email,
-      phone: currentUserData.phone,
-      password: currentUserData.password,
-      totalFcf: currentUserData.totalFcf || 0,
-      referralCode: currentUserData.referralCode
+      name: currentUserData.name, email: currentUserData.email, phone: currentUserData.phone,
+      password: currentUserData.password, totalFcf: currentUserData.totalFcf || 0, referralCode: currentUserData.referralCode
     });
   }
   
   async function findUserByEmail(email) {
     try {
       const snapshot = await db.collection('users').where('email', '==', email).get();
-      if(!snapshot.empty) {
-        const doc = snapshot.docs[0];
-        return { id: doc.id, ...doc.data() };
-      }
+      if(!snapshot.empty) { const doc = snapshot.docs[0]; return { id: doc.id, ...doc.data() }; }
     } catch(e) { console.error(e); }
     return null;
   }
@@ -893,19 +717,9 @@
         type = r === 0 ? "capitals" : (r === 1 ? "flags" : "reverse");
       }
       let q = {};
-      if(type === "capitals") {
-        q.text = `Capitale de ${country.nom} ?`;
-        q.answer = country.capitale;
-        q.flag = country.code;
-      } else if(type === "flags") {
-        q.text = `Quel est ce pays ?`;
-        q.answer = country.nom;
-        q.flag = country.code;
-      } else {
-        q.text = `${country.capitale} est la capitale de ?`;
-        q.answer = country.nom;
-        q.flag = country.code;
-      }
+      if(type === "capitals") { q.text = `Capitale de ${country.nom} ?`; q.answer = country.capitale; q.flag = country.code; }
+      else if(type === "flags") { q.text = `Quel est ce pays ?`; q.answer = country.nom; q.flag = country.code; }
+      else { q.text = `${country.capitale} est la capitale de ?`; q.answer = country.nom; q.flag = country.code; }
       let wrongOptions = [];
       let otherCountries = getFilteredCountries().filter(c => c.nom !== country.nom);
       while(wrongOptions.length < 3) {
@@ -926,10 +740,7 @@
     adContainer.classList.add('visible');
     adVisible = true;
     try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
-    adHideTimeout = setTimeout(() => {
-      adContainer.classList.remove('visible');
-      adVisible = false;
-    }, 10000);
+    adHideTimeout = setTimeout(() => { adContainer.classList.remove('visible'); adVisible = false; }, 10000);
   }
   
   function showQuizAd() {
@@ -939,13 +750,7 @@
   
   function startQuiz() {
     questions = generateQuestions();
-    currentIndex = 0;
-    score = 0;
-    correctCount = 0;
-    wrongCount = 0;
-    streak = 0;
-    bestStreak = 0;
-    answeredTotal = 0;
+    currentIndex = 0; score = 0; correctCount = 0; wrongCount = 0; streak = 0; bestStreak = 0; answeredTotal = 0;
     document.getElementById('startScreen').classList.remove('active');
     document.getElementById('resultsScreen').classList.remove('active');
     document.getElementById('quizScreen').classList.add('active');
@@ -960,7 +765,6 @@
     document.getElementById('scoreLive').textContent = `💰 ${score} FCF`;
     document.getElementById('flagDisplay').innerHTML = `<img src="https://flagcdn.com/w160/${q.flag}.png" alt="" onerror="this.style.display='none'">`;
     document.getElementById('questionText').textContent = q.text;
-    
     let container = document.getElementById('optionsContainer');
     container.innerHTML = '';
     let letters = ['A', 'B', 'C', 'D'];
@@ -971,7 +775,6 @@
       btn.onclick = () => handleAnswer(btn, opt);
       container.appendChild(btn);
     });
-    
     document.getElementById('nextBtn').style.display = 'none';
     document.getElementById('feedbackMsg').textContent = '';
     document.getElementById('feedbackMsg').className = 'feedback';
@@ -986,13 +789,9 @@
     let isCorrect = (selected === q.answer);
     let allBtns = document.querySelectorAll('.opt-btn');
     allBtns.forEach(b => b.disabled = true);
-    
     const feedbackEl = document.getElementById('feedbackMsg');
-    
     if(isCorrect) {
-      score += 10;
-      correctCount++;
-      streak++;
+      score += 10; correctCount++; streak++;
       if(streak > bestStreak) bestStreak = streak;
       btn.classList.add('correct');
       feedbackEl.textContent = `✅ +10 FCF! Série: ${streak}`;
@@ -1004,8 +803,7 @@
         updateUserDisplay();
       }
     } else {
-      wrongCount++;
-      streak = 0;
+      wrongCount++; streak = 0;
       btn.classList.add('wrong');
       allBtns.forEach(b => { if(b.textContent.includes(q.answer)) b.classList.add('correct'); });
       feedbackEl.textContent = `❌ Réponse: ${q.answer}`;
@@ -1019,26 +817,21 @@
   }
   
   function nextQuestion() { if(!answered) return; currentIndex++; renderQuestion(); }
-  
   function startTimer() {
     if(timer) clearInterval(timer);
     timeLeft = 15;
     let fill = document.getElementById('timerFill');
     fill.style.width = '100%';
     fill.className = 'timer-fill';
-    
     timer = setInterval(() => {
       if(!answered && timeLeft > 0) {
         timeLeft--;
         fill.style.width = (timeLeft/15)*100+'%';
         if(timeLeft <= 5 && timeLeft > 2) fill.classList.add('warning');
         if(timeLeft <= 2) { fill.classList.remove('warning'); fill.classList.add('danger'); }
-        
         if(timeLeft <= 0 && !answered) {
           clearInterval(timer);
-          answered = true;
-          wrongCount++;
-          streak = 0;
+          answered = true; wrongCount++; streak = 0;
           document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
           let q = questions[currentIndex];
           const feedbackEl = document.getElementById('feedbackMsg');
@@ -1052,7 +845,6 @@
       }
     }, 1000);
   }
-  
   function stopTimer() { if(timer) clearInterval(timer); }
   
   function showResults() {
@@ -1072,9 +864,7 @@
   
   function restartSameMode() { startQuiz(); }
   function backToMenu() {
-    ['resultsScreen','communiquesScreen','messagesScreen','legalScreen'].forEach(id => {
-      document.getElementById(id).classList.remove('active');
-    });
+    ['resultsScreen','communiquesScreen','legalScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
     document.getElementById('startScreen').classList.add('active');
   }
 
@@ -1083,11 +873,7 @@
       firebaseCommuniques = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        firebaseCommuniques.push({
-          text: data.text || '',
-          date: data.date ? new Date(data.date).toLocaleString('fr-FR') : '',
-          author: data.author || 'Admin'
-        });
+        firebaseCommuniques.push({ text: data.text || '', date: data.date ? new Date(data.date).toLocaleString('fr-FR') : '', author: data.author || 'Admin' });
       });
     });
   }
@@ -1097,12 +883,7 @@
     if(firebaseCommuniques.length === 0) {
       container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:20px;">Aucun communiqué</p>';
     } else {
-      container.innerHTML = firebaseCommuniques.map(c => `
-        <div class="communique-card">
-          <div class="communique-date">📅 ${c.date} • ${c.author}</div>
-          <div class="communique-text">${c.text}</div>
-        </div>
-      `).join('');
+      container.innerHTML = firebaseCommuniques.map(c => `<div class="communique-card"><div class="communique-date">📅 ${c.date} • ${c.author}</div><div class="communique-text">${c.text}</div></div>`).join('');
     }
     document.getElementById('startScreen').classList.remove('active');
     document.getElementById('communiquesScreen').classList.add('active');
@@ -1114,52 +895,27 @@
       userMessages = [];
       snapshot.forEach(doc => {
         const data = doc.data();
-        userMessages.push({ 
-          id: doc.id, 
-          ...data,
-          dateFormatted: data.date ? new Date(data.date).toLocaleString('fr-FR') : '',
-          replyDateFormatted: data.replyDate ? new Date(data.replyDate).toLocaleString('fr-FR') : null
-        });
+        userMessages.push({ id: doc.id, ...data, dateFormatted: data.date ? new Date(data.date).toLocaleString('fr-FR') : '', replyDateFormatted: data.replyDate ? new Date(data.replyDate).toLocaleString('fr-FR') : null });
       });
-      if(document.getElementById('messagesScreen').classList.contains('active')) displayUserMessages();
     });
   }
   
-  function displayUserMessages() {
-    const container = document.getElementById('messagesList');
-    if(userMessages.length === 0) {
-      container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:20px;">Aucun message</p>';
-      return;
-    }
-    container.innerHTML = userMessages.map(msg => `
-      <div class="communique-card" style="border-left-color: ${msg.reply ? '#48bb78' : '#ed8936'};">
-        <div class="communique-date">📅 ${msg.dateFormatted}</div>
-        <div class="communique-text">${msg.message}</div>
-        ${msg.reply ? `<div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border); color:#48bb78; font-size:0.8rem;"><strong>Réponse:</strong> ${msg.reply}</div>` : '<div style="margin-top:6px; font-size:0.75rem; color:#ed8936;">⏳ En attente</div>'}
-      </div>
-    `).join('');
-  }
-  
-  function showMessages() {
-    if(!currentUser) { toast("Connectez-vous"); openAuthModal(); return; }
-    displayUserMessages();
-    document.getElementById('startScreen').classList.remove('active');
-    document.getElementById('messagesScreen').classList.add('active');
-  }
-  
-  async function sendLegalContact() {
-    const name = document.getElementById('legalContactName')?.value;
-    const email = document.getElementById('legalContactEmail')?.value;
-    const message = document.getElementById('legalContactMessage')?.value;
-    if(!name || !email || !message) { toast("Remplissez tous les champs"); return; }
+  async function sendSupportMessage() {
+    const message = document.getElementById('supportMessage')?.value;
+    if(!message || message.trim().length < 10) { toast("Message trop court (10 caractères min)"); return; }
     try {
-      await db.collection('contacts').add({ name, email, message, status: 'non lu', date: new Date().toISOString() });
-      document.getElementById('legalContactName').value = '';
-      document.getElementById('legalContactEmail').value = '';
-      document.getElementById('legalContactMessage').value = '';
-      toast("✅ Message envoyé!");
+      await db.collection('contacts').add({
+        name: currentUserData?.name || 'Invité',
+        email: currentUserData?.email || 'anon@quiz.com',
+        message: message,
+        userId: currentUser || null,
+        status: 'non lu',
+        date: new Date().toISOString()
+      });
+      document.getElementById('supportMessage').value = '';
+      toast("✅ Message envoyé au support!");
       playSound('correct');
-    } catch(e) { toast("❌ Erreur"); }
+    } catch(e) { toast("❌ Erreur d'envoi"); }
   }
 
   function showLegalPage(page) {
@@ -1168,22 +924,68 @@
     const title = document.getElementById('legalTitle');
     const content = document.getElementById('legalContent');
     
-    if(page === 'contact') {
-      title.textContent = '📧 Support';
+    if(page === 'privacy') {
+      title.textContent = '🔒 Confidentialité';
       content.innerHTML = `
-        <div style="background:rgba(255,255,255,0.05); padding:16px; border-radius:12px; margin-top:12px;">
-          <input type="text" id="legalContactName" placeholder="Votre nom" value="${currentUserData?.name || ''}">
-          <input type="email" id="legalContactEmail" placeholder="Email" value="${currentUserData?.email || ''}">
-          <textarea id="legalContactMessage" placeholder="Votre message..."></textarea>
-          <button class="btn btn-primary" style="width:100%; margin-top:12px;" onclick="sendLegalContact()">Envoyer</button>
+        <div class="privacy-content">
+          <h3>📋 Collecte des données</h3>
+          <p>Nous collectons uniquement les informations nécessaires : nom, email et téléphone.</p>
+          
+          <h3>🔐 Sécurité</h3>
+          <p>Vos données sont cryptées et stockées sur Firebase (Google Cloud) avec les plus hauts standards de sécurité.</p>
+          
+          <h3>👁️ Utilisation</h3>
+          <ul>
+            <li>Gestion de votre compte</li>
+            <li>Traitement des retraits</li>
+            <li>Système de parrainage</li>
+            <li>Support client</li>
+          </ul>
+          
+          <h3>✅ Vos droits</h3>
+          <p>Vous pouvez demander la suppression de vos données à tout moment via le support.</p>
+          
+          <h3>🚫 Partage</h3>
+          <p>Nous ne vendons ni ne partageons vos données avec des tiers.</p>
         </div>
       `;
-    } else if(page === 'privacy') {
-      title.textContent = '🔒 Confidentialité';
-      content.innerHTML = '<p>Vos données sont sécurisées sur Firebase. Nous ne les partageons jamais.</p>';
-    } else if(page === 'terms') {
-      title.textContent = '📜 Conditions';
-      content.innerHTML = '<p>10 FCF par bonne réponse. Retrait min: 300 FCF. Parrainage: 500 FCF.</p>';
+    } else if(page === 'support') {
+      title.textContent = '📧 Support';
+      content.innerHTML = `
+        <div class="support-card">
+          <div class="support-item" onclick="window.location.href='mailto:support@quizworld.com'">
+            <div class="support-icon">📧</div>
+            <div class="support-info">
+              <div class="support-label">Email</div>
+              <div class="support-value">support@quizworld.com</div>
+            </div>
+          </div>
+          
+          <div class="support-item" onclick="window.open('https://wa.me/221XXXXXXXXX', '_blank')">
+            <div class="support-icon">💬</div>
+            <div class="support-info">
+              <div class="support-label">WhatsApp</div>
+              <div class="support-value">+221 XX XXX XX XX</div>
+            </div>
+          </div>
+          
+          <div class="support-item">
+            <div class="support-icon">⏱️</div>
+            <div class="support-info">
+              <div class="support-label">Temps de réponse</div>
+              <div class="support-value">24-48 heures</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-form">
+          <h3 style="margin-bottom:16px; font-size:1rem;">📝 Envoyer un message</h3>
+          <div class="form-group">
+            <textarea id="supportMessage" placeholder="Décrivez votre problème ou question..." style="width:100%;"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="sendSupportMessage()">📤 Envoyer</button>
+        </div>
+      `;
     }
   }
 
@@ -1229,16 +1031,11 @@
     const pwd = document.getElementById('loginPassword').value;
     const user = await findUserByEmail(email);
     if(user && user.password === pwd) {
-      currentUser = user.id;
-      currentUserData = user;
+      currentUser = user.id; currentUserData = user;
       localStorage.setItem('quiz_current_user_id', currentUser);
-      updateUserDisplay();
-      closeAuthModal();
-      toast("✅ Connecté!");
+      updateUserDisplay(); closeAuthModal(); toast("✅ Connecté!");
       listenToUserMessages();
-    } else {
-      document.getElementById('authError').textContent = '❌ Identifiants incorrects';
-    }
+    } else { document.getElementById('authError').textContent = '❌ Identifiants incorrects'; }
   }
   
   async function handleSignup() {
@@ -1249,7 +1046,6 @@
     let referralCode = document.getElementById('signupReferral').value.trim() || localStorage.getItem('pending_referral') || '';
     
     if(!name || !email || !phone || pwd.length < 6) { document.getElementById('authError').textContent = '❌ Champs invalides'; return; }
-    
     if(await findUserByEmail(email)) { document.getElementById('authError').textContent = '❌ Email déjà utilisé'; return; }
     
     if(referralCode) {
@@ -1264,27 +1060,17 @@
     const newUserRef = db.collection('users').doc();
     const userId = newUserRef.id;
     const newReferralCode = "REF" + userId.substring(0,8).toUpperCase();
-    
     await newUserRef.set({ name, email, phone, password: pwd, totalFcf: 0, referralCode: newReferralCode, createdAt: new Date().toISOString() });
     
     currentUser = userId;
     currentUserData = { name, email, phone, totalFcf: 0, referralCode: newReferralCode };
     localStorage.setItem('quiz_current_user_id', currentUser);
     localStorage.removeItem('pending_referral');
-    updateUserDisplay();
-    closeAuthModal();
-    toast("✅ Inscription réussie!");
-    playSound('correct');
-    listenToUserMessages();
+    updateUserDisplay(); closeAuthModal(); toast("✅ Inscription réussie!");
+    playSound('correct'); listenToUserMessages();
   }
   
-  function logout() {
-    currentUser = null;
-    currentUserData = null;
-    localStorage.removeItem('quiz_current_user_id');
-    updateUserDisplay();
-    toast("👋 Déconnecté");
-  }
+  function logout() { currentUser = null; currentUserData = null; localStorage.removeItem('quiz_current_user_id'); updateUserDisplay(); toast("👋 Déconnecté"); }
   
   function openInviteModal() {
     if(!currentUser) { toast("Connectez-vous"); openAuthModal(); return; }
@@ -1292,12 +1078,8 @@
     document.getElementById('inviteLinkDisplay').textContent = window.location.origin + window.location.pathname + "?ref=" + code;
     document.getElementById('inviteModal').classList.add('active');
   }
-  
   function closeInviteModal() { document.getElementById('inviteModal').classList.remove('active'); }
-  function copyInviteLink() {
-    navigator.clipboard.writeText(document.getElementById('inviteLinkDisplay').textContent);
-    toast("✅ Lien copié!");
-  }
+  function copyInviteLink() { navigator.clipboard.writeText(document.getElementById('inviteLinkDisplay').textContent); toast("✅ Lien copié!"); }
   
   function openWithdrawModal() { if(!currentUser) toast('Connectez-vous'); else document.getElementById('withdrawModal').classList.add('active'); }
   function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); }
@@ -1306,14 +1088,11 @@
     const amount = parseInt(document.getElementById('withdrawAmount').value);
     const phone = document.getElementById('withdrawPhone').value;
     const method = document.getElementById('withdrawMethod').value;
-    
     if(!amount || amount < 300) { toast('❌ Min 300 FCF'); return; }
     if(!phone) { toast('❌ Numéro requis'); return; }
     if((currentUserData?.totalFcf || 0) < amount) { toast('❌ Solde insuffisant'); return; }
-    
     currentUserData.totalFcf -= amount;
-    await saveUserToFirebase();
-    updateUserDisplay();
+    await saveUserToFirebase(); updateUserDisplay();
     await db.collection('withdrawals').add({ userId: currentUser, userName: currentUserData.name, amount, phone, method, status: 'pending', date: new Date().toISOString() });
     toast(`✅ Demande ${amount} FCF envoyée!`);
     closeWithdrawModal();
@@ -1328,13 +1107,8 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // Event listeners
   document.querySelectorAll('.mode-card').forEach(el => {
-    el.onclick = () => { 
-      document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected')); 
-      el.classList.add('selected'); 
-      currentMode = el.dataset.mode; 
-    };
+    el.onclick = () => { document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); currentMode = el.dataset.mode; };
   });
   
   document.querySelectorAll('.selector-btn').forEach(el => {
@@ -1348,15 +1122,10 @@
   });
   
   listenToCommuniques();
-  
   const savedUserId = localStorage.getItem('quiz_current_user_id');
   if(savedUserId) {
     loadUserFromFirebase(savedUserId).then(loaded => {
-      if(loaded) {
-        currentUser = savedUserId;
-        updateUserDisplay();
-        listenToUserMessages();
-      }
+      if(loaded) { currentUser = savedUserId; updateUserDisplay(); listenToUserMessages(); }
     });
   }
   detectReferralCode();
