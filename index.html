@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#667eea">
 <meta name="google-adsense-account" content="ca-pub-6876086925672856">
-<title>🌍 Quiz World Live | 10 FCF/rép</title>
+<title>🌍 Quiz World Live | 15 FCF/200h</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -110,6 +110,7 @@
   .btn-icon:hover { background: rgba(255,255,255,0.2); }
   .btn-withdraw { background: #f56565; color: white; }
   .btn-invite { background: #48bb78; color: white; }
+  .btn-admin { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
   
   .main-card { 
     background: var(--surface);
@@ -128,7 +129,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  .btn-communiques, .btn-live { 
+  .btn-communiques, .btn-live, .btn-admin-panel { 
     width: 100%;
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
@@ -145,6 +146,11 @@
   .btn-live {
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
+  
+  .btn-admin-panel {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
   }
   
   .notification-bubble { 
@@ -206,7 +212,7 @@
   .timer-fill.warning { background: linear-gradient(90deg, #ed8936 0%, #dd6b20 100%); }
   .timer-fill.danger { background: linear-gradient(90deg, #f56565 0%, #e53e3e 100%); }
   
-  .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.85rem; font-weight: 600; }
+  .quiz-header { display: flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:0.85rem; font-weight:600; }
   .flag-display { text-align: center; margin: 12px 0; }
   .flag-display img { max-width: 140px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 3px solid rgba(255,255,255,0.2); }
   
@@ -795,6 +801,90 @@
     font-weight: 600;
   }
 
+  /* === ADMIN PANEL STYLES === */
+  .admin-user-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  
+  .admin-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px;
+  }
+  
+  .admin-user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  
+  .admin-user-email {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  
+  .admin-user-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    font-size: 0.8rem;
+    margin: 10px 0;
+  }
+  
+  .admin-progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 4px 0;
+  }
+  
+  .admin-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 10px;
+    transition: width 0.3s;
+  }
+  
+  .admin-reward-btn {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.8rem;
+    background: linear-gradient(135deg, #48bb78, #38a169);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .admin-reward-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+  }
+  
+  .online-badge {
+    background: #48bb78;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  
+  .offline-badge {
+    background: #475569;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
   @media (max-width: 480px) {
     body { padding: 6px; font-size: 13px; }
     .main-card { padding: 14px; border-radius: 16px; }
@@ -811,7 +901,7 @@
   <div class="top-bar">
     <div class="logo">
       <h1>🌍 QUIZ WORLD</h1>
-      <p>10 FCF/rép • Retrait 300 FCF</p>
+      <p>15 FCF/200h • Retrait 300 FCF</p>
     </div>
     <div class="user-card" id="userCard">
       <div class="user-info">
@@ -821,6 +911,7 @@
       <button class="btn btn-icon" id="authBtn" onclick="openAuthModal()">🔐</button>
       <button class="btn btn-icon btn-invite" id="inviteBtn" onclick="openInviteModal()" style="display:none;">👥</button>
       <button class="btn btn-icon btn-withdraw" id="withdrawBtn" onclick="openWithdrawModal()" style="display:none;">💸</button>
+      <button class="btn btn-icon btn-admin" id="adminBtn" onclick="showAdminPanel()" style="display:none;">⚙️</button>
       <button class="btn btn-icon" id="logoutBtn" onclick="logout()" style="display:none;">🚪</button>
     </div>
   </div>
@@ -834,7 +925,11 @@
       </button>
       
       <button class="btn-live" onclick="showLiveRooms()">
-        🔴 SALONS LIVE • 10 FCF • CAGNOTTE
+        🔴 SALONS LIVE • Cagnotte
+      </button>
+      
+      <button class="btn-admin-panel" id="adminPanelBtn" onclick="showAdminPanel()" style="display:none;">
+        👨‍💼 PANEL ADMIN
       </button>
       
       <div class="legal-buttons">
@@ -881,10 +976,10 @@
       </button>
       
       <div style="text-align:center; margin-top:14px; font-size:0.75rem; color:var(--text-muted);">
-        🎁 Parrainage: 500 FCF par ami
+        🎁 Parrainage: 1500 FCF par ami • ⏱️ 15 FCF toutes les 200h de jeu
       </div>
       
-      <!-- AdSense: Fixed banner on home page (compliant placement) -->
+      <!-- AdSense -->
       <div class="ad-native visible" style="margin-top:20px;">
         <span class="ad-label">Sponsorisé</span>
         <ins class="adsbygoogle"
@@ -908,7 +1003,6 @@
         </button>
       </div>
 
-      <!-- AdSense: Native banner between header and list -->
       <div class="ad-native visible">
         <span class="ad-label">Sponsorisé</span>
         <ins class="adsbygoogle"
@@ -925,7 +1019,6 @@
         </div>
       </div>
 
-      <!-- Winner History -->
       <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border);">
         <h3 style="font-size:0.95rem; margin-bottom:12px;">🏆 Gagnants récents</h3>
         <div class="history-list" id="winnerHistory">
@@ -957,13 +1050,9 @@
         En attente de la question...
       </div>
 
-      <div class="options-grid" id="liveOptionsContainer">
-        <!-- Options injected by JS -->
-      </div>
-
+      <div class="options-grid" id="liveOptionsContainer"></div>
       <div class="feedback" id="liveFeedback"></div>
 
-      <!-- Live Leaderboard -->
       <div class="live-leaderboard">
         <div class="leaderboard-title">📊 Classement en direct</div>
         <div id="liveLeaderboardContent">
@@ -971,7 +1060,6 @@
         </div>
       </div>
 
-      <!-- Optional Chat -->
       <div class="live-chat">
         <div class="chat-messages" id="liveChatMessages">
           <div style="text-align:center; color:var(--text-muted); font-size:0.75rem;">💬 Chat rapide</div>
@@ -982,7 +1070,6 @@
         </div>
       </div>
 
-      <!-- AdSense: Post-question native ad (non-disruptive) -->
       <div class="ad-native" id="livePostQuestionAd">
         <span class="ad-label">Publicité</span>
         <ins class="adsbygoogle"
@@ -998,12 +1085,12 @@
       </button>
     </div>
 
-    <!-- QUIZ SCREEN (original) -->
+    <!-- QUIZ SCREEN -->
     <div id="quizScreen" class="screen">
       <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
       <div class="quiz-header">
         <span id="qCounter">Q 1/20</span>
-        <span id="scoreLive" style="color:#48bb78;">💰 0 FCF</span>
+        <span id="scoreLive" style="color:#48bb78;">🎯 0 pts</span>
       </div>
       <div class="flag-display" id="flagDisplay">🌍</div>
       <div class="question-text" id="questionText"></div>
@@ -1039,16 +1126,40 @@
           <div class="stat-card">✔️ Bonnes<div id="resCorrect">0</div></div>
           <div class="stat-card">❌ Erreurs<div id="resWrong">0</div></div>
           <div class="stat-card">📊 Précision<div id="resAcc">0%</div></div>
-          <div class="stat-card">💰 Gains<div id="resEarn">0 FCF</div></div>
+          <div class="stat-card">🎯 Score<div id="resEarn">0 pts</div></div>
         </div>
         <div class="result-stats">
           <div class="stat-card">🔥 Série<div id="resStreak">0</div></div>
-          <div class="stat-card">💎 Total<div id="resTotal">0</div></div>
+          <div class="stat-card">💎 Total<div id="resTotal">0 FCF</div></div>
         </div>
         <div style="display:flex; gap:10px; margin-top:16px;">
           <button class="btn btn-primary" style="flex:1;" onclick="restartSameMode()">🔄 Rejouer</button>
           <button class="btn btn-icon" style="flex:1;" onclick="backToMenu()">🏠 Menu</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL SCREEN -->
+    <div id="adminScreen" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h2>👨‍💼 Panel Admin</h2>
+        <button class="btn btn-icon" onclick="backToMenu()" style="background:#f56565;">✕ Fermer</button>
+      </div>
+      
+      <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+        <input type="text" id="adminSearch" placeholder="Rechercher utilisateur..." 
+               style="flex:1; min-width:150px; padding:10px; border-radius:8px; border:1px solid var(--border); background:rgba(255,255,255,0.1); color:white;">
+        <select id="adminSort" style="padding:10px; border-radius:8px; border:1px solid var(--border); background:rgba(255,255,255,0.1); color:white;">
+          <option value="lastLogin">Dernière connexion</option>
+          <option value="totalSessionTime">Temps total</option>
+          <option value="totalFcf">Solde FCF</option>
+          <option value="referralCount">Parrainages</option>
+        </select>
+        <button class="btn btn-primary" onclick="loadAdminUsers()" style="padding:10px 16px;">🔄 Actualiser</button>
+      </div>
+      
+      <div id="adminUsersList" style="display:flex; flex-direction:column; gap:10px; max-height:60vh; overflow-y:auto;">
+        <div style="text-align:center; padding:20px; color:var(--text-muted);">Chargement des utilisateurs...</div>
       </div>
     </div>
   </div>
@@ -1092,7 +1203,7 @@
     <p style="margin-bottom:12px; font-size:0.9rem;">Votre lien de parrainage:</p>
     <div id="inviteLinkDisplay" style="background:rgba(255,255,255,0.1); padding:12px; border-radius:10px; word-break:break-all; margin-bottom:12px; font-size:0.85rem;"></div>
     <button class="btn btn-primary" style="width:100%;" onclick="copyInviteLink()">📋 Copier</button>
-    <p style="margin-top:16px; text-align:center; color:#48bb78; font-size:0.85rem;">🎁 +500 FCF par ami inscrit!</p>
+    <p style="margin-top:16px; text-align:center; color:#48bb78; font-size:0.85rem;">🎁 +1500 FCF par ami inscrit!</p>
   </div>
 </div>
 
@@ -1158,6 +1269,23 @@
     <button class="btn btn-primary" style="width:100%; padding:14px;" id="startLiveBtn" disabled onclick="createLiveRoom()">
       🚀 Lancer le salon
     </button>
+  </div>
+</div>
+
+<!-- REWARD MODAL (Admin) -->
+<div id="rewardModal" class="modal">
+  <div class="modal-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h3 style="font-size:1.2rem;">🎁 Récompenser un utilisateur</h3>
+      <button class="btn btn-icon" onclick="closeRewardModal()">✕</button>
+    </div>
+    <p id="rewardUserName" style="margin:8px 0; color:var(--text-muted); font-size:0.9rem;"></p>
+    <input type="number" id="rewardAmount" placeholder="Montant en FCF" min="1">
+    <textarea id="rewardReason" placeholder="Motif de la récompense..." style="width:100%; margin:8px 0; min-height:80px;"></textarea>
+    <div style="display:flex; gap:10px; margin-top:12px;">
+      <button class="btn btn-primary" style="flex:1;" onclick="confirmReward()">✅ Valider</button>
+      <button class="btn btn-icon" style="flex:1;" onclick="closeRewardModal()">Annuler</button>
+    </div>
   </div>
 </div>
 
@@ -1232,6 +1360,15 @@
   let selectedDuration = 240;
   let selectedMaxPlayers = 20;
   let liveAnswered = false;
+  
+  // === SESSION TRACKING VARIABLES ===
+  let sessionStartTime = null;
+  let sessionTimer = null;
+  const SECONDS_FOR_REWARD = 200 * 3600; // 200 heures en secondes
+  const FCF_PER_REWARD = 15;
+  
+  // === ADMIN VARIABLES ===
+  let selectedAdminUser = null;
 
   // === SOUND UTILS ===
   function playSound(type) {
@@ -1254,7 +1391,14 @@
   async function loadUserFromFirebase(userId) {
     try {
       const doc = await db.collection('users').doc(userId).get();
-      if(doc.exists) { currentUserData = { id: doc.id, ...doc.data() }; return true; }
+      if(doc.exists) { 
+        currentUserData = { id: doc.id, ...doc.data() }; 
+        // Initialiser les nouveaux champs si inexistants
+        if(currentUserData.totalSessionTime === undefined) currentUserData.totalSessionTime = 0;
+        if(currentUserData.referralCount === undefined) currentUserData.referralCount = 0;
+        if(currentUserData.lastRewardCalculation === undefined) currentUserData.lastRewardCalculation = 0;
+        return true; 
+      }
     } catch(e) { console.error(e); }
     return false;
   }
@@ -1262,10 +1406,20 @@
   async function saveUserToFirebase() {
     if(!currentUser || !currentUserData) return;
     await db.collection('users').doc(currentUser).set({
-      name: currentUserData.name, email: currentUserData.email, phone: currentUserData.phone,
-      password: currentUserData.password, totalFcf: currentUserData.totalFcf || 0, 
-      referralCode: currentUserData.referralCode, referredBy: currentUserData.referredBy
-    });
+      name: currentUserData.name, 
+      email: currentUserData.email, 
+      phone: currentUserData.phone,
+      password: currentUserData.password, 
+      totalFcf: currentUserData.totalFcf || 0, 
+      referralCode: currentUserData.referralCode, 
+      referredBy: currentUserData.referredBy,
+      totalSessionTime: currentUserData.totalSessionTime || 0,
+      referralCount: currentUserData.referralCount || 0,
+      lastRewardCalculation: currentUserData.lastRewardCalculation || 0,
+      lastLogin: currentUserData.lastLogin || null,
+      isOnline: currentUserData.isOnline || false,
+      currentSessionStart: currentUserData.currentSessionStart || null
+    }, { merge: true });
   }
   
   async function findUserByEmail(email) {
@@ -1274,6 +1428,83 @@
       if(!snapshot.empty) { const doc = snapshot.docs[0]; return { id: doc.id, ...doc.data() }; }
     } catch(e) { console.error(e); }
     return null;
+  }
+
+  // === SESSION TIME TRACKING ===
+  function startSessionTracking() {
+    if (!currentUser || !currentUserData) return;
+    
+    sessionStartTime = Date.now();
+    currentUserData.currentSessionStart = sessionStartTime;
+    currentUserData.isOnline = true;
+    currentUserData.lastLogin = new Date().toISOString();
+    
+    // Mise à jour immédiate dans Firebase
+    db.collection('users').doc(currentUser).update({
+      currentSessionStart: sessionStartTime,
+      lastLogin: currentUserData.lastLogin,
+      isOnline: true
+    }).catch(e => console.log("Session start update:", e));
+    
+    // Timer pour sauvegarder le temps toutes les 30 secondes
+    sessionTimer = setInterval(() => {
+      saveSessionProgress();
+    }, 30000);
+    
+    // Écouter la fermeture de page
+    window.addEventListener('beforeunload', endSessionTracking);
+    window.addEventListener('pagehide', endSessionTracking);
+  }
+
+  async function saveSessionProgress() {
+    if (!sessionStartTime || !currentUser) return;
+    
+    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+    currentUserData.totalSessionTime = (currentUserData.totalSessionTime || 0) + elapsed;
+    
+    await db.collection('users').doc(currentUser).update({
+      totalSessionTime: currentUserData.totalSessionTime
+    }).catch(e => console.log("Session progress save:", e));
+    
+    sessionStartTime = Date.now();
+  }
+
+  async function endSessionTracking() {
+    if (!sessionStartTime || !currentUser) return;
+    
+    const finalElapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+    currentUserData.totalSessionTime = (currentUserData.totalSessionTime || 0) + finalElapsed;
+    
+    // Calculer les récompenses
+    let earnedFcf = 0;
+    if (currentUserData.totalSessionTime >= SECONDS_FOR_REWARD) {
+      const rewardCycles = Math.floor(currentUserData.totalSessionTime / SECONDS_FOR_REWARD);
+      const alreadyRewarded = currentUserData.lastRewardCalculation ? 
+        Math.floor(currentUserData.lastRewardCalculation / SECONDS_FOR_REWARD) : 0;
+      
+      const newRewards = rewardCycles - alreadyRewarded;
+      if (newRewards > 0) {
+        earnedFcf = newRewards * FCF_PER_REWARD;
+        currentUserData.totalFcf = (currentUserData.totalFcf || 0) + earnedFcf;
+        currentUserData.lastRewardCalculation = currentUserData.totalSessionTime;
+      }
+    }
+    
+    await db.collection('users').doc(currentUser).update({
+      totalSessionTime: currentUserData.totalSessionTime,
+      totalFcf: currentUserData.totalFcf,
+      lastRewardCalculation: currentUserData.lastRewardCalculation,
+      isOnline: false,
+      currentSessionStart: null
+    }).catch(e => console.log("Session end update:", e));
+    
+    if (sessionTimer) clearInterval(sessionTimer);
+    sessionStartTime = null;
+    
+    if (earnedFcf > 0) {
+      toast(`🎁 +${earnedFcf} FCF ajoutés pour votre temps de connexion!`);
+      updateUserDisplay();
+    }
   }
 
   // === QUIZ LOGIC ===
@@ -1339,7 +1570,7 @@
     answered = false;
     let q = questions[currentIndex];
     document.getElementById('qCounter').textContent = `Q ${currentIndex+1}/${questions.length}`;
-    document.getElementById('scoreLive').textContent = `💰 ${score} FCF`;
+    document.getElementById('scoreLive').textContent = `🎯 ${score} pts`;
     document.getElementById('flagDisplay').innerHTML = `<img src="https://flagcdn.com/w160/${q.flag}.png" alt="" onerror="this.style.display='none'">`;
     document.getElementById('questionText').textContent = q.text;
     let container = document.getElementById('optionsContainer');
@@ -1371,14 +1602,10 @@
       score += 10; correctCount++; streak++;
       if(streak > bestStreak) bestStreak = streak;
       btn.classList.add('correct');
-      feedbackEl.textContent = `✅ +10 FCF! Série: ${streak}`;
+      feedbackEl.textContent = `✅ Bonne réponse! Série: ${streak}`;
       feedbackEl.className = 'feedback correct';
       playSound('correct');
-      if(currentUser) {
-        currentUserData.totalFcf = (currentUserData.totalFcf || 0) + 10;
-        saveUserToFirebase();
-        updateUserDisplay();
-      }
+      // ⚠️ PLUS DE CRÉDIT FCF ICI - C'est le temps qui récompense
     } else {
       wrongCount++; streak = 0;
       btn.classList.add('wrong');
@@ -1387,7 +1614,7 @@
       feedbackEl.className = 'feedback wrong';
       playSound('wrong');
     }
-    document.getElementById('scoreLive').textContent = `💰 ${score} FCF`;
+    document.getElementById('scoreLive').textContent = `🎯 ${score} pts`;
     document.getElementById('nextBtn').style.display = 'block';
     answeredTotal++;
     showQuizAd();
@@ -1431,9 +1658,9 @@
     document.getElementById('resCorrect').textContent = correctCount;
     document.getElementById('resWrong').textContent = wrongCount;
     document.getElementById('resAcc').textContent = acc + '%';
-    document.getElementById('resEarn').textContent = score + ' FCF';
+    document.getElementById('resEarn').textContent = score + ' pts';
     document.getElementById('resStreak').textContent = bestStreak;
-    document.getElementById('resTotal').textContent = (currentUser ? (currentUserData?.totalFcf || 0) : score) + ' FCF';
+    document.getElementById('resTotal').textContent = (currentUser ? (currentUserData?.totalFcf || 0) : 0) + ' FCF';
     document.getElementById('resultEmoji').textContent = acc >= 70 ? '🏆' : (acc >= 50 ? '👍' : '💪');
     document.getElementById('quizScreen').classList.remove('active');
     document.getElementById('resultsScreen').classList.add('active');
@@ -1441,9 +1668,8 @@
   
   function restartSameMode() { startQuiz(); }
   function backToMenu() {
-    ['resultsScreen','communiquesScreen','legalScreen','liveScreen','liveGameScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
+    ['resultsScreen','communiquesScreen','legalScreen','liveScreen','liveGameScreen','adminScreen'].forEach(id => document.getElementById(id).classList.remove('active'));
     document.getElementById('startScreen').classList.add('active');
-    // Cleanup live listeners
     liveRoomUnsubscribers.forEach(unsub => unsub());
     liveRoomUnsubscribers = [];
     if(liveGameTimer) { clearInterval(liveGameTimer); liveGameTimer = null; }
@@ -1544,8 +1770,8 @@
         <div style="margin-top:20px;">
           <h3 style="margin-bottom:12px; font-size:0.95rem;">❓ Questions fréquentes</h3>
           <div class="faq-item"><div class="faq-question">Comment retirer mes gains ?</div><div class="faq-answer">Allez dans le menu principal, cliquez sur 💸 Retrait, entrez le montant (min 300 FCF) et votre numéro.</div></div>
-          <div class="faq-item"><div class="faq-question">Comment fonctionne le parrainage ?</div><div class="faq-answer">Partagez votre lien d'invitation. Vous recevez 500 FCF quand un ami s'inscrit et joue.</div></div>
-          <div class="faq-item"><div class="faq-question">Mes gains sont-ils sécurisés ?</div><div class="faq-answer">Oui, vos gains sont stockés de manière sécurisée sur Firebase et ne peuvent être perdus.</div></div>
+          <div class="faq-item"><div class="faq-question">Comment fonctionne le parrainage ?</div><div class="faq-answer">Partagez votre lien d'invitation. Vous recevez 1500 FCF quand un ami s'inscrit et joue.</div></div>
+          <div class="faq-item"><div class="faq-question">Comment gagner des FCF ?</div><div class="faq-answer">Jouez régulièrement ! Vous recevez <strong>15 FCF automatiquement</strong> toutes les <strong>200 heures</strong> de temps de connexion cumulé.</div></div>
         </div>
       `;
     }
@@ -1560,6 +1786,14 @@
       document.getElementById('logoutBtn').style.display = 'inline-flex';
       document.getElementById('withdrawBtn').style.display = 'inline-flex';
       document.getElementById('inviteBtn').style.display = 'inline-flex';
+      // Afficher bouton admin si l'utilisateur est admin (à configurer)
+      if(currentUserData.isAdmin) {
+        document.getElementById('adminBtn').style.display = 'inline-flex';
+        document.getElementById('adminPanelBtn').style.display = 'block';
+      } else {
+        document.getElementById('adminBtn').style.display = 'none';
+        document.getElementById('adminPanelBtn').style.display = 'none';
+      }
     } else {
       document.getElementById('displayName').textContent = 'Invité';
       document.getElementById('displayBalance').textContent = '💰 0 FCF';
@@ -1567,6 +1801,8 @@
       document.getElementById('logoutBtn').style.display = 'none';
       document.getElementById('withdrawBtn').style.display = 'none';
       document.getElementById('inviteBtn').style.display = 'none';
+      document.getElementById('adminBtn').style.display = 'none';
+      document.getElementById('adminPanelBtn').style.display = 'none';
     }
   }
   
@@ -1599,6 +1835,7 @@
       localStorage.setItem('quiz_current_user_id', currentUser);
       updateUserDisplay(); closeAuthModal(); toast("✅ Connecté!");
       listenToUserMessages();
+      startSessionTracking(); // ← Démarrer le tracking temps
     } else { document.getElementById('authError').textContent = '❌ Identifiants incorrects'; }
   }
   
@@ -1616,7 +1853,11 @@
       const snapshot = await db.collection('users').where('referralCode', '==', referralCode).get();
       if(!snapshot.empty) {
         const referrerDoc = snapshot.docs[0];
-        await db.collection('users').doc(referrerDoc.id).update({ totalFcf: (referrerDoc.data().totalFcf || 0) + 1500 });
+        const referrerData = referrerDoc.data();
+        await db.collection('users').doc(referrerDoc.id).update({ 
+          totalFcf: (referrerData.totalFcf || 0) + 1500,
+          referralCount: firebase.firestore.FieldValue.increment(1)
+        });
         toast("🎉 Bonus parrain crédité!");
       }
     }
@@ -1624,17 +1865,30 @@
     const newUserRef = db.collection('users').doc();
     const userId = newUserRef.id;
     const newReferralCode = "REF" + userId.substring(0,8).toUpperCase();
-    await newUserRef.set({ name, email, phone, password: pwd, totalFcf: 0, referralCode: newReferralCode, createdAt: new Date().toISOString() });
+    await newUserRef.set({ 
+      name, email, phone, password: pwd, 
+      totalFcf: 0, 
+      referralCode: newReferralCode, 
+      createdAt: new Date().toISOString(),
+      totalSessionTime: 0,
+      referralCount: 0,
+      lastRewardCalculation: 0,
+      isOnline: false
+    });
     
     currentUser = userId;
-    currentUserData = { name, email, phone, totalFcf: 0, referralCode: newReferralCode };
+    currentUserData = { name, email, phone, totalFcf: 0, referralCode: newReferralCode, totalSessionTime: 0, referralCount: 0, lastRewardCalculation: 0 };
     localStorage.setItem('quiz_current_user_id', currentUser);
     localStorage.removeItem('pending_referral');
     updateUserDisplay(); closeAuthModal(); toast("✅ Inscription réussie!");
     playSound('correct'); listenToUserMessages();
+    startSessionTracking();
   }
   
-  function logout() { currentUser = null; currentUserData = null; localStorage.removeItem('quiz_current_user_id'); updateUserDisplay(); toast("👋 Déconnecté"); }
+  function logout() { 
+    endSessionTracking(); // ← Terminer la session avant déconnexion
+    currentUser = null; currentUserData = null; localStorage.removeItem('quiz_current_user_id'); updateUserDisplay(); toast("👋 Déconnecté"); 
+  }
   
   // === INVITE & WITHDRAW ===
   function openInviteModal() {
@@ -1972,14 +2226,174 @@
     setTimeout(() => { adContainer.classList.remove('visible'); }, 15000);
   }
 
+  // === ADMIN PANEL FUNCTIONS ===
+  function showAdminPanel() {
+    // Vérification simple: seul un utilisateur avec isAdmin=true peut accéder
+    if(!currentUser || !currentUserData?.isAdmin) {
+      toast("🔐 Accès admin requis");
+      return;
+    }
+    document.getElementById('startScreen').classList.remove('active');
+    document.getElementById('adminScreen').classList.add('active');
+    loadAdminUsers();
+  }
+
+  async function loadAdminUsers() {
+    try {
+      const search = document.getElementById('adminSearch').value.toLowerCase();
+      const sortBy = document.getElementById('adminSort').value;
+      
+      let query = db.collection('users').limit(50);
+      if(sortBy === 'lastLogin') query = query.orderBy('lastLogin', 'desc');
+      else if(sortBy === 'totalSessionTime') query = query.orderBy('totalSessionTime', 'desc');
+      else if(sortBy === 'totalFcf') query = query.orderBy('totalFcf', 'desc');
+      else if(sortBy === 'referralCount') query = query.orderBy('referralCount', 'desc');
+      
+      const snapshot = await query.get();
+      let users = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        // Filtre de recherche
+        if(search && !data.name?.toLowerCase().includes(search) && !data.email?.toLowerCase().includes(search)) return;
+        users.push({ id: doc.id, ...data });
+      });
+      renderAdminUsers(users);
+    } catch(e) {
+      console.error("Admin load error:", e);
+      document.getElementById('adminUsersList').innerHTML = 
+        '<p style="color:#f56565; text-align:center;">❌ Erreur de chargement</p>';
+    }
+  }
+
+  function renderAdminUsers(users) {
+    const container = document.getElementById('adminUsersList');
+    if (users.length === 0) {
+      container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucun utilisateur trouvé</p>';
+      return;
+    }
+    
+    container.innerHTML = users.map(u => {
+      const hours = Math.floor((u.totalSessionTime || 0) / 3600);
+      const minutes = Math.floor(((u.totalSessionTime || 0) % 3600) / 60);
+      const lastLogin = u.lastLogin ? new Date(u.lastLogin).toLocaleString('fr-FR') : 'Jamais';
+      const progress = Math.min(100, ((u.totalSessionTime || 0) / SECONDS_FOR_REWARD) * 100);
+      
+      return `
+        <div class="admin-user-card">
+          <div class="admin-user-header">
+            <div>
+              <div class="admin-user-name">${escapeHtml(u.name || 'Anonyme')}</div>
+              <div class="admin-user-email">${escapeHtml(u.email || '')}</div>
+            </div>
+            <span class="${u.isOnline ? 'online-badge' : 'offline-badge'}">
+              ${u.isOnline ? '🟢 En ligne' : '⚪ Hors ligne'}
+            </span>
+          </div>
+          
+          <div class="admin-user-stats">
+            <div>⏱️ <strong>${hours}h ${minutes}m</strong> cumulés</div>
+            <div>💰 <strong>${u.totalFcf || 0} FCF</strong></div>
+            <div>👥 <strong>${u.referralCount || 0}</strong> parrainages</div>
+            <div>📅 ${lastLogin.split(',')[0]}</div>
+          </div>
+          
+          <div style="margin:10px 0;">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">
+              <span>Prochaine récompense (200h)</span>
+              <span>${Math.round(progress)}%</span>
+            </div>
+            <div class="admin-progress-bar">
+              <div class="admin-progress-fill" style="width: ${progress}%"></div>
+            </div>
+          </div>
+          
+          <button class="admin-reward-btn" onclick="openRewardModal('${u.id}', '${escapeHtml(u.name)}', ${u.totalFcf || 0})">
+            🎁 Récompenser cet utilisateur
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openRewardModal(userId, userName, currentBalance) {
+    selectedAdminUser = { id: userId, name: userName, balance: currentBalance };
+    document.getElementById('rewardUserName').textContent = `${userName} (Solde: ${currentBalance} FCF)`;
+    document.getElementById('rewardAmount').value = '';
+    document.getElementById('rewardReason').value = '';
+    document.getElementById('rewardModal').classList.add('active');
+  }
+
+  function closeRewardModal() {
+    document.getElementById('rewardModal').classList.remove('active');
+    selectedAdminUser = null;
+  }
+
+  async function confirmReward() {
+    if (!selectedAdminUser) return;
+    const amount = parseInt(document.getElementById('rewardAmount').value);
+    const reason = document.getElementById('rewardReason').value.trim();
+    
+    if (!amount || amount < 1) { toast("❌ Montant invalide"); return; }
+    if (!reason) { toast("❌ Veuillez indiquer un motif"); return; }
+    
+    try {
+      await db.collection('users').doc(selectedAdminUser.id).update({
+        totalFcf: firebase.firestore.FieldValue.increment(amount)
+      });
+      
+      await db.collection('adminRewards').add({
+        adminId: currentUser,
+        userId: selectedAdminUser.id,
+        userName: selectedAdminUser.name,
+        amount: amount,
+        reason: reason,
+        timestamp: new Date().toISOString(),
+        userBalanceAfter: selectedAdminUser.balance + amount
+      });
+      
+      toast(`✅ +${amount} FCF ajoutés à ${selectedAdminUser.name}`);
+      closeRewardModal();
+      loadAdminUsers();
+    } catch(e) {
+      console.error("Reward error:", e);
+      toast("❌ Erreur lors de la récompense");
+    }
+  }
+
+  // Event listeners for admin filters
+  document.getElementById('adminSearch')?.addEventListener('input', loadAdminUsers);
+  document.getElementById('adminSort')?.addEventListener('change', loadAdminUsers);
+
   // === INIT ===
   listenToCommuniques();
   const savedUserId = localStorage.getItem('quiz_current_user_id');
-  if(savedUserId) { loadUserFromFirebase(savedUserId).then(loaded => { if(loaded) { currentUser = savedUserId; updateUserDisplay(); listenToUserMessages(); } }); }
-  detectReferralCode();
+  if(savedUserId) { 
+    loadUserFromFirebase(savedUserId).then(loaded => { 
+      if(loaded) { 
+        currentUser = savedUserId; 
+        updateUserDisplay(); 
+        listenToUserMessages();
+        startSessionTracking();
+      } 
+    }); 
+  }
   
-  // Initialize AdSense on page load
+  // Tracking pour les invités (stats uniquement)
+  if(!savedUserId) {
+    sessionStartTime = Date.now();
+    window.addEventListener('beforeunload', () => {
+      console.log("Session invité: " + Math.floor((Date.now()-sessionStartTime)/1000) + " secondes");
+    });
+  }
+  
+  detectReferralCode();
   setTimeout(() => { try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {} }, 1000);
+  
+  // Setup event listeners for admin filters after DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('adminSearch')?.addEventListener('input', loadAdminUsers);
+    document.getElementById('adminSort')?.addEventListener('change', loadAdminUsers);
+  });
 </script>
 </body>
 </html>
